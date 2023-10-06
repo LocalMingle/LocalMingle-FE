@@ -1,7 +1,11 @@
 import "./App.css";
 
-function App() {
-  return <></>;
+const App:React.FC = () => {
+  return (
+  <>
+    App 페이지 입니다.
+  </>
+  );
 }
 
 export default App;
