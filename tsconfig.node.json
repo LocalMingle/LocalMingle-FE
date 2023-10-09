@@ -3,7 +3,9 @@
     "composite": true,
     "skipLibCheck": true,
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    //"node" 모듈 해결 방식은 Node.js 환경에서 사용하기에 적합합니다.
+    //이 설정은 Node.js 모듈 시스템과 관련된 모듈 해결 규칙을 따릅니다.
+    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true
   },
   "include": ["vite.config.ts"]
