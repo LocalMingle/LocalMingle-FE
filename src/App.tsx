@@ -1,11 +1,11 @@
-import "./App.css";
+import Router from "../src/router/Router";
 
-const App:React.FC = () => {
+const App: React.FC = () => {
   return (
-  <>
-    App 페이지 입니다.
-  </>
+    <>
+      <Router />
+    </>
   );
-}
+};
 
 export default App;
