@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import {HeaderWrap} from './STHeader'
 
 const Header: React.FC = () =>{
   const navigate = useNavigate();
@@ -36,22 +37,24 @@ const Header: React.FC = () =>{
     <>
     {isLogin === false ? (
       /* 로그인 전 */
-      <div>
+      <HeaderWrap>
           <span onClick={goToMain}>로고</span>
           {/* 231010 JSY : 이미지 로고 받으면 아래 코드로 교체 예정 */}
           {/* <img src="" alt="logo" onClick={goToMain}>로고</img> */}
         <button onClick={login}>로그인</button>
-      </div>
+      </HeaderWrap>
     ) : (
       /* 로그인 후 */
-      <div>
+      <HeaderWrap>
           <span onClick={goToMain}>로고</span>
           {/* 231010 JSY : 이미지 로고 받으면 아래 코드로 교체 예정 */}
           {/* <img src="" alt="logo" onClick={goToMain}>로고</img> */}
-        <button onClick={goToPost}>게시글 작성</button>
-        <button onClick={goToMyPage}>마이 페이지</button>
-        <button onClick={logout}>로그아웃</button>
-      </div>
+          <div>
+            <button onClick={goToPost}>게시글 작성</button>
+            <button onClick={goToMyPage}>마이 페이지</button>
+            <button onClick={logout}>로그아웃</button>
+          </div>
+      </HeaderWrap>
     )}
     </>
   )
