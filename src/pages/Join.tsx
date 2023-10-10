@@ -26,6 +26,7 @@ const SignUpForm: React.FC = () => {
 
   return (
     <div>
+      <h2>회원가입</h2>
       <label>
         닉네임:
         <input
