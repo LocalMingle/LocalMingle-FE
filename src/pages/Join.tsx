@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 // import { useRecoilState } from "recoil";
 // import { userState } from "../recoil/atoms/UserState";
 
@@ -8,6 +11,7 @@ const SignUpForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [bio, setBio] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   // const [user, setUser] = useRecoilState(userState);
 
@@ -24,9 +28,13 @@ const SignUpForm: React.FC = () => {
     // setUser({ userId: });
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div>
-      <h2>회원가입</h2>
+      <h1>회원가입</h1>
       <label>
         닉네임:
         <input
@@ -49,10 +57,17 @@ const SignUpForm: React.FC = () => {
       <label>
         비밀번호:
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <button onClick={togglePasswordVisibility}>
+          {showPassword ? (
+            <FontAwesomeIcon icon={faEye} />
+          ) : (
+            <FontAwesomeIcon icon={faEyeSlash} />
+          )}
+        </button>
       </label>
       <br />
       <label>
