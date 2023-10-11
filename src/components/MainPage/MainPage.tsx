@@ -1,11 +1,14 @@
 import React from 'react'
 import Banner from '../common/ Banner/Banner'
+import Search from '../common/Search/Search'
+import Selector from '../common/Selector/Selector'
 
 const MainPage: React.FC = () => {
   return (
     <>
       <Banner></Banner>
-      <div>Main 페이지 입니다</div>
+      <Search></Search>
+      <Selector></Selector>
     </>
   )
 }

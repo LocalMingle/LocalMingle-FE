@@ -1,8 +1,9 @@
 import React from 'react'
+import * as St from './STSearch'
 
 const Search: React.FC = () => {
   return (
-    <div>: React.FC</div>
+    <div>검색바</div>
   )
 }
 
