@@ -1,15 +1,21 @@
 import styled, { css } from "styled-components";
 
 export const HeaderWrap = styled.div`
-  padding: 10px 20px;
+  padding: 20px 0 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e9ecef;
+
+  & svg {
+    cursor: pointer;
+  }
 
   & button {
     border: none;
     background: transparent;
     cursor: pointer;
+    padding: 0;
+    font-size: 15px;
+    font-weight: 700;
   }
 `
