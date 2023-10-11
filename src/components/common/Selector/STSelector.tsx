@@ -14,4 +14,5 @@ export const Selector = styled.select`
   height: 30px;
   color: #646464;
   padding: 0 3px;
+  font-size: 13px;
 `

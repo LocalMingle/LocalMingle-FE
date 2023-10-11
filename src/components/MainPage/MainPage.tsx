@@ -3,9 +3,10 @@ import * as St from './STMainPage'
 import Banner from '../common/Banner/Banner'
 import Search from '../common/Search/Search'
 import Selector from '../common/Selector/Selector'
+import Card from '../common/Card/Card'
 
 const MainPage: React.FC = () => {
-  // 위치 인증 여부 옵션 값
+  // 위치 인증 여부 옵션 값 -> DB로 가져올 예정
   const locationOptions = [
     { value: 'anyone', label: '🙋🏻 아무나' },
     { value: 'neighborhood', label: '🏡 동네만' },
@@ -23,7 +24,7 @@ const MainPage: React.FC = () => {
     { value: '관악구', label: '관악구' },
   ]
 
-  // 카테고리 옵션 값
+  // 카테고리 옵션 값 -> DB로 가져올 예정
   const categoryOptions = [
     { value: '맛집/커피', label: '☕️ 맛집/커피' },
     { value: '운동/건강', label: '🏃🏻 운동/건강' },
@@ -45,6 +46,10 @@ const MainPage: React.FC = () => {
         {/* 카테고리 : 맛집/커피, 운동/건강, 애완동물, 공부/교육 */}
         <Selector options={categoryOptions}></Selector>
       </St.SelectorWrap>
+      {/* 카드 */}
+      <Card></Card>
+      <Card></Card>
+      <Card></Card>
     </>
   );
 };
