@@ -50,7 +50,7 @@ table {
 /************************************************
                   기본 화면 넓이
 ************************************************/
-body {background:#eee}
+body {background:#eee;color:#131313}
 #root {width:500px;height:100vh;background:#fff;margin:0 auto;padding:0 25px}
 
 @media screen and (max-width:500px) {
