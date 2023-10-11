@@ -21,6 +21,7 @@ time, mark, audio, video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+  box-sizing: border-box;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
@@ -50,7 +51,7 @@ table {
                   기본 화면 넓이
 ************************************************/
 body {background:#eee}
-#root {width:500px;height:100vh;background:#fff;margin:0 auto}
+#root {width:500px;height:100vh;background:#fff;margin:0 auto;padding:0 25px}
 
 @media screen and (max-width:500px) {
   #root {width:100%}
