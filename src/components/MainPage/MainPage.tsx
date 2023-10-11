@@ -4,6 +4,7 @@ import Banner from '../common/Banner/Banner'
 import Search from '../common/Search/Search'
 import Selector from '../common/Selector/Selector'
 import Card from '../common/Card/Card'
+import FixedButton from '../common/FixedButton/FixedButton'
 
 const MainPage: React.FC = () => {
   // 위치 인증 여부 옵션 값 -> DB로 가져올 예정
@@ -50,6 +51,7 @@ const MainPage: React.FC = () => {
       <Card></Card>
       <Card></Card>
       <Card></Card>
+      <FixedButton></FixedButton>
     </>
   );
 };
