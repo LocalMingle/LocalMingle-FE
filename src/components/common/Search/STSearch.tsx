@@ -5,6 +5,7 @@ export const SearchBar = styled.div`
   border-radius: 18px;
   padding: 3px;
   width: 100%;
+  margin-bottom: 10px;
 
   & div {
     border: 1px solid #ADADAD;
