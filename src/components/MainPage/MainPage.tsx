@@ -1,5 +1,5 @@
-import React from 'react'
-import Banner from '../common/ Banner/Banner'
+import React from "react";
+import Banner from "../common/ Banner/Banner";
 
 const MainPage: React.FC = () => {
   return (
@@ -7,7 +7,7 @@ const MainPage: React.FC = () => {
       <Banner></Banner>
       <div>Main 페이지 입니다</div>
     </>
-  )
-}
+  );
+};
 
-export default MainPage
+export default MainPage;
