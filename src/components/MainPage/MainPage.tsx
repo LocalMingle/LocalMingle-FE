@@ -1,5 +1,5 @@
 import React from 'react'
-import Banner from '../common/ Banner/Banner'
+import Banner from '../common/Banner/Banner'
 import Search from '../common/Search/Search'
 import Selector from '../common/Selector/Selector'
 
