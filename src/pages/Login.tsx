@@ -38,8 +38,8 @@ const LoginPage: React.FC = () => {
       );
 
       if (response.status === 201) {
-        const accessToken = response.headers.accessToken;
-        const refreshToken = response.headers.refreshToken;
+        const accessToken = response.headers.accesstoken;
+        const refreshToken = response.headers.refreshtoken;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
         const userId = response.data.userId;
