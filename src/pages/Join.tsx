@@ -64,6 +64,7 @@ const SignUpForm: React.FC = () => {
         nickname,
         email,
         password,
+        confirmPassword,
         bio,
       });
 
