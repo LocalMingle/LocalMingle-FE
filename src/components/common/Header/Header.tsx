@@ -6,16 +6,11 @@ const Header: React.FC = () =>{
   const navigate = useNavigate();
   
   // 로그인 여부
-  const isLogin = localStorage.getItem("accessToken") ? true : false;
+  const isLogin: boolean = localStorage.getItem("accessToken") ? true : false;
 
   // (로고)메인 페이지로 이동 
   const goToMain = () => {
     navigate('/');
-  }
-
-  // 게시글 작성 페이지로 이동
-  const goToPost = () => {
-    navigate('/post');
   }
 
   // 마이 페이지로 이동
