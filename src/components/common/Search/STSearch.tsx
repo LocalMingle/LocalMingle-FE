@@ -21,4 +21,5 @@ export const SearchBar = styled.div`
 export const SearchInput = styled.input`
   font-size: 15px;
   width:100%;
+  border: none;
 `
