@@ -3,8 +3,9 @@ export function validateNickname(nickname: string) {
   if (!nickname) {
     return "닉네임을 입력하세요.";
   }
-  if (/[!@#$%^&*(),.?":{}|<>]/.test(nickname)) {
-    return "닉네임에는 특수문자를 사용할 수 없습니다.";
+  // 특수문자, 공백, 한글 자음/모음만 사용 불가
+  if (/[!@#$%^&*(),.?":{}|<> ]|[ㄱ-ㅎㅏ-ㅣ]/.test(nickname)) {
+    return "닉네임에는 특수문자, 공백, 단독 자음/모음을 사용할 수 없습니다.";
   }
   if (nickname.length < 2 || nickname.length > 8) {
     return "닉네임은 2자 이상 8자 이하로 입력해야 합니다.";
