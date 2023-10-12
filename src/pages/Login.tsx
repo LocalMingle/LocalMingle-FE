@@ -101,7 +101,7 @@ const LoginPage: React.FC = () => {
       <br />
       <button onClick={handleLogin}>로그인</button>
       <div>
-        로컬밍글의 회원이 아니신가요?{" "}
+        로컬밍글의 회원이 아니신가요??{" "}
         <span onClick={handleJoinClick}>회원가입하기</span>
       </div>
     </div>
