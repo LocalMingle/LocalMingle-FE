@@ -5,6 +5,7 @@ export const BannerSection = styled.div`
   height: 200px;
   background-color:#E6DCF0;
   border-radius: 10px;
+  margin-bottom: 30px;
 `
 
 export const BannerContent = styled.div`

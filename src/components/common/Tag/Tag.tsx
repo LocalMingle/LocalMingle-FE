@@ -1,8 +1,16 @@
 import React from 'react'
+import * as St from './STTag'
 
-const Tag:React.FC = () => {
+interface TagProps {
+  bgColor?: string;
+  children?: React.ReactNode;
+}
+
+const Tag:React.FC<TagProps> = ( {bgColor, children}) => {
   return (
-    <div>Tag</div>
+    <St.TagWrap>
+      <St.Tag bgColor={bgColor}>{children}</St.Tag>
+    </St.TagWrap>
   )
 }
 
