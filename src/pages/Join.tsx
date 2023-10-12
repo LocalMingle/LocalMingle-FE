@@ -1,8 +1,18 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-// import { useRecoilState } from "recoil";
-// import { userState } from "../recoil/atoms/UserState";
+import { useRecoilState } from "recoil";
+import { userState } from "../recoil/atoms/UserState";
+import { axiosInstance } from "../api/axiosInstance";
+import { setToken } from "../util/token";
+import {
+  validateNickname,
+  validatePassword,
+  validatePasswordConfirmation,
+  validateEmail,
+  validateBio,
+} from "../util/validation";
 
 const SignUpForm: React.FC = () => {
   const [nickname, setNickname] = useState("");
@@ -11,20 +21,106 @@ const SignUpForm: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [bio, setBio] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [, setUser] = useRecoilState(userState);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  // const [user, setUser] = useRecoilState(userState);
+  const [nicknameError, setNicknameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [bioError, setBioError] = useState("");
 
-  const handleEmailVerification = () => {
-    // 이메일 인증 로직을 구현
-    // 이메일을 보내고, 인증 코드를 확인하는 등의 작업을 수행
+  const handleSignUp = async () => {
+    const newNicknameError = validateNickname(nickname);
+    const newEmailError = validateEmail(email);
+    const newPasswordError = validatePassword(password);
+    const newConfirmPasswordError = validatePasswordConfirmation(
+      password,
+      confirmPassword
+    );
+    const newBioError = validateBio(bio);
+
+    setNicknameError(newNicknameError);
+    setEmailError(newEmailError);
+    setPasswordError(newPasswordError);
+    setConfirmPasswordError(newConfirmPasswordError);
+    setBioError(newBioError);
+
+    if (
+      newNicknameError ||
+      newEmailError ||
+      newPasswordError ||
+      newConfirmPasswordError ||
+      newBioError
+    ) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await axiosInstance.post(`users/signup`, {
+        nickname,
+        email,
+        password,
+        bio,
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        const accessToken = response.headers["authorization"];
+        setToken(accessToken);
+
+        setUser({
+          userId: response.data.userId,
+        });
+
+        navigate("/login");
+      } else {
+        console.error("예상치 못한 응답:", response);
+      }
+    } catch (error: unknown) {
+      console.error("회원가입 중 에러 발생:", error);
+
+      if (error && typeof error === "object" && "response" in error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        console.error("서버 응답:", (error as any).response.data);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleSignUp = () => {
-    // 회원가입 로직을 구현
-    // 입력된 정보를 서버로 전송하고 회원가입을 처리
-    // 이메일 인증이 완료되었는지 확인하고 처리
-    // 회원가입이 성공하면 Recoil 상태를 업데이트
-    // setUser({ userId: });
+  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setNickname(newValue);
+    setNicknameError(validateNickname(newValue));
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setEmail(newValue);
+    setEmailError(validateEmail(newValue));
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setPassword(newValue);
+    setPasswordError(validatePassword(newValue));
+  };
+
+  const handleConfirmPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newValue = e.target.value;
+    setConfirmPassword(newValue);
+    setConfirmPasswordError(validatePasswordConfirmation(password, newValue));
+  };
+
+  const handleBioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setBio(newValue);
+    setBioError(validateBio(newValue));
   };
 
   const togglePasswordVisibility = () => {
@@ -36,29 +132,22 @@ const SignUpForm: React.FC = () => {
       <h1>회원가입</h1>
       <label>
         닉네임:
-        <input
-          type="text"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-        />
+        <input type="text" value={nickname} onChange={handleNicknameChange} />
       </label>
+      <div>{nicknameError}</div>
       <br />
       <label>
         이메일:
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <button onClick={handleEmailVerification}>이메일 인증</button>
+        <input type="email" value={email} onChange={handleEmailChange} />
       </label>
+      <div>{emailError}</div>
       <br />
       <label>
         비밀번호:
         <input
           type={showPassword ? "text" : "password"}
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handlePasswordChange}
         />
         <button onClick={togglePasswordVisibility}>
           {showPassword ? (
@@ -68,24 +157,24 @@ const SignUpForm: React.FC = () => {
           )}
         </button>
       </label>
+      <div>{passwordError}</div>
       <br />
       <label>
         비밀번호 확인:
         <input
           type="password"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={handleConfirmPasswordChange}
         />
       </label>
+      <div>{confirmPasswordError}</div>
       <br />
       <label>
         한줄 자기 소개:
-        <input
-          type="text"
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-        />
+        <input type="text" value={bio} onChange={handleBioChange} />
       </label>
+      <div>{bioError}</div>
+      {isLoading && <div>회원가입 중...</div>}
       <br />
       <button onClick={handleSignUp}>회원가입</button>
     </div>
