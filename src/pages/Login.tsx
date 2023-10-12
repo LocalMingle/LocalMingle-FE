@@ -38,10 +38,12 @@ const LoginPage: React.FC = () => {
       );
 
       if (response.status === 201) {
-        const accessToken = response.headers.accesstoken;
-        const refreshToken = response.headers.refreshtoken;
+        console.log(response);
+        const accessToken = response.headers.accessToken;
+        const refreshToken = response.headers.refreshToken;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
+        console.log("accessToken", accessToken);
         const userId = response.data.userId;
         setUser({ userId });
         navigate("/");

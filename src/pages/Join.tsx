@@ -5,7 +5,6 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
 import { userState } from "../recoil/atoms/UserState";
 import { axiosInstance } from "../api/axiosInstance";
-import { setToken } from "../util/token";
 import {
   validateNickname,
   validatePassword,
@@ -69,9 +68,6 @@ const SignUpForm: React.FC = () => {
       });
 
       if (response.status === 200 || response.status === 201) {
-        const accessToken = response.headers["authorization"];
-        setToken(accessToken);
-
         setUser({
           userId: response.data.userId,
         });
