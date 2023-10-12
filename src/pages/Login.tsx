@@ -28,7 +28,7 @@ const LoginPage: React.FC = () => {
       const response = await axios.post(
         `${import.meta.env.VITE_REACT_APP_URL}users/login`,
         {
-          username: email,
+          email: email,
           password: password,
         },
         {
@@ -37,14 +37,14 @@ const LoginPage: React.FC = () => {
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         const accessToken = response.headers["authorization"];
         const refreshToken = response.headers["authorization_refresh"];
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
         const userId = response.data.userId;
         setUser({ userId });
-        navigate("/main");
+        navigate("/");
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
