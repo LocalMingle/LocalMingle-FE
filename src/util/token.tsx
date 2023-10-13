@@ -20,10 +20,6 @@ export const setRefreshToken = (token: string) => {
 export const setTokens = (accessToken: string, refreshToken: string) => {
   localStorage.setItem("accessToken", accessToken);
   localStorage.setItem("refreshToken", refreshToken);
-
-  const now = new Date();
-  const expiresIn = new Date(now.getTime() + 5000).getTime(); // 5초 뒤 만료
-  localStorage.setItem("accessTokenExpiresAt", expiresIn.toString());
 };
 
 // 액세스 토큰 가져오기 함수
