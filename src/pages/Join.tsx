@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -173,7 +174,7 @@ const SignUpForm: React.FC = () => {
       <div>{bioError}</div>
       {isLoading && <div>회원가입 중...</div>}
       <br />
-      <button onClick={handleSignUp}>회원가입</button>
+      <Button onClick={handleSignUp}>회원가입</Button>
     </div>
   );
 };
