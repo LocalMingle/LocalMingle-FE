@@ -19,6 +19,6 @@ export const Spinner = styled.div`
     display: block;
     width: 100%;
     height: 100%;
-    background: #5353535a;
+    background: #00000040;
   }
 `

@@ -71,7 +71,7 @@ table {
                   기본 화면 넓이
 ************************************************/
 body {background:#eee;color:#131313;font-family: "Noto Sans KR", sans-serif}
-#root {width:500px;height:100%;background:#fff;margin:0 auto;padding:0 25px 25px;position:relative;}
+#root {width:500px;min-height:100vh;height:100%;background:#fff;margin:0 auto;padding:0 25px 25px;position:relative;}
 
 @media screen and (max-width:520px) {
   #root {width:100%}
