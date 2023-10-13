@@ -37,7 +37,6 @@ const LoginPage: React.FC = () => {
           withCredentials: true,
         }
       );
-
       if (response.status === 201) {
         const accessToken = response.headers["accesstoken"];
         const refreshToken = response.headers["refreshtoken"];
