@@ -20,6 +20,7 @@ export const checkAndRefreshTokenIfNeeded = async () => {
     }
   }
 };
+
 // 로그인
 export const loginUser = async (email: string, password: string) => {
   const response = await axiosInstance.post(`users/login`, {
@@ -49,4 +50,27 @@ export const deleteUser = async () => {
   localStorage.removeItem("refreshToken");
 
   return data;
+};
+
+// 로그아웃
+export const logoutUser = () => {
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+};
+
+// 회원 탈퇴
+export const deleteUser = async () => {
+  const data = await axiosInstance.delete(`users/delete`);
+
+  // 로컬 스토리지에서 토큰 제거 (이 부분은 그대로 유지해도 됨)
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+
+  return data;
+};
+
+// 게시글 전체 조회
+export const getPosts = async () => {
+  const response = await axiosInstance.get("events");
+  return response.data;
 };

@@ -19,3 +19,9 @@ export const HeaderWrap = styled.div`
     font-weight: 700;
   }
 `
+
+export const HeaderBtns = styled.div`
+  & button:first-child {
+    margin-right: 10px;
+  }
+`

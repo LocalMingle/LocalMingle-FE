@@ -2,21 +2,37 @@ import React from 'react'
 import * as St from './STCard'
 import Tag from '../Tag/Tag'
 
-const Card: React.FC = () => {
+// 카드 (Swagger 기준)
+interface CardProps {
+  data : {
+    eventName: string;
+    maxSize: number
+    eventDate: string;
+    signupStartDate: string;
+    signupEndDate: string;
+    eventLocation: string;
+    content: string;
+    category: string;
+    isDeleted: boolean;
+    isVerified: boolean;
+  }
+}
+
+const Card: React.FC<CardProps> = ( {data} ) => {
   return (
     <St.CardSection>
       <St.CardWrap>
         <St.CardTop>
-          <Tag bgColor="green">카테고리명</Tag>
-          <St.Members>07/10</St.Members>
+          <Tag bgColor="green">{data.category}</Tag>
+          <St.Members>{data.maxSize}</St.Members>
         </St.CardTop>
         <St.Date>
           <span>모임 일시</span>
-          <span>2023.12.25</span>
+          <span>{data.eventDate}</span>
         </St.Date>
-        <St.Title>6조 최종 프로젝트 파이팅 😆</St.Title>
+        <St.Title>{data.eventName}</St.Title>
         <St.CardMiddle>
-          <Tag bgColor="orange">서울시 도봉구</Tag>
+          <Tag bgColor="orange">{data.eventLocation}</Tag>
           <Tag bgColor="pink">아무나 환영</Tag>
         </St.CardMiddle>
         <St.CardBottom>
