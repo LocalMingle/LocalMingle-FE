@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { axiosInstance } from "../api/axiosInstance";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { userState } from "../recoil/atoms/UserState";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { validateEmail } from "../util/validation";
+import { setTokens } from "../util/token";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${import.meta.env.VITE_REACT_APP_URL}users/login`,
         {
           email: email,
@@ -38,18 +39,17 @@ const LoginPage: React.FC = () => {
       );
 
       if (response.status === 201) {
-        const accessToken = response.headers.accesstoken;
-        const refreshToken = response.headers.refreshtoken;
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
+        const accessToken = response.headers["accesstoken"];
+        const refreshToken = response.headers["refreshtoken"];
+        setTokens(accessToken, refreshToken);
         const userId = response.data.userId;
         setUser({ userId });
+        console.log("로그인 후 userId:", userId);
         navigate("/");
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.log(error.message);
-        // 기타 오류 처리도 필요하다면 여기에 추가해
       }
     }
   };

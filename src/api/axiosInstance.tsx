@@ -1,20 +1,41 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { getNewAccessToken } from "../util/token";
 
-export const axiosInstance = axios.create({
+interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+  _retry?: boolean;
+}
+
+const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_REACT_APP_URL,
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
 
-axiosInstance.defaults.timeout = 10000;
+axiosInstance.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config as CustomAxiosRequestConfig;
 
-// axios를 통해 client에서 서버로 request 전
-// accessToken이 있는지 확인하고, 있다면 headers에 추가
-axiosInstance.interceptors.request.use((config) => {
-  const accessToken = localStorage.getItem("accessToken");
-  if (accessToken) {
-    config.headers["Authorization"] = accessToken;
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      const newAccessToken: string | null = await getNewAccessToken();
+      if (newAccessToken) {
+        originalRequest.headers = {
+          ...originalRequest.headers,
+          Authorization: newAccessToken,
+        };
+        return axiosInstance(originalRequest);
+      }
+    }
+    return Promise.reject(error);
   }
+);
 
-  return config;
-});
+export { axiosInstance };

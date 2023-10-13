@@ -1,13 +1,74 @@
-// 토큰 설정 함수 set
-// 사용자 로그인 또는 인증 시에 사용
-// 로그인에 성공핬을때 서버에서 발급한 토큰을 로컬스토리지에 저장
-export const setToken = (token: string | null) => {
-  localStorage.setItem("token", token || "");
+import jwt_decode from "jwt-decode";
+import axios from "axios";
+import { logoutUser } from "../api/api";
+
+interface DecodedToken {
+  exp: number;
+}
+
+// 액세스 토큰 저장 함수
+export const setAccessToken = (token: string) => {
+  localStorage.setItem("accessToken", token);
 };
 
-// 토큰 가져오기 함수 get
-// 사용자 인증정보를 확인하거나 api요청 보낼때 사용
-// 사용자가 인증되었는지 확인하거나 인증 토큰을 서버로 전송할 때 사용하여 로컬 스토리지에서 토큰을 가져온다
-export const getToken = (): string | null => {
-  return localStorage.getItem("token");
+// 리프레시 토큰 저장 함수
+export const setRefreshToken = (token: string) => {
+  localStorage.setItem("refreshToken", token);
+};
+
+// 액세스 토큰과 리프레시 토큰 동시 저장 함수
+export const setTokens = (accessToken: string, refreshToken: string) => {
+  localStorage.setItem("accessToken", accessToken);
+  localStorage.setItem("refreshToken", refreshToken);
+
+  const now = new Date();
+  const expiresIn = new Date(now.getTime() + 5000).getTime(); // 5초 뒤 만료
+  localStorage.setItem("accessTokenExpiresAt", expiresIn.toString());
+};
+
+// 액세스 토큰 가져오기 함수
+export const getAccessToken = (): string | null => {
+  return localStorage.getItem("accessToken");
+};
+
+// 리프레시 토큰 가져오기 함수
+export const getRefreshToken = (): string | null => {
+  return localStorage.getItem("refreshToken");
+};
+
+// 토큰 만료 확인
+export const isTokenExpired = (token: string): boolean => {
+  const decodedToken = jwt_decode<DecodedToken>(token);
+  const expirationTime = decodedToken.exp * 1000; // JWT 토큰의 exp는 초단위라서 밀리초로 변환
+  const currentTime = Date.now();
+  return expirationTime < currentTime;
+};
+
+// 새로운 액세스 토큰 받아오기
+export const getNewAccessToken = async (): Promise<string | null> => {
+  try {
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) return null;
+
+    const response = await axios.post(
+      `${import.meta.env.VITE_REACT_APP_URL}users/refresh`,
+      {
+        refreshToken,
+      }
+    );
+
+    if (response.status === 401) {
+      // 만약 리프레쉬 토큰이 만료되었다면
+      logoutUser(); // 로그아웃
+      window.location.href = "/login"; // 로그인 페이지로 리다이렉트
+      return null;
+    }
+
+    const newAccessToken = response.data.accessToken;
+    setAccessToken(newAccessToken);
+
+    return newAccessToken;
+  } catch (error) {
+    return null;
+  }
 };
