@@ -5,6 +5,9 @@ import Search from '../common/Search/Search'
 import Selector from '../common/Selector/Selector'
 import Card from '../common/Card/Card'
 import FixedButton from '../common/FixedButton/FixedButton'
+import { QueryObserverResult, useQuery } from 'react-query'
+import axios from 'axios'
+import { Spinner } from '../common/Spinner'
 
 const MainPage: React.FC = () => {
   // 위치 인증 여부 옵션 값 -> DB로 가져올 예정
@@ -33,7 +36,57 @@ const MainPage: React.FC = () => {
     { value: '공부/교육', label: '📚 공부/교육' },
   ]
 
-  return (
+  const accessToken = localStorage.getItem('accessToken')
+
+  // 게시글 전체 조회 (Swagger 기준)
+  interface CardProps {
+    data : {
+      eventName: string;
+      maxSize: number
+      eventDate: string;
+      signupStartDate: string;
+      signupEndDate: string;
+      eventLocation: string;
+      content: string;
+      category: string;
+      isDeleted: boolean;
+      isVerified: boolean;
+    }
+  }
+
+  const { isLoading, data } = useQuery<QueryObserverResult<CardProps, unknown>>(
+    "posts",
+    async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_URL}events`,
+          {
+            headers: {
+              Authorization: `${accessToken}`,
+            },
+          }
+          )
+
+        if (response.status == 200) {
+          console.log('게시글 전체조회 리스트 :', response.data);
+          return response.data;
+        }
+      } catch (error: unknown) {
+        console.log('게시글 전체조회 에러! :', error);
+        throw error;
+      }
+    }
+  );
+
+  // 로딩 중
+  // if (isLoading) return (<Spinner/>)
+    
+
+  // 에러 발생
+  // if (error) return alert({error})
+
+  // 데이터가 없는 경우
+  if (!data) return (
     <>
       <Banner></Banner>
       <Search></Search>
@@ -47,10 +100,30 @@ const MainPage: React.FC = () => {
         {/* 카테고리 : 맛집/커피, 운동/건강, 애완동물, 공부/교육 */}
         <Selector options={categoryOptions}></Selector>
       </St.SelectorWrap>
+      {/* <Card></Card> */}
+      <div>게시글이 없습니다!</div>
+      <FixedButton></FixedButton>
+    </>
+  )
+
+  return (
+      <>
+      <Banner></Banner>
+      <Search></Search>
+      <St.SelectorWrap>
+        {/* 위치 인증 여부 : 아무나 환영 | 우리 동네만 */}
+        <Selector options={locationOptions}></Selector>
+        {/* 도 */}
+        <Selector options={doOptions}></Selector>
+        {/* 시 */}
+        <Selector options={guOptions}></Selector>
+        {/* 카테고리 : 맛집/커피, 운동/건강, 애완동물, 공부/교육 */}
+        <Selector options={categoryOptions}></Selector>
+      </St.SelectorWrap>
       {/* 카드 */}
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
+      {data.map((postData) => (
+        <Card key={postData.eventName} data={postData}></Card>
+      ))}
       <FixedButton></FixedButton>
     </>
   );

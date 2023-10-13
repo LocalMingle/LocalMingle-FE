@@ -13,3 +13,9 @@ export const loginUser = async (email: string, password: string) => {
   );
   return response;
 };
+
+// 게시글 전체 조회
+export const getPosts = async () => {
+  const response = await axiosInstance.get("events");
+  return response.data;
+};
