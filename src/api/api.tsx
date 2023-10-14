@@ -15,7 +15,7 @@ export const checkAndRefreshTokenIfNeeded = async () => {
       if (newToken) {
         setAccessToken(newToken);
       } else {
-        // 여기서 로그아웃 로직이나 리프레쉬 토큰도 만료되었을 때의 처리를 해주면 좋겠어
+        // 여기서 로그아웃 로직이나 리프레쉬 토큰도 만료되었을 때의 처리요망
       }
     }
   }
@@ -28,7 +28,6 @@ export const loginUser = async (email: string, password: string) => {
     password,
   });
 
-  // 토큰의 키 이름에 맞게 수정
   setAccessToken(response.data.accessToken);
   setRefreshToken(response.data.refreshToken);
 
