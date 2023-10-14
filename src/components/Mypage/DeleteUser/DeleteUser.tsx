@@ -1,7 +1,8 @@
-import axios from "axios";
 import React, { useState } from "react";
+import * as St from './STDeleteUser'
+import axios from "axios";
 import { useRecoilValue } from "recoil";
-import { userState } from "../../recoil/atoms/UserState";
+import { userState } from "../../../recoil/atoms/UserState";
 
 const DeleteUser: React.FC = () => {
   const [password, setPassword] = useState<string>("");

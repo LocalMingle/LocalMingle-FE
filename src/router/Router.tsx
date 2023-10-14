@@ -5,10 +5,10 @@ import Login from "../pages/Login";
 import Post from "../pages/Post";
 import MyPage from "../pages/MyPage";
 import PostView from "../pages/PostView";
-import UserInfo from "../components/Mypage/UserInfo";
-import MakeList from "../components/Mypage/MakeList";
-import JoinList from "../components/Mypage/JoinList";
-import DeleteUser from "../components/Mypage/DeleteUser";
+import UserInfo from "../components/Mypage/UserInfo/UserInfo";
+import MakeList from "../components/Mypage/MakeList/MakeList";
+import JoinList from "../components/Mypage/JoinList/JoinList";
+import DeleteUser from "../components/Mypage/DeleteUser/DeleteUser";
 
 export default function Router() {
   return (

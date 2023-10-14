@@ -1435,7 +1435,7 @@
 
 "@types/styled-components@^5.1.28":
   version "5.1.28"
-  resolved "https://registry.npmjs.org/@types/styled-components/-/styled-components-5.1.28.tgz"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-5.1.28.tgz#3b86c4d373924ff6976de788843cab445d9ab15b"
   integrity sha512-nu0VKNybkjvUqJAXWtRqKd7j3iRUl8GbYSTvZNuIBJcw/HUp1Y4QUXNLlj7gcnRV/t784JnHAlvRnSnE3nPbJA==
   dependencies:
     "@types/hoist-non-react-statics" "*"
