@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import { Button } from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -126,57 +127,102 @@ const SignUpForm: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>회원가입</h1>
-      <label>
-        닉네임:
-        <input type="text" value={nickname} onChange={handleNicknameChange} />
-      </label>
+    <Wrapper>
+      <Title>회원가입</Title>
+      <LabelWrapper>
+        <label>닉네임</label>
+        <Input type="text" value={nickname} onChange={handleNicknameChange} />
+      </LabelWrapper>
       <div>{nicknameError}</div>
       <br />
-      <label>
-        이메일:
-        <input type="email" value={email} onChange={handleEmailChange} />
-      </label>
+      <LabelWrapper>
+        <label>이메일</label>
+        <Input type="email" value={email} onChange={handleEmailChange} />
+      </LabelWrapper>
       <div>{emailError}</div>
       <br />
-      <label>
-        비밀번호:
-        <input
+      <LabelWrapper>
+        <label>비밀번호</label>
+        <Input
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={handlePasswordChange}
         />
-        <button onClick={togglePasswordVisibility}>
+        <EyeToggleButton onClick={togglePasswordVisibility}>
           {showPassword ? (
             <FontAwesomeIcon icon={faEye} />
           ) : (
             <FontAwesomeIcon icon={faEyeSlash} />
           )}
-        </button>
-      </label>
+        </EyeToggleButton>
+      </LabelWrapper>
       <div>{passwordError}</div>
       <br />
-      <label>
-        비밀번호 확인:
-        <input
+      <LabelWrapper>
+        <label>비밀번호 확인</label>
+        <Input
           type="password"
           value={confirmPassword}
           onChange={handleConfirmPasswordChange}
         />
-      </label>
+      </LabelWrapper>
       <div>{confirmPasswordError}</div>
       <br />
-      <label>
-        한줄 자기 소개:
-        <input type="text" value={bio} onChange={handleBioChange} />
-      </label>
+      <LabelWrapper>
+        <label>한줄 자기 소개</label>
+        <Input type="text" value={bio} onChange={handleBioChange} />
+      </LabelWrapper>
       <div>{bioError}</div>
       {isLoading && <div>회원가입 중...</div>}
       <br />
       <Button onClick={handleSignUp}>회원가입</Button>
-    </div>
+    </Wrapper>
   );
 };
 
 export default SignUpForm;
+
+const Title = styled.h2`
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 50px;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+`;
+
+const LabelWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 70%;
+  position: relative;
+  margin-bottom: 10px;
+
+  label {
+    margin-bottom: 5px;
+  }
+`;
+
+const Input = styled.input`
+  padding: 6px;
+  width: 100%;
+  height: 35px;
+  border-radius: 6px;
+  border: 1px solid gray;
+`;
+
+const EyeToggleButton = styled.button`
+  position: absolute;
+  right: 6px;
+  top: 69%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+`;
