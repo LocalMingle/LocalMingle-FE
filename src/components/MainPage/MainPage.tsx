@@ -41,16 +41,19 @@ const MainPage: React.FC = () => {
   // 게시글 전체 조회 (Swagger 기준)
   interface CardProps {
     data : {
-      eventName: string;
-      maxSize: number
-      eventDate: string;
-      signupStartDate: string;
-      signupEndDate: string;
-      eventLocation: string;
-      content: string;
       category: string;
+      content: string;
+      createdAt: string;
+      eventDate: string;
+      eventId: number;
+      eventLocation: string;
+      eventName: string;
       isDeleted: boolean;
-      isVerified: boolean;
+      isVerified: "no";
+      maxSize: number;
+      signupEndDate: string;
+      signupStartDate: string;
+      updatedAt: string;
     }
   }
 
@@ -79,11 +82,7 @@ const MainPage: React.FC = () => {
   );
 
   // 로딩 중
-  // if (isLoading) return (<Spinner/>)
-    
-
-  // 에러 발생
-  // if (error) return alert({error})
+  if (isLoading) return (<Spinner/>)
 
   // 데이터가 없는 경우
   if (!data) return (
