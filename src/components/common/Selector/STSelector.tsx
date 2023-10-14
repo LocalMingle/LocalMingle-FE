@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 
 export const SelectorBar = styled.div`
+  background: #fff;
   border: 1px solid #E7E7E7;
   border-radius: 15px;
   width: 110px;

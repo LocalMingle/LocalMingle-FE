@@ -44,6 +44,7 @@ const MainPage: React.FC = () => {
       category: string;
       content: string;
       createdAt: string;
+      event: object;
       eventDate: string;
       eventId: number;
       eventLocation: string;
@@ -57,8 +58,9 @@ const MainPage: React.FC = () => {
     }
   }
 
-  const { isLoading, data } = useQuery<QueryObserverResult<CardProps, unknown>>(
-    "posts",
+  
+  const { isLoading, data } = useQuery<CardProps, unknown>(
+    "get",
     async () => {
       try {
         const response = await axios.get(
@@ -72,6 +74,8 @@ const MainPage: React.FC = () => {
 
         if (response.status == 200) {
           console.log('게시글 전체조회 리스트 :', response.data);
+          // console.clear();
+          // console.log(typeof data)
           return response.data;
         }
       } catch (error: unknown) {
@@ -81,8 +85,61 @@ const MainPage: React.FC = () => {
     }
   );
 
+
+
+
   // 로딩 중
   if (isLoading) return (<Spinner/>)
+
+
+  // 카테고리
+  // const { sidoData } = useQuery<CardProps, unknown>(
+  //   "get",
+  //   async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${import.meta.env.VITE_REACT_APP_URL}data/city`,
+  //         {
+  //           headers: {
+  //             Authorization: `${accessToken}`,
+  //           },
+  //         }
+  //         )
+
+  //       if (response.status == 200) {
+  //         console.log('시/도 리스트 :', response.data);
+  //         return response.data;
+  //       }
+  //     } catch (error: unknown) {
+  //       console.log('시/도 전체조회 에러! :', error);
+  //       throw error;
+  //     }
+  //   }
+  // );
+
+  // const { gunguData } = useQuery<QueryObserverResult<CardProps, unknown>>(
+  //   "get",
+  //   async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${import.meta.env.VITE_REACT_APP_URL}data/gu_name`,
+  //         {
+  //           headers: {
+  //             Authorization: `${accessToken}`,
+  //           },
+  //         }
+  //         )
+
+  //       if (response.status == 200) {
+  //         console.log('군/구 리스트 :', response.data);
+  //         return response.data;
+  //       }
+  //     } catch (error: unknown) {
+  //       console.log('게시글 전체조회 에러! :', error);
+  //       throw error;
+  //     }
+  //   }
+  // );
 
   // 데이터가 없는 경우
   if (!data) return (
@@ -92,9 +149,9 @@ const MainPage: React.FC = () => {
       <St.SelectorWrap>
         {/* 위치 인증 여부 : 아무나 환영 | 우리 동네만 */}
         <Selector options={locationOptions}></Selector>
-        {/* 도 */}
+        {/* 시/도 */}
         <Selector options={doOptions}></Selector>
-        {/* 시 */}
+        {/* 구 */}
         <Selector options={guOptions}></Selector>
         {/* 카테고리 : 맛집/커피, 운동/건강, 애완동물, 공부/교육 */}
         <Selector options={categoryOptions}></Selector>
@@ -112,16 +169,16 @@ const MainPage: React.FC = () => {
       <St.SelectorWrap>
         {/* 위치 인증 여부 : 아무나 환영 | 우리 동네만 */}
         <Selector options={locationOptions}></Selector>
-        {/* 도 */}
+        {/* 시/도 */}
         <Selector options={doOptions}></Selector>
-        {/* 시 */}
+        {/* 구 */}
         <Selector options={guOptions}></Selector>
         {/* 카테고리 : 맛집/커피, 운동/건강, 애완동물, 공부/교육 */}
         <Selector options={categoryOptions}></Selector>
       </St.SelectorWrap>
       {/* 카드 */}
-      {data.map((postData) => (
-        <Card key={postData.eventName} data={postData}></Card>
+      {data.map((postData: CardProps) => (
+        <Card key={postData.eventName} data={postData.event}></Card>
       ))}
       <FixedButton></FixedButton>
     </>
