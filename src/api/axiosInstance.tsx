@@ -11,6 +11,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+// 엑세스 토큰 만료시 리프레시 토큰 이용해서 새로운 엑세스 토큰 받아오는 코드!
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
     return response;
