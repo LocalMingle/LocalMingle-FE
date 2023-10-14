@@ -79,11 +79,7 @@ const MainPage: React.FC = () => {
   );
 
   // 로딩 중
-  // if (isLoading) return (<Spinner/>)
-    
-
-  // 에러 발생
-  // if (error) return alert({error})
+  if (isLoading) return (<Spinner/>)
 
   // 데이터가 없는 경우
   if (!data) return (
