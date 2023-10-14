@@ -5,7 +5,7 @@ import Search from '../common/Search/Search'
 import Selector from '../common/Selector/Selector'
 import Card from '../common/Card/Card'
 import FixedButton from '../common/FixedButton/FixedButton'
-import { QueryObserverResult, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 import axios from 'axios'
 import { Spinner } from '../common/Spinner'
 
@@ -84,9 +84,6 @@ const MainPage: React.FC = () => {
       }
     }
   );
-
-
-
 
   // 로딩 중
   if (isLoading) return (<Spinner/>)
