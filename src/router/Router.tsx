@@ -18,12 +18,14 @@ export default function Router() {
         <Route path="/join" element={<Join />} />
         <Route path="/login" element={<Login />} />
         <Route path="/post" element={<Post />} />
-        <Route path="/mypage" element={<MyPage />} />
         <Route path="/postview" element={<PostView />} />
-        <Route path="/mypage/userinfo" element={<UserInfo />} />
-        <Route path="/mypage/makelist" element={<MakeList />} />
-        <Route path="/mypage/joinlist" element={<JoinList />} />
-        <Route path="/mypage/deleteuser" element={<DeleteUser />} />
+        <Route path="/mypage" element={<MyPage />}>
+          <Route index element={<UserInfo />} />
+          <Route path="userinfo" element={<UserInfo />} />
+          <Route path="makelist" element={<MakeList />} />
+          <Route path="joinlist" element={<JoinList />} />
+          <Route path="deleteuser" element={<DeleteUser />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
