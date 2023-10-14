@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 interface TagProps {
-  bgColor?: string;
+  bgcolor?: string;
 }
 
 export const TagWrap = styled.div`
@@ -21,19 +21,19 @@ export const Tag = styled.p<TagProps>`
   font-weight: 500;
   
   ${(props)=>
-    props.bgColor === "green" &&
+    props.bgcolor === "green" &&
   css`
     background: #58DF97;
   `}
 
   ${(props)=>
-    props.bgColor === "orange" &&
+    props.bgcolor === "orange" &&
   css`
     background: #E48668;
   `}
 
   ${(props)=>
-    props.bgColor === "pink" &&
+    props.bgcolor === "pink" &&
   css`
     background: #F19FC4;
   `}

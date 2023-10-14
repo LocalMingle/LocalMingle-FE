@@ -10,7 +10,7 @@ export const CardSection = styled.div`
 ` 
 
 export const CardWrap = styled.div`
-  min-height: 335px;
+  /* min-height: 335px; */
   border: 1px solid #ADADAD;
   border-radius: 29px;
   padding: 20px;
@@ -25,7 +25,6 @@ export const CardTop = styled.div`
 export const Members = styled.p`
   color: #ADADAD;
   font-size: 17px;
-  letter-spacing: 1.5px;
   font-weight: 500;
 `
 
