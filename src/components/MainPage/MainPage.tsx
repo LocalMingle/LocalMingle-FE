@@ -41,16 +41,19 @@ const MainPage: React.FC = () => {
   // 게시글 전체 조회 (Swagger 기준)
   interface CardProps {
     data : {
-      eventName: string;
-      maxSize: number
-      eventDate: string;
-      signupStartDate: string;
-      signupEndDate: string;
-      eventLocation: string;
-      content: string;
       category: string;
+      content: string;
+      createdAt: string;
+      eventDate: string;
+      eventId: number;
+      eventLocation: string;
+      eventName: string;
       isDeleted: boolean;
-      isVerified: boolean;
+      isVerified: "no";
+      maxSize: number;
+      signupEndDate: string;
+      signupStartDate: string;
+      updatedAt: string;
     }
   }
 
