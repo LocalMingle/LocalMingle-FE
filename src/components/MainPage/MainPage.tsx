@@ -60,7 +60,7 @@ const MainPage: React.FC = () => {
 
   
   const { isLoading, data } = useQuery<CardProps, unknown>(
-    "posts",
+    "get",
     async () => {
       try {
         const response = await axios.get(
