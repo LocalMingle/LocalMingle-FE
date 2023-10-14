@@ -36,29 +36,45 @@ const MainPage: React.FC = () => {
     { value: '공부/교육', label: '📚 공부/교육' },
   ]
 
-  const accessToken = localStorage.getItem('accessToken')
+  const accessToken = localStorage.getItem('accessToken');
 
-  // 게시글 전체 조회 (Swagger 기준)
+  // 게시글 전체 조회 interface (console.log 기준)
   interface CardProps {
     data : {
-      category: string;
-      content: string;
-      createdAt: string;
-      event: object;
-      eventDate: string;
-      eventId: number;
-      eventLocation: string;
-      eventName: string;
-      isDeleted: boolean;
-      isVerified: "no";
-      maxSize: number;
-      signupEndDate: string;
-      signupStartDate: string;
-      updatedAt: string;
+      event : {
+        category: string;
+        content: string;
+        createdAt: string;
+        event: object;
+        eventDate: string;
+        eventId: number;
+        eventLocation: string;
+        eventName: string;
+        isDeleted: boolean;
+        isVerified: "no";
+        maxSize: number;
+        signupEndDate: string;
+        signupStartDate: string;
+        updatedAt: string;
+      },
+      guestList: number;
+      gustUser : {
+        guestEventId: number;
+        GuestId: null;
+        EventId: number
+      },
+      hostUser: {
+        userDetailId: number;
+        UserId: number;
+        nickname: string;
+        intro: null;
+        profileImg: null;
+        updatedAt: string;
+      };
     }
   }
 
-  
+  // 게시글 전체 조회 - DB 연동
   const { isLoading, data } = useQuery<CardProps, unknown>(
     "get",
     async () => {
@@ -74,8 +90,6 @@ const MainPage: React.FC = () => {
 
         if (response.status == 200) {
           console.log('게시글 전체조회 리스트 :', response.data);
-          // console.clear();
-          // console.log(typeof data)
           return response.data;
         }
       } catch (error: unknown) {
@@ -85,7 +99,7 @@ const MainPage: React.FC = () => {
     }
   );
 
-  // 로딩 중
+  // 게시글 전체 조회 - 로딩 중
   if (isLoading) return (<Spinner/>)
 
 
@@ -174,8 +188,8 @@ const MainPage: React.FC = () => {
         <Selector options={categoryOptions}></Selector>
       </St.SelectorWrap>
       {/* 카드 */}
-      {data.map((postData: CardProps) => (
-        <Card key={postData.eventName} data={postData.event}></Card>
+      {data.map((postData) => (
+        <Card key={postData.event.eventId} data={postData}></Card>
       ))}
       <FixedButton></FixedButton>
     </>

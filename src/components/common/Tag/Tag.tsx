@@ -2,14 +2,14 @@ import React from 'react'
 import * as St from './STTag'
 
 interface TagProps {
-  bgColor?: string;
+  bgcolor?: string;
   children?: React.ReactNode;
 }
 
-const Tag:React.FC<TagProps> = ( {bgColor, children}) => {
+const Tag:React.FC<TagProps> = ( {bgcolor, children}) => {
   return (
     <St.TagWrap>
-      <St.Tag bgColor={bgColor}>{children}</St.Tag>
+      <St.Tag bgcolor={bgcolor}>{children}</St.Tag>
     </St.TagWrap>
   )
 }
