@@ -1,8 +1,7 @@
-import axios from "axios"; // axios를 불러와!
+import axios from "axios";
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../recoil/atoms/UserState";
-// import MyPageTabs from "../Mypage/MypageTabs";
 
 const DeleteUser: React.FC = () => {
   const [password, setPassword] = useState<string>("");
@@ -31,7 +30,6 @@ const DeleteUser: React.FC = () => {
 
   return (
     <>
-      {/* <MyPageTabs /> */}
       <div>
         <div>
           <label>

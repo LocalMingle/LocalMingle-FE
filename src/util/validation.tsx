@@ -16,7 +16,7 @@ export function validateNickname(nickname: string) {
 // 비밀번호
 export function validatePassword(password: string) {
   if (!password) {
-    return "비밀번호를 입력하세요.";
+    return "비밀번호를 입력해주세요.";
   }
   if (password.length < 8 || password.length > 15) {
     return "비밀번호는 8글자 이상 15글자 이하로 입력해야 합니다.";
@@ -43,10 +43,18 @@ export function validatePasswordConfirmation(
   return "";
 }
 
+// 비밀번호
+export function validateLoginPassword(password: string) {
+  if (!password) {
+    return "비밀번호를 입력해주세요.";
+  }
+  return "";
+}
+
 // 이메일
 export function validateEmail(email: string) {
   if (!email) {
-    return "이메일을 입력하세요.";
+    return "이메일을 입력해주세요.";
   }
   if (!/\S+@\S+\.\S+/.test(email)) {
     return "유효한 이메일 형식이 아닙니다.";
