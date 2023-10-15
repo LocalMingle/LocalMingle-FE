@@ -54,9 +54,10 @@ const LoginPage: React.FC = () => {
         const accessToken = response.headers["accesstoken"];
         const refreshToken = response.headers["refreshtoken"];
         setTokens(accessToken, refreshToken);
-        const userId = response.data.userId;
+        const userId = response.data.UserId;
+        console.log(response.data);
         setUser({ userId });
-        console.log("로그인 후 userId:", userId);
+        console.log("로그인 후 UserId:", userId);
         navigate("/");
       }
     } catch (error: unknown) {
