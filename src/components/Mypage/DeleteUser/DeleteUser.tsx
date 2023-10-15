@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import * as St from './STDeleteUser'
+import * as St from "./STDeleteUser";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../recoil/atoms/UserState";
@@ -35,7 +35,7 @@ const DeleteUser: React.FC = () => {
         <div>
           <label>
             비밀번호 확인:
-            <input
+            <St.Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -46,7 +46,7 @@ const DeleteUser: React.FC = () => {
         <div>
           <label>
             탈퇴 사유:
-            <textarea
+            <St.TextArea
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               placeholder="왜 탈퇴하시는지 알려주세요ㅠㅠ으엉엉"

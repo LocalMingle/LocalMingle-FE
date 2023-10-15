@@ -56,3 +56,49 @@ export const getPosts = async () => {
   const response = await axiosInstance.get("events");
   return response.data;
 };
+
+// 게시글 삭제
+export const deletePost = async (postId: string) => {
+  const { data } = await axiosInstance.delete(`posts/${postId}`);
+  return data;
+};
+
+// 게시글 수정
+interface PostUpdate {
+  eventName: string;
+  maxSize: number;
+  eventDate: Date;
+  signupStartDate: Date;
+  signupEndDate: Date;
+  eventLocation: string;
+  content: string;
+  category: string;
+  isVerified: "yes" | "no";
+}
+
+export const updatePost = async (eventId: number, post: PostUpdate) => {
+  const { data } = await axiosInstance.patch(`event/${eventId}`, post);
+  return data;
+};
+
+// 게시글 조회
+interface PostDetail {
+  eventId: number;
+  eventName: string;
+  maxSize: number;
+  eventDate: Date;
+  signupStartDate: Date;
+  signupEndDate: Date;
+  eventLocation: string;
+  content: string;
+  category: string;
+  isVerified: "yes" | "no";
+  isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export const getOnePost = async (eventId: number): Promise<PostDetail> => {
+  const { data } = await axiosInstance.get(`event/${eventId}`);
+  return data.data;
+};
