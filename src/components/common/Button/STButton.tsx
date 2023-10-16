@@ -1,21 +1,26 @@
 import styled from "styled-components";
 
+export const ButtonWrap = styled.div`
+border-radius: 23px;
+border: 1px solid #E7E7E7;
+background: #fff;
+padding: 3px;
+
+`
+
 export const Button = styled.button`
-  text-align: center;
+  border-radius: 20px;
+  border: 1px solid #ADADAD;
   background: #edf895;
-  border-radius: 14px;
+  color: #646464;
+  text-align: center;
   width: 100px;
-  height: 40px;
-  border-color: #adadad;
-  font-size: 16px;
-  font-weight: bold;
+  padding: 8px;
+  font-size: 20px;
+  font-weight: 400;
   cursor: pointer;
-
-  &:hover {
-    background-color: #ffcc00;
-  }
-
+  
   &:focus {
     outline: none;
   }
-`;
+`
