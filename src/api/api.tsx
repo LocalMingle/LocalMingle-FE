@@ -41,14 +41,20 @@ export const logoutUser = () => {
 };
 
 // 회원 탈퇴
-export const deleteUser = async () => {
-  const data = await axiosInstance.delete(`users/delete`);
-
-  // 로컬 스토리지에서 토큰 제거 (이 부분은 그대로 유지해도 됨)
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
-
-  return data;
+export const deleteUser = async (password: string) => {
+  try {
+    const response = await axiosInstance.delete(`users/withdrawal`, {
+      data: {
+        password,
+      },
+    });
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    return response;
+  } catch (error) {
+    console.error("회원 탈퇴에 실패했어요!", error);
+    throw error;
+  }
 };
 
 // 게시글 전체 조회
