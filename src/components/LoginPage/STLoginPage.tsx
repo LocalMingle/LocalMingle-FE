@@ -4,12 +4,12 @@ export const LabelWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 70%;
-  position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
 
   label {
-    margin-bottom: 5px;
+    color: #646464;
+    font-size: 15px;
+    margin-bottom: 8px;
   }
 `;
 
@@ -33,7 +33,6 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  padding: 50px;
 `;
 
 export const Title = styled.h2`
@@ -43,20 +42,19 @@ export const Title = styled.h2`
 `;
 
 export const StyledInput = styled.input`
-  flex-grow: 1;
-  padding: 6px;
-  width: 100%;
-  height: 35px;
-  border-radius: 6px;
-  border: 1px solid gray;
-  margin-right: 10px;
+  padding: 10px;
+  min-width: 300px;
+  border-radius: 5px;
+  border: 1px solid #E7E7E7;
   margin-bottom: 10px;
+  background: #fff;
 `;
 
 export const SignupText = styled.div`
   margin-top: 20px;
-  font-size: 10px;
+  font-size: 14px;
   user-select: none;
+  color: #ADADAD;
 
   span {
     color: #da7969;

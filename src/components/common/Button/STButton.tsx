@@ -15,11 +15,12 @@ export const Button = styled.button`
   color: #646464;
   text-align: center;
   width: 100px;
+  height: 45px;
   padding: 8px;
-  font-size: 20px;
-  font-weight: 400;
+  font-size: 18px;
+  font-weight: 600;
   cursor: pointer;
-  
+
   &:focus {
     outline: none;
   }
