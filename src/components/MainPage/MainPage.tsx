@@ -1,42 +1,138 @@
-import React from 'react'
-import * as St from './STMainPage'
-import Banner from '../common/Banner/Banner'
-import Search from '../common/Search/Search'
-import Selector from '../common/Selector/Selector'
-import Card from '../common/Card/Card'
-import FixedButton from '../common/FixedButton/FixedButton'
-import { useQuery } from 'react-query'
-import axios from 'axios'
-import { Spinner } from '../common/Spinner'
+// Main.tsx
+import React from 'react';
+import * as St from './STMainPage';
+import Banner from '../common/Banner/Banner';
+import Search from '../common/Search/Search';
+import Selector from '../common/Selector/Selector';
+import Card from '../common/Card/Card';
+import FixedButton from '../common/FixedButton/FixedButton';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import { Spinner } from '../common/Spinner';
 
 const MainPage: React.FC = () => {
-  // 위치 인증 여부 옵션 값 -> DB로 가져올 예정
-  const locationOptions = [
-    { value: 'anyone', label: '🙋🏻 아무나' },
-    { value: 'neighborhood', label: '🏡 동네만' },
+  const nothingOptions = [
+    { value: 'nothingOptions1', label: '🤩 로컬밍글' },
+    { value: 'nothingOptions2', label: '😍 LocalMingle' },
   ];
-  
-  // 시 임시 샐랙터 옵션 값 -> DB로 가져올 예정
-  const doOptions = [
-    { value: '경기도', label: '경기도' },
-    { value: '서울특별시', label: '서울특별시' },
-  ]
-
-  // 구 임시 샐랙터 옵션 값 -> DB로 가져올 예정
-  const guOptions = [
-    { value: '성남시 분당구', label: '성남시 분당구' },
-    { value: '관악구', label: '관악구' },
-  ]
-
-  // 카테고리 옵션 값 -> DB로 가져올 예정
-  const categoryOptions = [
-    { value: '맛집/커피', label: '☕️ 맛집/커피' },
-    { value: '운동/건강', label: '🏃🏻 운동/건강' },
-    { value: '애완동물', label: '🐾 애완동물' },
-    { value: '공부/교육', label: '📚 공부/교육' },
-  ]
 
   const accessToken = localStorage.getItem('accessToken');
+
+  // 위치 인증 여부 interface (console.log 기준)
+  interface LocationOptionsProps {
+
+  }
+
+  // 위치 인증 여부 - DB 연동
+  const { data: locationOptionsData } = useQuery<LocationOptionsProps, unknown>(
+    'locationOptions',
+    async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_URL}categories`,
+          {
+            headers: {
+              Authorization: `${accessToken}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          console.log('위치 인증 여부 성공', response.data);
+          return response.data;
+        }
+      } catch (error) {
+        console.log('위치 인증 여부 불러오기 실패', error);
+        throw error;
+      }
+    }
+  );
+
+  // 시/도 옵션 interface (console.log 기준)
+  interface SidoOptionsProps {
+    doName: string;
+  }
+
+  // 시/도 옵션 - DB 연동
+  const { data: sidoOptionsData } = useQuery<SidoOptionsProps, unknown>(
+    'sidoOptions',
+    async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_URL}data/city`,
+          {
+            headers: {
+              Authorization: `${accessToken}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          console.log('시/도 옵션 성공', response.data);
+          return response.data;
+        }
+      } catch (error) {
+        console.log('시/도 불러오기 실패', error);
+        throw error;
+      }
+    }
+  );
+
+  // 구/군 옵션 interface (console.log 기준)
+  interface GugunOptionsProps {
+    guName: string;
+  }
+
+  // 구/군 옵션 - DB 연동
+  const { data: gugunOptionsData } = useQuery<GugunOptionsProps, unknown>(
+    'gugunOptions',
+    async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_URL}data/gu_name`,
+          {
+            headers: {
+              Authorization: `${accessToken}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          console.log('구/군 옵션 성공', response.data);
+          return response.data;
+        }
+      } catch (error) {
+        console.log('구/군 불러오기 실패', error);
+        throw error;
+      }
+    }
+  );
+
+  // 카테고리 옵션 interface (console.log 기준)
+  interface CategoryOptionsProps {
+    category: string;
+  }
+
+  // 카테고리 옵션 - DB 연동
+  const { data: categoryOptionsData } = useQuery<CategoryOptionsProps, unknown>(
+    'categoryOptions',
+    async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_URL}categories`,
+          {
+            headers: {
+              Authorization: `${accessToken}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          console.log('카테고리 옵션 성공', response.data);
+          return response.data;
+        }
+      } catch (error) {
+        console.log('카테고리 옵션 카테고리 불러오기 실패', error);
+        throw error;
+      }
+    }
+  );
 
   // 게시글 전체 조회 interface (console.log 기준)
   interface CardProps {
@@ -73,10 +169,10 @@ const MainPage: React.FC = () => {
       };
     }
   }
-
+  
   // 게시글 전체 조회 - DB 연동
-  const { isLoading, data } = useQuery<CardProps, unknown>(
-    "get",
+  const { isLoading: postsLoading, data: postData } = useQuery<CardProps, unknown>(
+    'get',
     async () => {
       try {
         const response = await axios.get(
@@ -86,110 +182,63 @@ const MainPage: React.FC = () => {
               Authorization: `${accessToken}`,
             },
           }
-          )
+        );
 
-        if (response.status == 200) {
-          console.log('게시글 전체조회 리스트 :', response.data);
+        if (response.status === 200) {
+          console.log('게시글 전체조회 리스트:', response.data);
           return response.data;
         }
-      } catch (error: unknown) {
-        console.log('게시글 전체조회 에러! :', error);
+      } catch (error) {
+        console.log('게시글 전체조회 에러!', error);
         throw error;
       }
     }
   );
 
-  // 게시글 전체 조회 - 로딩 중
-  if (isLoading) return (<Spinner/>)
-
-
-  // 카테고리
-  // const { sidoData } = useQuery<CardProps, unknown>(
-  //   "get",
-  //   async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${import.meta.env.VITE_REACT_APP_URL}data/city`,
-  //         {
-  //           headers: {
-  //             Authorization: `${accessToken}`,
-  //           },
-  //         }
-  //         )
-
-  //       if (response.status == 200) {
-  //         console.log('시/도 리스트 :', response.data);
-  //         return response.data;
-  //       }
-  //     } catch (error: unknown) {
-  //       console.log('시/도 전체조회 에러! :', error);
-  //       throw error;
-  //     }
-  //   }
-  // );
-
-  // const { gunguData } = useQuery<QueryObserverResult<CardProps, unknown>>(
-  //   "get",
-  //   async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${import.meta.env.VITE_REACT_APP_URL}data/gu_name`,
-  //         {
-  //           headers: {
-  //             Authorization: `${accessToken}`,
-  //           },
-  //         }
-  //         )
-
-  //       if (response.status == 200) {
-  //         console.log('군/구 리스트 :', response.data);
-  //         return response.data;
-  //       }
-  //     } catch (error: unknown) {
-  //       console.log('게시글 전체조회 에러! :', error);
-  //       throw error;
-  //     }
-  //   }
-  // );
+  // 로딩 중인 경우
+  if (postsLoading) return <Spinner />;
 
   // 데이터가 없는 경우
-  if (!data) return (
+  if (!postData) {
+    return (
+      <>
+        <Banner></Banner>
+        <Search></Search>
+        <St.SelectorWrap>
+          {/* 위치 인증 여부 : 아무나 환영 | 우리 동네만 */}
+          <Selector options={nothingOptions}></Selector>
+          {/* 시/도 */}
+          <Selector options={nothingOptions}></Selector>
+          {/* 구 */}
+          <Selector options={nothingOptions}></Selector>
+          {/* 카테고리 : 맛집/커피, 운동/건강, 애완동물, 공부/교육 */}
+          <Selector options={nothingOptions}></Selector>
+        </St.SelectorWrap>
+        <div>게시글이 없습니다!</div>
+        <FixedButton></FixedButton>
+      </>
+    );
+  }
+
+  return (
     <>
       <Banner></Banner>
       <Search></Search>
       <St.SelectorWrap>
         {/* 위치 인증 여부 : 아무나 환영 | 우리 동네만 */}
-        <Selector options={locationOptions}></Selector>
+        <Selector options={nothingOptions}></Selector>
+        {/* <Selector options={locationOptionsData?.map(item => ({value: item.location, label: item.location}))}></Selector> */}
         {/* 시/도 */}
-        <Selector options={doOptions}></Selector>
-        {/* 구 */}
-        <Selector options={guOptions}></Selector>
+        <Selector options={sidoOptionsData?.map(item => ({ value: item.doName, label: item.doName }))}></Selector>
+        {/* 구/군 */}
+        <Selector options={gugunOptionsData?.map(item => ({ value: item.guName, label: item.guName}))}></Selector>
         {/* 카테고리 : 맛집/커피, 운동/건강, 애완동물, 공부/교육 */}
-        <Selector options={categoryOptions}></Selector>
-      </St.SelectorWrap>
-      {/* <Card></Card> */}
-      <div>게시글이 없습니다!</div>
-      <FixedButton></FixedButton>
-    </>
-  )
-
-  return (
-      <>
-      <Banner></Banner>
-      <Search></Search>
-      <St.SelectorWrap>
-        {/* 위치 인증 여부 : 아무나 환영 | 우리 동네만 */}
-        <Selector options={locationOptions}></Selector>
-        {/* 시/도 */}
-        <Selector options={doOptions}></Selector>
-        {/* 구 */}
-        <Selector options={guOptions}></Selector>
-        {/* 카테고리 : 맛집/커피, 운동/건강, 애완동물, 공부/교육 */}
-        <Selector options={categoryOptions}></Selector>
+        <Selector options={nothingOptions}></Selector>
+        {/* <Selector options={categoryOptionsData?.map(item => ({value: item.category, label: item.category}))}></Selector> */}
       </St.SelectorWrap>
       {/* 카드 */}
-      {data.map((postData) => (
-        <Card key={postData.event.eventId} data={postData}></Card>
+      {postData.map((postDataItem) => (
+        <Card key={postDataItem.event.eventId} data={postDataItem}></Card>
       ))}
       <FixedButton></FixedButton>
     </>
