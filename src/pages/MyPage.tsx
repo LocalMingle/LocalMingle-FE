@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/common/Header/Header";
 import { Outlet } from "react-router-dom";
-import MyPageTabs from "../components/Mypage/MypageTabs";
+import MyPageTabs from "../components/Mypage/MypageTabs/MypageTabs";
 
 const MyPage: React.FC = () => {
   return (

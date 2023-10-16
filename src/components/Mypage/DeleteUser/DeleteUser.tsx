@@ -1,32 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as St from "./STDeleteUser";
-import axios from "axios";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../../recoil/atoms/UserState";
+import { deleteUser } from "../../../api/api";
+import lottie from "lottie-web";
 
 const DeleteUser: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [reason, setReason] = useState<string>("");
-  const userData = useRecoilValue(userState);
+  const lottieContainer = useRef(null);
+  const [showAnimation, setShowAnimation] = useState<boolean>(false);
 
-  const handleDelete = async () => {
-    console.log("userId:", userData.userId);
-    console.log("password:", password);
-    try {
-      const response = await axios.delete(
-        `${import.meta.env.VITE_REACT_APP_URL}users/withdrawal`,
-        {
-          data: {
-            userId: userData.userId,
-            password,
-          },
-        }
-      );
-      console.log("회원탈퇴 성공!", response);
-    } catch (error) {
-      console.log("회원탈퇴 실패! 왜인지 알아보자", error);
-      console.log(userData.userId, password);
+  useEffect(() => {
+    const handleRealDelete = async () => {
+      try {
+        const response = await deleteUser(password);
+        console.log("회원탈퇴 성공!", response);
+      } catch (error) {
+        console.log("회원탈퇴 실패! 왜인지 알아보자", error);
+      }
+    };
+
+    if (lottieContainer.current && showAnimation) {
+      const animation = lottie.loadAnimation({
+        container: lottieContainer.current,
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "/animations/goodbye-animation.json",
+      });
+
+      setTimeout(() => {
+        animation.destroy(); // 2초 후 애니메이션 제거
+        handleRealDelete(); // 실제 회원탈퇴 처리
+      }, 2000);
+
+      return () => animation.destroy(); // 컴포넌트 언마운트 시 애니메이션 제거
     }
+  }, [showAnimation, password]);
+
+  const handleDelete = () => {
+    setShowAnimation(true); // 애니메이션을 보여주기 시작
   };
 
   return (
@@ -56,6 +68,7 @@ const DeleteUser: React.FC = () => {
         <div>
           <button onClick={handleDelete}>회원탈퇴</button>
         </div>
+        <div ref={lottieContainer}></div>
       </div>
     </>
   );
