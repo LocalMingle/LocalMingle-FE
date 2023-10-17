@@ -5,7 +5,7 @@ import lottie from "lottie-web";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../common/Button";
 
-const DeleteUser: React.FC<ButtonProps> = () => {
+const DeleteUser: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [reason, setReason] = useState<string>("");
   const lottieContainer = useRef(null);
