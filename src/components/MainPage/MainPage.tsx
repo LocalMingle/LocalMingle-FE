@@ -10,42 +10,13 @@ import axios from 'axios';
 import { Spinner } from '../common/Spinner';
 
 const MainPage: React.FC = () => {
-  const nothingOptions = [
-    { value: 'nothingOptions1', label: '🤩 로컬밍글' },
-    { value: 'nothingOptions2', label: '😍 LocalMingle' },
-  ];
-
   const [selectedSido, setSelectedSido] = useState<string>(""||'서울특별시'); // 시도
-  const [selectedGugun, setSelectedGugun] = useState<string>(""); // 구군
+  // const [selectedGugun, setSelectedGugun] = useState<string>(""); // 구군
 
-  type SelectorChangeHandler = (selectedOption: { value: string, label: string }) => void;
+  // type SelectorChangeHandler = (selectedOption: { value: string, label: string }) => void;
 
   const accessToken = localStorage.getItem('accessToken');
 
-  // 검색 기능
-  // const handleSearch = async (keyword: string) => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${import.meta.env.VITE_REACT_APP_URL}events/search`,
-  //       {
-  //         headers: {
-  //           Authorization: `${accessToken}`,
-  //         },
-  //         params: {
-  //           keyword,
-  //         },
-  //       }
-  //     );
-
-  //     if (response.status === 200) {
-  //       console.log('키워드 검색 성공', response.data);
-  //     }
-  //   } catch (error) {
-  //     console.log('키워드 검색 실패', error);
-  //   }
-  // };
-
-  
   // 위치 인증 여부 interface (console.log 기준)
   // interface LocationOptionsProps {
 
@@ -77,11 +48,11 @@ const MainPage: React.FC = () => {
 
   // 시/도 옵션 interface (console.log 기준)
   interface SidoOptionsProps {
-    doName: string;
+    doName: string[];
   }
 
   // 시/도 옵션 - DB 연동
-  const { data: sidoOptionsData } = useQuery<SidoOptionsProps, unknown>(
+  const { data: sidoOptionsData } = useQuery<SidoOptionsProps[]>(
     'sidoOptions',
     async () => {
       try {
@@ -106,11 +77,11 @@ const MainPage: React.FC = () => {
 
   // 구/군 옵션 interface (console.log 기준)
   interface GugunOptionsProps {
-    guName: string;
+    guName: string[];
   }
 
   // 구/군 옵션 - DB 연동
-  const { data: gugunOptionsData } = useQuery<GugunOptionsProps, unknown>(
+  const { data: gugunOptionsData } = useQuery<GugunOptionsProps[]>(
     'gugunOptions',
     async () => {
       try {
@@ -164,43 +135,42 @@ const MainPage: React.FC = () => {
   // );
 
   // 게시글 전체 조회 interface (console.log 기준)
-  interface CardProps {
-    data : {
-      event : {
-        category: string;
-        content: string;
-        createdAt: string;
-        event: object;
-        eventDate: string;
-        eventId: number;
-        eventLocation: string;
-        eventName: string;
-        isDeleted: boolean;
-        isVerified: "no";
-        maxSize: number;
-        signupEndDate: string;
-        signupStartDate: string;
-        updatedAt: string;
-      },
-      guestList: number;
-      gustUser : {
-        guestEventId: number;
-        GuestId: null;
-        EventId: number
-      },
-      hostUser: {
-        userDetailId: number;
-        UserId: number;
-        nickname: string;
-        intro: null;
-        profileImg: null;
-        updatedAt: string;
-      };
-    }
+interface CardProps {
+  data: {
+    event: {
+      category: string;
+      content: string;
+      createdAt: string;
+      eventDate: string;
+      eventId: number;
+      eventLocation: string;
+      eventName: string;
+      isDeleted: boolean;
+      isVerified: string;
+      maxSize: number;
+      signupEndDate: string;
+      signupStartDate: string;
+      updatedAt: string;
+    };
+    guestList: number[];
+    guestUser: {
+      guestEventId: number;
+      GuestId: null;
+      EventId: number;
+    }[];
+    hostUser: {
+      userDetailId: number;
+      UserId: number;
+      nickname: string;
+      intro: null;
+      profileImg: null;
+      updatedAt: string;
+    }[];
   }
-  
+} 
+
   // 게시글 전체 조회 - DB 연동
-  const { isLoading: postsLoading, data: postData } = useQuery<CardProps, unknown>(
+  const { isLoading: postsLoading, data: postData } = useQuery<CardProps[]>(
     'get',
     async () => {
       try {
@@ -228,21 +198,11 @@ const MainPage: React.FC = () => {
   if (postsLoading) return <Spinner />;
 
   // 데이터가 없는 경우
-  if (!postData) {
+  if (!postData || postData.length === 0) {
     return (
       <>
         <Banner></Banner>
         <Search></Search>
-        <St.SelectorWrap>
-          {/* 위치 인증 여부 : 아무나 환영 | 우리 동네만 */}
-          <Selector options={nothingOptions}></Selector>
-          {/* 시/도 */}
-          <Selector options={nothingOptions}></Selector>
-          {/* 구 */}
-          <Selector options={nothingOptions}></Selector>
-          {/* 카테고리 : 맛집/커피, 운동/건강, 애완동물, 공부/교육 */}
-          <Selector options={nothingOptions}></Selector>
-        </St.SelectorWrap>
         <div>게시글이 없습니다!</div>
         <FixedButton></FixedButton>
       </>
@@ -259,11 +219,10 @@ const MainPage: React.FC = () => {
         {/* <Selector options={locationOptionsData?.map(item => ({value: item.location, label: item.location}))}></Selector> */}
         {/* 시/도 */}
         <Selector
-          options={sidoOptionsData?.map(item => ({ value: item.doName, label: item.doName }))}
-          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-            setSelectedSido(selectedOption.target.value);
-          }}
-          
+            options={sidoOptionsData?.map(item => ({ value: item.doName, label: item.doName }))}
+            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+                setSelectedSido(selectedOption.target.value);
+            }}
         ></Selector>
         {/* 구/군 */}
         <Selector options={gugunOptionsData?.map(item => ({ value: item.guName, label: item.guName}))}></Selector>
@@ -272,8 +231,8 @@ const MainPage: React.FC = () => {
         {/* <Selector options={categoryOptionsData?.map(item => ({value: item.category, label: item.category}))}></Selector> */}
       </St.SelectorWrap>
       {/* 카드 */}
-      {postData.map((postDataItem) => (
-        <Card key={postDataItem.event.eventId} data={postDataItem}></Card>
+      {postData.map((postDataItem, index) => (
+          <Card key={index} {...postDataItem}></Card>
       ))}
       <FixedButton></FixedButton>
     </>

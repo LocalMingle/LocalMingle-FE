@@ -4,40 +4,30 @@ import Tag from '../Tag/Tag'
 
 // 카드 (Swagger 기준)
 interface CardProps {
-  data: {
-    event: {
-      category: string;
-      content: string;
-      createdAt: string;
-      event: object;
-      eventDate: string;
-      eventId: number;
-      eventLocation: string;
-      eventName: string;
-      isDeleted: boolean;
-      isVerified: "no";
-      maxSize: number;
-      signupEndDate: string;
-      signupStartDate: string;
-      updatedAt: string;
-    };
-    guestList: number;
-    guestUser: {
-      guestEventId: number;
-      GuestId: null;
-      EventId: number;
-    };
-    hostUser: [
-      {
-        userDetailId: number;
-        UserId: number;
-        nickname: string;
-        intro: null;
-        profileImg: null;
-        updatedAt: string;
-      },
-    ]
+  event: {
+    category: string;
+    content: string;
+    createdAt: string;
+    eventDate: string;
+    eventId: number;
+    eventLocation: string;
+    eventName: string;
+    isDeleted: boolean;
+    isVerified: string;
+    maxSize: number;
+    signupEndDate: string;
+    signupStartDate: string;
+    updatedAt: string;
   };
+  guestList: number[];
+  hostUser: [{
+    userDetailId: number;
+    UserId: number;
+    nickname: string;
+    intro: string;
+    profileImg: string;
+    updatedAt: string;
+  }];
 }
 
 const setDateFormat = (date:string):string => {
@@ -49,22 +39,22 @@ const setDateFormat = (date:string):string => {
   });
 }
 
-const Card: React.FC<CardProps> = ( {data} ) => {
+const Card: React.FC<CardProps> = ( {event, guestList, hostUser} ) => {
   return (
     <St.CardSection>
       <St.CardWrap>
         <St.CardTop>
-          <Tag bgcolor="green">{data.event.category}</Tag>
-          <St.Members> {data.guestList} / {data.event.maxSize}</St.Members>
+          <Tag bgcolor="green">{event.category}</Tag>
+          <St.Members> {guestList} / {event.maxSize}</St.Members>
         </St.CardTop>
         <St.Date>
           <span>모임 일시</span>
-          <span>{setDateFormat(data.event.eventDate)}</span>
+          <span>{setDateFormat(event.eventDate)}</span>
         </St.Date>
-        <St.Title>{data.event.eventName}</St.Title>
+        <St.Title>{event.eventName}</St.Title>
         <St.CardMiddle>
-          <Tag bgcolor="orange">{data.event.eventLocation}</Tag>
-          <Tag bgcolor="pink">{data.event.isVerified}</Tag>
+          <Tag bgcolor="orange">{event.eventLocation}</Tag>
+          <Tag bgcolor="pink">{event.isVerified}</Tag>
         </St.CardMiddle>
         <St.CardBottom>
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -72,7 +62,7 @@ const Card: React.FC<CardProps> = ( {data} ) => {
           <path d="M14 27C21.1797 27 27 21.1797 27 14C27 6.8203 21.1797 1 14 1C6.8203 1 1 6.8203 1 14C1 21.1797 6.8203 27 14 27Z" stroke="#292D32" strokeLinecap="round" strokeLinejoin="round"/>
           <path d="M14.1715 16.5983C14.0717 16.584 13.9432 16.584 13.8291 16.5983C11.3179 16.5125 9.32031 14.4548 9.32031 11.9254C9.32031 9.33892 11.4035 7.23828 14.0003 7.23828C16.5829 7.23828 18.6803 9.33892 18.6803 11.9254C18.666 14.4548 16.6828 16.5125 14.1715 16.5983Z" fill="#E7E7E7"/>
         </svg>
-        <St.NickName>{data.hostUser[0].nickname}</St.NickName>
+        <St.NickName>{hostUser[0].nickname}</St.NickName>
         </St.CardBottom>
       </St.CardWrap>
     </St.CardSection>
