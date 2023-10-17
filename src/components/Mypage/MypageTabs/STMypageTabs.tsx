@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const TabContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   padding-top: 75px;
   margin-bottom: 10px;
@@ -22,7 +22,8 @@ export const TabItem = styled.div<{ tabcolor: string }>`
   padding: 8px;
   text-align: center;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 15px;
   overflow: hidden;
+  word-break: keep-all;
   background-color: ${(props) => props.tabcolor};
 `
