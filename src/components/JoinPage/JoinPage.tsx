@@ -164,60 +164,69 @@ const SignUpForm: React.FC = () => {
       {/* <img src="" alt="logo" onClick={goToMain}>로고</img> */}
       <ST.LabelWrapper>
         <label>닉네임</label>
-        <ST.Input
-          type="text"
-          value={nickname}
-          onChange={handleNicknameChange}
-        />
-        <ST.DupCheckButton onClick={handleNicknameDupCheck}>
-          중복확인
-        </ST.DupCheckButton>
-      </ST.LabelWrapper>
+        <div>
+          <input
+            type="text"
+            value={nickname}
+            onChange={handleNicknameChange}
+          />
+          <ST.DupCheckButtonWrap>
+            <ST.DupCheckButton onClick={handleNicknameDupCheck}>
+              중복 체크
+            </ST.DupCheckButton>
+          </ST.DupCheckButtonWrap>
+        </div>
       <ST.ErrorMessageJoin>{nicknameError}</ST.ErrorMessageJoin>
-      <br />
+      </ST.LabelWrapper>
+
       <ST.LabelWrapper>
         <label>이메일</label>
-        <ST.Input type="email" value={email} onChange={handleEmailChange} />
-        <ST.DupCheckButton onClick={handleEmailDupCheck}>
-          중복 확인
-        </ST.DupCheckButton>
-      </ST.LabelWrapper>
+        <div>
+          <input type="email" value={email} onChange={handleEmailChange} />
+          <ST.DupCheckButtonWrap>
+            <ST.DupCheckButton onClick={handleEmailDupCheck}>
+              중복 체크
+            </ST.DupCheckButton>
+          </ST.DupCheckButtonWrap>
+        </div>
       <ST.ErrorMessageJoin>{emailError}</ST.ErrorMessageJoin>
-      <br />
+      </ST.LabelWrapper>
+
       <ST.LabelWrapper>
         <label>비밀번호</label>
-        <ST.Input
-          type={showPassword ? "text" : "password"}
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        <ST.EyeToggleButton onClick={togglePasswordVisibility}>
-          {showPassword ? (
-            <FontAwesomeIcon icon={faEye} />
-          ) : (
-            <FontAwesomeIcon icon={faEyeSlash} />
-          )}
-        </ST.EyeToggleButton>
-      </ST.LabelWrapper>
+        <ST.EyleToggleWrap>
+          <input
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={handlePasswordChange}
+          />
+            <ST.EyeToggleButton onClick={togglePasswordVisibility}>
+              {showPassword ? (
+                <FontAwesomeIcon icon={faEye} />
+              ) : (
+                <FontAwesomeIcon icon={faEyeSlash} />
+              )}
+            </ST.EyeToggleButton>
+        </ST.EyleToggleWrap>
       <ST.ErrorMessageJoin>{passwordError}</ST.ErrorMessageJoin>
-      <br />
+      </ST.LabelWrapper>
+
       <ST.LabelWrapper>
         <label>비밀번호 확인</label>
-        <ST.Input
+        <input
           type="password"
           value={confirmPassword}
           onChange={handleConfirmPasswordChange}
         />
-      </ST.LabelWrapper>
       <ST.ErrorMessageJoin>{confirmPasswordError}</ST.ErrorMessageJoin>
-      <br />
+      </ST.LabelWrapper>
+
       <ST.LabelWrapper>
         <label>한줄 자기 소개</label>
-        <ST.Input type="text" value={bio} onChange={handleBioChange} />
-      </ST.LabelWrapper>
+        <input type="text" value={bio} onChange={handleBioChange} />
       <ST.ErrorMessageJoin>{bioError}</ST.ErrorMessageJoin>
+      </ST.LabelWrapper>
       {isLoading && <div>회원가입 중...</div>}
-      <br />
       <Button onClick={handleSignUp}>회원가입</Button>
     </ST.Wrapper>
   );

@@ -49,7 +49,7 @@ export const ProfileTextButton = styled.button`
 export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   width: 100%;
 
   & div {
@@ -111,7 +111,7 @@ export const ErrorMessageJoin = styled.div`
   font-size: 12px;
   color: #da7969;
   text-align: left;
-  margin-top: 10px;
+  margin-top: 5px;
 `;
 
 export const SubmitButtonWrap = styled.div`

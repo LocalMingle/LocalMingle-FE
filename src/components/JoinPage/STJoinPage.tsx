@@ -17,51 +17,67 @@ export const Wrapper = styled.div`
 export const LabelWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 10px;
-  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
 
-  label {
+  & label {
     color: #646464;
     font-size: 15px;
     margin-bottom: 8px;
   }
+
+  & div {
+    display: flex;
+    align-items: center;
+
+    & input {
+      flex-grow: 1;
+    }
+  }
+
+  & input {
+    border: 1px solid #E7E7E7;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 12px;
+  }
 `;
 
-export const Input = styled.input`
-  padding: 10px;
-  min-width: 300px;
-  border-radius: 5px;
-  border: 1px solid #e7e7e7;
-  background: #fff;
-`;
+export const EyleToggleWrap = styled.div`
+  position: relative;
+`
 
 export const EyeToggleButton = styled.button`
   position: absolute;
   right: 5px;
-  top: 55%;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
 `;
 
 export const ErrorMessageJoin = styled.div`
-  align-self: flex-start;
-  padding-left: 18px;
   font-size: 12px;
   color: #da7969;
+  text-align: left;
+  margin-top: 5px;
 `;
 
-export const DupCheckButton = styled.button`
-  margin-left: 10px;
-  padding: 4px 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #edf895;
-  cursor: pointer;
-  font-size: 0.875rem;
+export const DupCheckButtonWrap = styled.div`
+  border: 1px solid #E7E7E7;
+  padding: 2px;
+  margin-left: 5px;
+  border-radius: 23px;
+`
 
-  &:hover {
-    background-color: #dcd584;
-  }
+export const DupCheckButton = styled.button`
+  border: 1px solid #ADADAD;
+  border-radius: 20px;
+  background-color: #F7D16F;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 5px;
+  color: #646464;
 `;
