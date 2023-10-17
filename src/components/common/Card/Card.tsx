@@ -4,8 +4,8 @@ import Tag from '../Tag/Tag'
 
 // 카드 (Swagger 기준)
 interface CardProps {
-  data : {
-    event : {
+  data: {
+    event: {
       category: string;
       content: string;
       createdAt: string;
@@ -20,61 +20,25 @@ interface CardProps {
       signupEndDate: string;
       signupStartDate: string;
       updatedAt: string;
-    },
+    };
     guestList: number;
-    gustUser : {
+    guestUser: {
       guestEventId: number;
       GuestId: null;
-      EventId: number
-    },
-    hostUser: {
-      userDetailId: number;
-      UserId: number;
-      nickname: string;
-      intro: null;
-      profileImg: null;
-      updatedAt: string;
+      EventId: number;
     };
-  }
+    hostUser: [
+      {
+        userDetailId: number;
+        UserId: number;
+        nickname: string;
+        intro: null;
+        profileImg: null;
+        updatedAt: string;
+      },
+    ]
+  };
 }
-
-// 231017 바뀐 것
-// interface CardProps {
-//   data: {
-//     event: {
-//       GuestEvents: [];
-//       HostEvents: [
-//         User: {
-//           UserDetail: [
-//             {
-//               UserId: number;
-//               createdAt: string;
-//               intro: null;
-//               nickname: string;
-//               profileImg: string;
-//               updatedAt: string;
-//               userDetailId: number;
-//             }
-//           ]
-//         }
-//       ];
-//       category: string;
-//       content: string;
-//       createdAt: string;
-//       eventDate: string;
-//       eventId: number;
-//       eventLocation: string;
-//       eventName: string;
-//       isDeleted: boolean;
-//       isVerified: string;
-//       maxSize: number;
-//       signupEndDate: string;
-//       signupStartDate: string;
-//       updatedAt: string;
-//     },
-//     guestList: number;
-//   }
-// }
 
 const setDateFormat = (date:string):string => {
   return new String(date).split("T")[0] + ' ' + (new Date(date)).toLocaleString('ko-KR',{
