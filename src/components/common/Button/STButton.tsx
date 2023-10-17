@@ -1,16 +1,15 @@
 import styled from "styled-components";
 
 export const ButtonWrap = styled.div`
-border-radius: 23px;
-border: 1px solid #E7E7E7;
-background: #fff;
-padding: 3px;
-
-`
+  border-radius: 23px;
+  border: 1px solid #e7e7e7;
+  background: #fff;
+  padding: 3px;
+`;
 
 export const Button = styled.button`
   border-radius: 20px;
-  border: 1px solid #ADADAD;
+  border: 1px solid #adadad;
   background: #edf895;
   color: #646464;
   text-align: center;
@@ -24,4 +23,4 @@ export const Button = styled.button`
   &:focus {
     outline: none;
   }
-`
+`;

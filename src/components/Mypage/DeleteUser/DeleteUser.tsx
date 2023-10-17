@@ -1,19 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as St from "./STDeleteUser";
-import { deleteUser } from "../../../api/api";
+import { deleteUser } from "../../../api/api"; // <-- 이 부분 수정됨
 import lottie from "lottie-web";
+import { useNavigate } from "react-router-dom";
 
 const DeleteUser: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [reason, setReason] = useState<string>("");
   const lottieContainer = useRef(null);
   const [showAnimation, setShowAnimation] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleRealDelete = async () => {
       try {
         const response = await deleteUser(password);
         console.log("회원탈퇴 성공!", response);
+        navigate("/login");
       } catch (error) {
         console.log("회원탈퇴 실패! 왜인지 알아보자", error);
       }
@@ -29,16 +32,16 @@ const DeleteUser: React.FC = () => {
       });
 
       setTimeout(() => {
-        animation.destroy(); // 2초 후 애니메이션 제거
-        handleRealDelete(); // 실제 회원탈퇴 처리
-      }, 2000);
+        animation.destroy();
+        handleRealDelete();
+      }, 3000);
 
-      return () => animation.destroy(); // 컴포넌트 언마운트 시 애니메이션 제거
+      return () => animation.destroy();
     }
-  }, [showAnimation, password]);
+  }, [showAnimation, password, navigate]);
 
   const handleDelete = () => {
-    setShowAnimation(true); // 애니메이션을 보여주기 시작
+    setShowAnimation(true);
   };
 
   return (
@@ -68,7 +71,7 @@ const DeleteUser: React.FC = () => {
         <div>
           <button onClick={handleDelete}>회원탈퇴</button>
         </div>
-        <div ref={lottieContainer}></div>
+        <St.AnimationContainer ref={lottieContainer}></St.AnimationContainer>
       </div>
     </>
   );

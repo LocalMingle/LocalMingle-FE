@@ -32,7 +32,7 @@ export const Input = styled.input`
   padding: 10px;
   min-width: 300px;
   border-radius: 5px;
-  border: 1px solid #E7E7E7;
+  border: 1px solid #e7e7e7;
   background: #fff;
 `;
 
@@ -50,4 +50,18 @@ export const ErrorMessageJoin = styled.div`
   padding-left: 18px;
   font-size: 12px;
   color: #da7969;
+`;
+
+export const DupCheckButton = styled.button`
+  margin-left: 10px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #edf895;
+  cursor: pointer;
+  font-size: 0.875rem;
+
+  &:hover {
+    background-color: #dcd584;
+  }
 `;

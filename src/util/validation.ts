@@ -105,3 +105,20 @@ export function UpdateValidatePasswordConfirmation(
   }
   return "";
 }
+
+// 이미지 업로드 유효성 검사
+export function validateImageUpload(file: File | null) {
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const SUPPORTED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif"];
+
+  if (!file) {
+    return "이미지 파일을 선택해주세요.";
+  }
+  if (file.size > MAX_FILE_SIZE) {
+    return "파일 크기는 5MB를 초과할 수 없습니다.";
+  }
+  if (!SUPPORTED_FILE_TYPES.includes(file.type)) {
+    return "지원되는 파일 형식은 JPEG, PNG, GIF 뿐입니다.";
+  }
+  return "";
+}

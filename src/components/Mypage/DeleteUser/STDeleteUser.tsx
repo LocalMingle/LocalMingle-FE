@@ -22,3 +22,10 @@ export const TextArea = styled.textarea`
     outline: none;
   }
 `;
+
+export const AnimationContainer = styled.div`
+  width: 300px; // 너비 설정
+  height: 300px; // 높이 설정
+  margin: auto; // 화면 중앙에 배치
+  position: relative;
+`;

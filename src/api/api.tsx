@@ -1,10 +1,12 @@
 import { axiosInstance } from "../api/axiosInstance";
+import axios from "axios";
 import {
   setAccessToken,
   setRefreshToken,
   getNewAccessToken,
 } from "../util/token";
 import { isTokenExpired } from "../util/token";
+import { uploadInstance } from "./axiosInstance.tsx";
 
 export const checkAndRefreshTokenIfNeeded = async () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -44,13 +46,16 @@ export const logoutUser = () => {
 export const deleteUser = async (password: string) => {
   try {
     const response = await axiosInstance.delete(`users/withdrawal`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
       data: {
         password,
       },
     });
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    return response;
+    return response.data;
   } catch (error) {
     console.error("회원 탈퇴에 실패했어요!", error);
     throw error;
@@ -107,4 +112,76 @@ interface PostDetail {
 export const getOnePost = async (eventId: number): Promise<PostDetail> => {
   const { data } = await axiosInstance.get(`event/${eventId}`);
   return data.data;
+};
+
+// 이미지 수정
+export const uploadProfileImage = async (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  console.log("formData", formData.get("file"));
+  try {
+    const response = await uploadInstance.post("users/upload", formData);
+    if (response.status === 201) {
+      const imageUrl = response.data.profileImgURL;
+      return imageUrl;
+    } else {
+      console.error("이미지 업로드 실패:", response);
+      return null;
+    }
+  } catch (error) {
+    console.error("이미지 업로드 중 오류 발생:", error);
+    throw error;
+  }
+};
+
+// 유저이미지 get
+export const getUserProfileImage = async (accessToken: string) => {
+  try {
+    const response = await axiosInstance.get("users/me", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data.UserDetail[0].profileImg;
+  } catch (error) {
+    console.error("프로필 이미지를 가져오는 중 오류 발생:", error);
+    throw error;
+  }
+};
+
+// 회원정보 수정
+export const updateUserInfo = async (
+  id: string,
+  nickname: string,
+  intro: string,
+  password: string,
+  confirmPassword: string
+) => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      throw new Error("액세스 토큰이 없습니다.");
+    }
+    const response = await axiosInstance.patch(
+      `users/${id}`,
+      {
+        nickname,
+        intro,
+        password,
+        confirmPassword,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof axios.AxiosError) {
+      throw error.response ? error.response.data : error;
+    } else {
+      throw error;
+    }
+  }
 };
