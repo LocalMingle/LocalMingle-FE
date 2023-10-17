@@ -53,7 +53,6 @@ const DeleteUser: React.FC = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="비밀번호를 입력하세요."
         />
       </St.DeleteUserWrap>
       <St.DeleteUserWrap>
@@ -62,10 +61,10 @@ const DeleteUser: React.FC = () => {
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder="
-            탈퇴하는 사유를 입력해주세요 🙂
+  탈퇴하는 사유를 입력해주세요 🙂
 
-            소중한 피드백은 더 좋은 서비스를 제공하기 위해
-            적극적으로 반영하도록 하겠습니다."
+  소중한 피드백은 더 좋은 서비스를 제공하기 위해
+  적극적으로 반영하도록 하겠습니다!"
           />
         </div>
       </St.DeleteUserWrap>
