@@ -209,3 +209,36 @@ export const checkEmail = async (email: string) => {
     throw error;
   }
 };
+
+// 글목록 삭제
+export const deleteEvent = async (eventId: number) => {
+  try {
+    const response = await axiosInstance.delete(`events/${eventId}`);
+    return response.data;
+  } catch (error) {
+    console.error("글목록 삭제 중 오류 발생:", error);
+    throw error;
+  }
+};
+
+// 글목록 불러오기
+export const getEvents = async (userId: number) => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      throw new Error("액세스 토큰이 없습니다.");
+    }
+    const response = await axiosInstance.get("events", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        userId, // userId를 쿼리 파라미터로 전달해
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("글목록 불러오기 중 오류 발생:", error);
+    throw error;
+  }
+};

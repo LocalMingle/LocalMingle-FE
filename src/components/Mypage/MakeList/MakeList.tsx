@@ -1,57 +1,81 @@
-import React from "react";
-import { useMutation } from "react-query";
-import { deletePost } from "../../../api/api";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UpdateIcon, DeleteIcon } from "../../../asset/icon/Icon";
 import * as ST from "./STMakeList";
+import { getEvents, deleteEvent } from "../../../api/api";
 
-interface Props {
-  eventId?: number;
-  refetch?: () => void;
+interface Event {
+  eventId: number;
+  eventName: string;
+  hostUser: { UserId: number }[];
 }
 
-const MakeList: React.FC<Props> = ({ eventId, refetch }) => {
+interface EventItem {
+  event: Event;
+  hostUser: { UserId: number }[];
+}
+
+const MakeList: React.FC = () => {
+  const [events, setEvents] = useState<Event[]>([]);
   const navigate = useNavigate();
 
-  const deletePostMutation = useMutation(
-    () => {
-      if (eventId) {
-        return deletePost(String(eventId));
-      } else {
-        return Promise.reject(new Error("eventId is missing"));
-      }
-    },
-    {
-      onSuccess: () => {
-        if (refetch) {
-          refetch();
-        }
-      },
+  const fetchEvents = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      if (!userId) throw new Error("User not logged in");
+      const data = await getEvents(Number(userId));
+      console.log(data);
+      const userEvents = data
+        .filter((item: EventItem) => item.hostUser[0].UserId === Number(userId))
+        .map((item: EventItem) => item.event);
+      setEvents(userEvents);
+    } catch (error) {
+      console.error("글목록 불러오기 실패:", error);
     }
-  );
-
-  const handlePostClick = () => {
-    navigate(`/postview`);
   };
 
-  const handleUpdateClick = () => {
+  const handleDeleteEvent = async (eventId: number) => {
+    try {
+      await deleteEvent(eventId);
+      fetchEvents();
+    } catch (error) {
+      console.error("글 삭제 실패:", error);
+    }
+  };
+
+  const handlePostClick = (eventId: number) => {
+    navigate(`/postview/${eventId}`);
+  };
+
+  const handleUpdateClick = (eventId: number) => {
     navigate(`/post/update/${eventId}`);
   };
 
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
   return (
-    <ST.UserPostForm>
-      <label onClick={handlePostClick}>
-        글제목이 길면...표시가 될까요?? test!!
-      </label>
-      <div>
-        <button onClick={handleUpdateClick}>
-          <UpdateIcon />
-        </button>
-        <button onClick={() => deletePostMutation.mutate()}>
-          <DeleteIcon />
-        </button>
-      </div>
-    </ST.UserPostForm>
+    <div>
+      {events.map((event) => {
+        console.log(event.eventName);
+        return (
+          <ST.UserPostForm key={event.eventId}>
+            <label onClick={() => handlePostClick(event.eventId)}>
+              {event.eventName}
+            </label>
+            <div>
+              <button onClick={() => handleUpdateClick(event.eventId)}>
+                <UpdateIcon />
+              </button>
+              <button onClick={() => handleDeleteEvent(event.eventId)}>
+                <DeleteIcon />
+              </button>
+            </div>
+          </ST.UserPostForm>
+        );
+      })}
+    </div>
   );
 };
 
