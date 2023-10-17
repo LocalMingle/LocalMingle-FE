@@ -1,8 +1,4 @@
-import styled, { css } from "styled-components";
-
-interface ButtonProps {
-  btnwidth?: string;
-}
+import styled from "styled-components";
 
 export const ButtonWrap = styled.div`
   border-radius: 23px;
@@ -11,7 +7,7 @@ export const ButtonWrap = styled.div`
   padding: 3px;
 `;
 
-export const Button = styled.button<ButtonProps>`
+export const Button = styled.button`
   box-sizing: border-box;
   border-radius: 20px;
   border: 1px solid #adadad;
@@ -28,22 +24,4 @@ export const Button = styled.button<ButtonProps>`
   &:focus {
     outline: none;
   }
-
-  ${(props) => 
-    props.btnwidth === "large" &&
-    css`
-      width: 150px;
-    `}
-
-${(props) => 
-    props.btnwidth === "medium" &&
-    css`
-      width: 100px;
-    `}
-
-${(props) => 
-    props.btnwidth === "small" &&
-    css`
-      width: 80px;
-    `}
 `;

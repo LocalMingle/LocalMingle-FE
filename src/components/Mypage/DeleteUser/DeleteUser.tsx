@@ -69,7 +69,7 @@ const DeleteUser: React.FC<ButtonProps> = () => {
           />
         </div>
       </St.DeleteUserWrap>
-      <Button btnwidth="large" onClick={handleDelete}>탈퇴하기</Button>
+      <Button onClick={handleDelete}>탈퇴하기</Button>
       {/* <St.AnimationContainer ref={lottieContainer}></St.AnimationContainer> */}
     </St.DeleteUserContainer>
   );
