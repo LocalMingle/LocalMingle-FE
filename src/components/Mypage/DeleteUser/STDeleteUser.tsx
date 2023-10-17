@@ -32,7 +32,7 @@ export const DeleteUserWrap = styled.div`
     border-radius: 34px;
     border: 1px solid #E7E7E7;
     background: #fff;
-    padding: 8px;
+    padding: 5px;
     margin-bottom: 30px;
   }
 
