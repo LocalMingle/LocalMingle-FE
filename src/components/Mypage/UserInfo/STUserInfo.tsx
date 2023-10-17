@@ -91,3 +91,17 @@ export const ErrorMessageJoin = styled.div`
   color: #da7969;
   text-align: center;
 `;
+
+export const DupCheckButton = styled.button`
+  margin-left: 10px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #edf895;
+  cursor: pointer;
+  font-size: 0.875rem;
+
+  &:hover {
+    background-color: #dcd584;
+  }
+`;
