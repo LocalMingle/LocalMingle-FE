@@ -44,6 +44,7 @@ export const DeleteUserWrap = styled.div`
     min-height: 335px;
     width: 330px;
     width: 100%;
+    padding: 15px;
   }
 `
 export const AnimationContainer = styled.div`

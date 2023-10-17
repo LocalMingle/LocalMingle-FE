@@ -19,7 +19,7 @@ export const Button = styled.button`
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  /* width: 120px; */
+  width: 120px;
 
   &:focus {
     outline: none;
