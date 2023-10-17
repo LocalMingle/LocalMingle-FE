@@ -18,7 +18,7 @@ jobs:
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          API_TOKEN_GITHUB: ${{ secrets.AUTO_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 }}
+          API_TOKEN_GITHUB: ${{ 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 }}
         with:
           source-directory: 'output'
           destination-github-username: ddoddiworld
