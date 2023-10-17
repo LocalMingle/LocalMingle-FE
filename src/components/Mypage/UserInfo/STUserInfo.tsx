@@ -1,38 +1,22 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const UserInfoContainer = styled.div`
+  margin-top: 30px;
+  border: 1px solid #E7E7E7;
+  border-radius: 34px;
+  padding: 5px;
+  background: #fff;
+`
+
+export const UserInfoWrap = styled.div`
+  background: #fff;
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
+  border: 1px solid #ADADAD;
+  border-radius: 29px;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   align-items: center;
-`;
-
-export const InputContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-export const Label = styled.label`
-  font-weight: 400;
-  font-size: 14px;
-`;
-
-export const Input = styled.input`
-  width: 250px;
-  height: 30px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding-left: 5px;
-  &:focus {
-    border-color: #75e1a3;
-    outline: none;
-  }
 `;
 
 export const ImageContainer = styled.div`
@@ -40,46 +24,83 @@ export const ImageContainer = styled.div`
   flex-direction: column;
   gap: 5px;
   align-items: center;
+  margin-bottom: 20px;
 `;
 
 export const ProfileImage = styled.img`
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
 `;
 
 export const ProfileTextButton = styled.button`
-  width: 90px;
-  height: 30px;
   background-color: transparent;
   border: none;
-  border-radius: 5px;
-  color: #333;
+  color: #646464;
+  font-size: 12px;
   cursor: pointer;
+
   &:hover {
-    color: #15d467;
-    text-decoration: underline;
+    color: #333;
   }
 `;
 
-export const SubmitButton = styled.button`
-  width: 80px;
-  height: 35px;
-  background-color: #f7d16f;
-  border: none;
-  border-radius: 14px;
-  color: #4e4343;
-  cursor: pointer;
-  &:hover {
-    background-color: #efb92f;
+export const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%;
+
+  & div {
+    display: flex;
+    align-items: center;
+
+    & input {
+      flex-grow: 1;
+    }
+  }
+
+  & input {
+    border: 1px solid #E7E7E7;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 12px;
   }
 `;
+
+export const DupCheckButtonWrap = styled.div`
+  border: 1px solid #E7E7E7;
+  padding: 2px;
+  margin-left: 5px;
+  border-radius: 23px;
+`
+
+export const DupCheckButton = styled.button`
+  border: 1px solid #ADADAD;
+  border-radius: 20px;
+  background-color: #F7D16F;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 5px;
+  color: #646464;
+`;
+
+export const Label = styled.label`
+  font-size: 15px;
+  color: #646464;
+  margin-bottom: 10px;
+`;
+
+export const EyleToggleWrap = styled.div`
+  position: relative;
+`
 
 export const EyeToggleButton = styled.button`
   position: absolute;
   right: 5px;
-  top: 65%;
+  top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
@@ -87,21 +108,30 @@ export const EyeToggleButton = styled.button`
 `;
 
 export const ErrorMessageJoin = styled.div`
-  font-size: 10px;
+  font-size: 12px;
   color: #da7969;
-  text-align: center;
+  text-align: left;
+  margin-top: 10px;
 `;
 
-export const DupCheckButton = styled.button`
-  margin-left: 10px;
-  padding: 4px 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #edf895;
-  cursor: pointer;
-  font-size: 0.875rem;
+export const SubmitButtonWrap = styled.div`
+  border-radius: 23px;
+  border: 1px solid #e7e7e7;
+  background: #fff;
+  padding: 3px; 
+`
 
-  &:hover {
-    background-color: #dcd584;
-  }
+export const SubmitButton = styled.button`
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: 1px solid #adadad;
+  background: #edf895;
+  color: #646464;
+  text-align: center;
+  height: 45px;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 120px;
 `;

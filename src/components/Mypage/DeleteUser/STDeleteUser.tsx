@@ -22,7 +22,6 @@ export const DeleteUserWrap = styled.div`
 
   & input {
     width: 100%;
-    height: 30px;
     border: 1px solid #E7E7E7;
     background: #fff;
     border-radius: 5px;
