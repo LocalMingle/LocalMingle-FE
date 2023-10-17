@@ -44,27 +44,38 @@ export const isTokenExpired = (token: string): boolean => {
 export const getNewAccessToken = async (): Promise<string | null> => {
   try {
     const refreshToken = getRefreshToken();
+    console.log("Refresh Token:", refreshToken); // 리프레시 토큰 출력
+
     if (!refreshToken) return null;
 
     const response = await axios.post(
       `${import.meta.env.VITE_REACT_APP_URL}users/refresh`,
       {
         refreshToken,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
       }
     );
 
+    console.log("Response:", response); // 서버 응답 출력
+
     if (response.status === 401) {
-      // 만약 리프레쉬 토큰이 만료되었다면
+      console.log("Refresh Token has expired."); // 리프레시 토큰 만료 로그
       logoutUser(); // 로그아웃
       window.location.href = "/login"; // 로그인 페이지로 리다이렉트
       return null;
     }
 
     const newAccessToken = response.data.accessToken;
+    console.log("New Access Token:", newAccessToken); // 새로운 액세스 토큰 출력
     setAccessToken(newAccessToken);
 
     return newAccessToken;
   } catch (error) {
+    console.error("Error:", error); // 에러 출력
     return null;
   }
 };
