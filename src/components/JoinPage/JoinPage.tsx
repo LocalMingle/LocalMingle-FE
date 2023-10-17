@@ -13,6 +13,8 @@ import {
   validatePasswordConfirmation,
   validateEmail,
   validateBio,
+  handleCheckNickname,
+  handleCheckEmail,
 } from "../../util/validation";
 import JSConfetti from "js-confetti";
 
@@ -139,14 +141,14 @@ const SignUpForm: React.FC = () => {
     setBioError(validateBio(newValue));
   };
 
-  const handleNicknameDupCheck = () => {
-    console.log("닉네임 중복 확인");
-    // 서버와 통신하는 코드를 여기에 작성
+  const handleNicknameDupCheck = async () => {
+    const errorMessage = await handleCheckNickname(nickname);
+    setNicknameError(errorMessage);
   };
 
-  const handleEmailDupCheck = () => {
-    console.log("이메일 중복 확인");
-    // 서버와 통신하는 코드를 여기에 작성
+  const handleEmailDupCheck = async () => {
+    const errorMessage = await handleCheckEmail(email);
+    setEmailError(errorMessage);
   };
 
   const togglePasswordVisibility = () => {

@@ -1,3 +1,5 @@
+import { checkNickname, checkEmail } from "../api/api";
+
 // 회원가입 닉네임
 export function validateNickname(nickname: string) {
   if (!nickname) {
@@ -121,4 +123,40 @@ export function validateImageUpload(file: File | null) {
     return "지원되는 파일 형식은 JPEG, PNG, GIF 뿐입니다.";
   }
   return "";
+}
+// 닉네임 중복검사
+export async function handleCheckNickname(nickname: string) {
+  try {
+    const data = await checkNickname(nickname);
+    const statusMessage = parseInt(data.message, 10); // 문자열을 숫자로 변환
+
+    if (statusMessage === 201) {
+      return "닉네임이 중복되었습니다.";
+    } else if (statusMessage === 200) {
+      return "닉네임을 사용할 수 있습니다.";
+    } else {
+      return "닉네임 확인 중 오류 발생.";
+    }
+  } catch (error) {
+    console.error("닉네임 중복 확인 중 오류 발생:", error);
+    return "닉네임 중복 확인 중 오류 발생.";
+  }
+}
+// 이메일 중복검사
+export async function handleCheckEmail(email: string) {
+  try {
+    const data = await checkEmail(email);
+    const statusMessage = parseInt(data.message, 10); // 문자열을 숫자로 변환
+
+    if (statusMessage === 201) {
+      return "이메일이 중복되었습니다.";
+    } else if (statusMessage === 200) {
+      return "이메일을 사용할 수 있습니다.";
+    } else {
+      return "이메일 확인 중 오류 발생.";
+    }
+  } catch (error) {
+    console.error("이메일 중복 확인 중 오류 발생:", error);
+    return "이메일 중복 확인 중 오류 발생.";
+  }
 }

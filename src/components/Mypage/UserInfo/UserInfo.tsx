@@ -6,6 +6,7 @@ import {
   UpdateValidateNickname,
   UpdateValidatePassword,
   UpdateValidatePasswordConfirmation,
+  handleCheckNickname,
 } from "../../../util/validation";
 import {
   uploadProfileImage,
@@ -129,6 +130,11 @@ const UserInfo: React.FC = () => {
     }
   };
 
+  const handleCheckNicknameClick = async () => {
+    const errorMessage = await handleCheckNickname(nickname);
+    setNicknameError(errorMessage);
+  };
+
   const handleNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setNickname(newValue);
@@ -170,6 +176,9 @@ const UserInfo: React.FC = () => {
           value={nickname}
           onChange={handleNicknameChange}
         />
+        <St.DupCheckButton onClick={handleCheckNicknameClick}>
+          중복 확인
+        </St.DupCheckButton>
         <St.ErrorMessageJoin>{nicknameError}</St.ErrorMessageJoin>
         <St.InputContainer>
           <St.Label htmlFor="introduce">한 줄 자기소개</St.Label>
