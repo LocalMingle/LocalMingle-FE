@@ -1,28 +1,51 @@
 import styled from "styled-components";
 
-export const Input = styled.input`
-  width: 250px;
-  height: 30px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding-left: 5px;
-  &:focus {
-    border-color: #75e1a3;
-    outline: none;
-  }
-`;
-
-export const TextArea = styled.textarea`
+export const DeleteUserContainer = styled.div`
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+export const DeleteUserWrap = styled.div`
+  align-self: flex-start;
   width: 100%;
-  padding: 10px 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  &:focus {
-    border-color: #75e1a3;
-    outline: none;
-  }
-`;
 
+  &:first-child {
+    margin-bottom: 30px;
+  }
+
+  & > p {
+    color: #646464;
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  & input {
+    width: 100%;
+    height: 30px;
+    border: 1px solid #E7E7E7;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  & > div {
+    border-radius: 34px;
+    border: 1px solid #E7E7E7;
+    background: #fff;
+    padding: 8px;
+    margin-bottom: 30px;
+  }
+
+  & textarea {
+    border-radius: 29px;
+    border: 1px solid #ADADAD;
+    resize: none;
+    min-height: 335px;
+    width: 330px;
+    width: 100%;
+  }
+`
 export const AnimationContainer = styled.div`
   width: 300px; // 너비 설정
   height: 300px; // 높이 설정

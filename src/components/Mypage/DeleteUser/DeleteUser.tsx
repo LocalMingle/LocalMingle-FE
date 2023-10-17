@@ -3,8 +3,9 @@ import * as St from "./STDeleteUser";
 import { deleteUser } from "../../../api/api"; // <-- 이 부분 수정됨
 import lottie from "lottie-web";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../../common/Button";
 
-const DeleteUser: React.FC = () => {
+const DeleteUser: React.FC<ButtonProps> = () => {
   const [password, setPassword] = useState<string>("");
   const [reason, setReason] = useState<string>("");
   const lottieContainer = useRef(null);
@@ -45,35 +46,32 @@ const DeleteUser: React.FC = () => {
   };
 
   return (
-    <>
-      <div>
+    <St.DeleteUserContainer>
+      <St.DeleteUserWrap>
+        <p>비밀번호 재입력</p>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="비밀번호를 입력하세요."
+        />
+      </St.DeleteUserWrap>
+      <St.DeleteUserWrap>
         <div>
-          <label>
-            비밀번호 확인:
-            <St.Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="비밀번호를 입력하세요."
-            />
-          </label>
+          <textarea
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            placeholder="
+            탈퇴하는 사유를 입력해주세요 🙂
+
+            소중한 피드백은 더 좋은 서비스를 제공하기 위해
+            적극적으로 반영하도록 하겠습니다."
+          />
         </div>
-        <div>
-          <label>
-            탈퇴 사유:
-            <St.TextArea
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              placeholder="왜 탈퇴하시는지 알려주세요ㅠㅠ으엉엉"
-            />
-          </label>
-        </div>
-        <div>
-          <button onClick={handleDelete}>회원탈퇴</button>
-        </div>
-        <St.AnimationContainer ref={lottieContainer}></St.AnimationContainer>
-      </div>
-    </>
+      </St.DeleteUserWrap>
+      <Button btnwidth="large" onClick={handleDelete}>탈퇴하기</Button>
+      {/* <St.AnimationContainer ref={lottieContainer}></St.AnimationContainer> */}
+    </St.DeleteUserContainer>
   );
 };
 
