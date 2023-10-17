@@ -38,6 +38,44 @@ interface CardProps {
   }
 }
 
+// 231017 바뀐 것
+// interface CardProps {
+//   data: {
+//     event: {
+//       GuestEvents: [];
+//       HostEvents: [
+//         User: {
+//           UserDetail: [
+//             {
+//               UserId: number;
+//               createdAt: string;
+//               intro: null;
+//               nickname: string;
+//               profileImg: string;
+//               updatedAt: string;
+//               userDetailId: number;
+//             }
+//           ]
+//         }
+//       ];
+//       category: string;
+//       content: string;
+//       createdAt: string;
+//       eventDate: string;
+//       eventId: number;
+//       eventLocation: string;
+//       eventName: string;
+//       isDeleted: boolean;
+//       isVerified: string;
+//       maxSize: number;
+//       signupEndDate: string;
+//       signupStartDate: string;
+//       updatedAt: string;
+//     },
+//     guestList: number;
+//   }
+// }
+
 const setDateFormat = (date:string):string => {
   return new String(date).split("T")[0] + ' ' + (new Date(date)).toLocaleString('ko-KR',{
     timeZone: 'Asia/Seoul',
@@ -48,8 +86,6 @@ const setDateFormat = (date:string):string => {
 }
 
 const Card: React.FC<CardProps> = ( {data} ) => {
-
-
   return (
     <St.CardSection>
       <St.CardWrap>
