@@ -185,3 +185,27 @@ export const updateUserInfo = async (
     }
   }
 };
+
+// 닉네임 중복 확인
+export const checkNickname = async (nickname: string) => {
+  try {
+    const response = await axiosInstance.post("users/checkNickname", {
+      nickname,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("닉네임 중복 확인 중 오류 발생:", error);
+    throw error;
+  }
+};
+
+// 이메일 중복 확인
+export const checkEmail = async (email: string) => {
+  try {
+    const response = await axiosInstance.post("users/checkEmail", { email });
+    return response.data;
+  } catch (error) {
+    console.error("이메일 중복 확인 중 오류 발생:", error);
+    throw error;
+  }
+};
