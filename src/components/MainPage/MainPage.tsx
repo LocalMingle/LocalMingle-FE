@@ -1,5 +1,4 @@
-// Main.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import * as St from './STMainPage';
 import Banner from '../common/Banner/Banner';
 import Search from '../common/Search/Search';
@@ -16,36 +15,65 @@ const MainPage: React.FC = () => {
     { value: 'nothingOptions2', label: '😍 LocalMingle' },
   ];
 
+  const [selectedSido, setSelectedSido] = useState<string>(""||'서울특별시'); // 시도
+  const [selectedGugun, setSelectedGugun] = useState<string>(""); // 구군
+
+  type SelectorChangeHandler = (selectedOption: { value: string, label: string }) => void;
+
   const accessToken = localStorage.getItem('accessToken');
 
-  // 위치 인증 여부 interface (console.log 기준)
-  interface LocationOptionsProps {
+  // 검색 기능
+  // const handleSearch = async (keyword: string) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${import.meta.env.VITE_REACT_APP_URL}events/search`,
+  //       {
+  //         headers: {
+  //           Authorization: `${accessToken}`,
+  //         },
+  //         params: {
+  //           keyword,
+  //         },
+  //       }
+  //     );
 
-  }
+  //     if (response.status === 200) {
+  //       console.log('키워드 검색 성공', response.data);
+  //     }
+  //   } catch (error) {
+  //     console.log('키워드 검색 실패', error);
+  //   }
+  // };
+
+  
+  // 위치 인증 여부 interface (console.log 기준)
+  // interface LocationOptionsProps {
+
+  // }
 
   // 위치 인증 여부 - DB 연동
-  const { data: locationOptionsData } = useQuery<LocationOptionsProps, unknown>(
-    'locationOptions',
-    async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_REACT_APP_URL}categories`,
-          {
-            headers: {
-              Authorization: `${accessToken}`,
-            },
-          }
-        );
-        if (response.status === 200) {
-          console.log('위치 인증 여부 성공', response.data);
-          return response.data;
-        }
-      } catch (error) {
-        console.log('위치 인증 여부 불러오기 실패', error);
-        throw error;
-      }
-    }
-  );
+  // const { data: locationOptionsData } = useQuery<LocationOptionsProps, unknown>(
+  //   'locationOptions',
+  //   async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${import.meta.env.VITE_REACT_APP_URL}data/toss`,
+  //         {
+  //           headers: {
+  //             Authorization: `${accessToken}`,
+  //           },
+  //         }
+  //       );
+  //       if (response.status === 200) {
+  //         console.log('위치 인증 여부 성공', response.data);
+  //         return response.data;
+  //       }
+  //     } catch (error) {
+  //       console.log('위치 인증 여부 불러오기 실패', error);
+  //       throw error;
+  //     }
+  //   }
+  // );
 
   // 시/도 옵션 interface (console.log 기준)
   interface SidoOptionsProps {
@@ -92,6 +120,7 @@ const MainPage: React.FC = () => {
             headers: {
               Authorization: `${accessToken}`,
             },
+            params: { 'doName': selectedSido },
           }
         );
         if (response.status === 200) {
@@ -102,37 +131,37 @@ const MainPage: React.FC = () => {
         console.log('구/군 불러오기 실패', error);
         throw error;
       }
-    }
+    },
   );
 
   // 카테고리 옵션 interface (console.log 기준)
-  interface CategoryOptionsProps {
-    category: string;
-  }
+  // interface CategoryOptionsProps {
+  //   category: string;
+  // }
 
   // 카테고리 옵션 - DB 연동
-  const { data: categoryOptionsData } = useQuery<CategoryOptionsProps, unknown>(
-    'categoryOptions',
-    async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_REACT_APP_URL}categories`,
-          {
-            headers: {
-              Authorization: `${accessToken}`,
-            },
-          }
-        );
-        if (response.status === 200) {
-          console.log('카테고리 옵션 성공', response.data);
-          return response.data;
-        }
-      } catch (error) {
-        console.log('카테고리 옵션 카테고리 불러오기 실패', error);
-        throw error;
-      }
-    }
-  );
+  // const { data: categoryOptionsData } = useQuery<CategoryOptionsProps, unknown>(
+  //   'categoryOptions',
+  //   async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${import.meta.env.VITE_REACT_APP_URL}categories`,
+  //         {
+  //           headers: {
+  //             Authorization: `${accessToken}`,
+  //           },
+  //         }
+  //       );
+  //       if (response.status === 200) {
+  //         console.log('카테고리 옵션 성공', response.data);
+  //         return response.data;
+  //       }
+  //     } catch (error) {
+  //       console.log('카테고리 옵션 카테고리 불러오기 실패', error);
+  //       throw error;
+  //     }
+  //   }
+  // );
 
   // 게시글 전체 조회 interface (console.log 기준)
   interface CardProps {
@@ -226,14 +255,20 @@ const MainPage: React.FC = () => {
       <Search></Search>
       <St.SelectorWrap>
         {/* 위치 인증 여부 : 아무나 환영 | 우리 동네만 */}
-        <Selector options={nothingOptions}></Selector>
+        {/* <Selector options={nothingOptions}></Selector> */}
         {/* <Selector options={locationOptionsData?.map(item => ({value: item.location, label: item.location}))}></Selector> */}
         {/* 시/도 */}
-        <Selector options={sidoOptionsData?.map(item => ({ value: item.doName, label: item.doName }))}></Selector>
+        <Selector
+          options={sidoOptionsData?.map(item => ({ value: item.doName, label: item.doName }))}
+          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+            setSelectedSido(selectedOption.target.value);
+          }}
+          
+        ></Selector>
         {/* 구/군 */}
         <Selector options={gugunOptionsData?.map(item => ({ value: item.guName, label: item.guName}))}></Selector>
         {/* 카테고리 : 맛집/커피, 운동/건강, 애완동물, 공부/교육 */}
-        <Selector options={nothingOptions}></Selector>
+        {/* <Selector options={nothingOptions}></Selector> */}
         {/* <Selector options={categoryOptionsData?.map(item => ({value: item.category, label: item.category}))}></Selector> */}
       </St.SelectorWrap>
       {/* 카드 */}
