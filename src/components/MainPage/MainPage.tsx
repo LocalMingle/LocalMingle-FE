@@ -135,8 +135,7 @@ const MainPage: React.FC = () => {
   // );
 
   // 게시글 전체 조회 interface (console.log 기준)
-interface CardProps {
-  data: {
+  interface CardProps {
     event: {
       category: string;
       content: string;
@@ -153,21 +152,15 @@ interface CardProps {
       updatedAt: string;
     };
     guestList: number[];
-    guestUser: {
-      guestEventId: number;
-      GuestId: null;
-      EventId: number;
-    }[];
-    hostUser: {
+    hostUser: [{
       userDetailId: number;
       UserId: number;
       nickname: string;
-      intro: null;
-      profileImg: null;
+      intro: string;
+      profileImg: string;
       updatedAt: string;
-    }[];
+    }];
   }
-} 
 
   // 게시글 전체 조회 - DB 연동
   const { isLoading: postsLoading, data: postData } = useQuery<CardProps[]>(
@@ -219,10 +212,10 @@ interface CardProps {
         {/* <Selector options={locationOptionsData?.map(item => ({value: item.location, label: item.location}))}></Selector> */}
         {/* 시/도 */}
         <Selector
-            options={sidoOptionsData?.map(item => ({ value: item.doName, label: item.doName }))}
-            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-                setSelectedSido(selectedOption.target.value);
-            }}
+          options={sidoOptionsData?.map(item => ({ value: item.doName, label: item.doName }))}
+          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+              setSelectedSido(selectedOption.target.value);
+          }}
         ></Selector>
         {/* 구/군 */}
         <Selector options={gugunOptionsData?.map(item => ({ value: item.guName, label: item.guName}))}></Selector>
