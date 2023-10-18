@@ -14,6 +14,9 @@ import {
   updateUserInfo,
 } from "../../../api/api";
 import { axiosInstance } from "../../../api/axiosInstance";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { successToast, warnToast } from "../../../util/toast";
 
 const UserInfo: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,6 +27,7 @@ const UserInfo: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [intro, setIntro] = useState("");
+  const [initialNickname, setInitialNickname] = useState("");
   const [nicknameError, setNicknameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
@@ -69,7 +73,8 @@ const UserInfo: React.FC = () => {
         ) {
           const userDetail = response.data.UserDetail[0];
           setNickname(userDetail.nickname);
-          setIntro(userDetail.intro);
+          setInitialNickname(userDetail.nickname);
+          setIntro(userDetail.intro ? userDetail.intro : "");
         }
       } catch (error) {
         console.error("사용자 정보를 불러오는 중 오류 발생:", error);
@@ -81,6 +86,11 @@ const UserInfo: React.FC = () => {
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
+    const nicknameChanged = nickname !== initialNickname;
+
+    if (nickname === initialNickname && nicknameError === "중복된 닉네임") {
+      setNicknameError("");
+    }
 
     if (password && password !== confirmPassword) {
       setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
@@ -98,22 +108,27 @@ const UserInfo: React.FC = () => {
           nickname,
           intro,
           password,
-          confirmPassword
+          confirmPassword,
+          nicknameChanged
         );
 
         console.log("업데이트 응답:", response);
         console.log(response.message);
-
         setPassword("");
         setConfirmPassword("");
       } else {
         console.error("사용자 ID를 불러오지 못했습니다.");
       }
+      successToast("수정이 완료되었습니다.");
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
+        warnToast(`수정 중 오류가 발생했습니다.
+        다시 시도해주세요.`);
       } else {
         console.error(error);
+        warnToast(`닉에임 중복 오류가 발생했습니다.
+        다시 시도해주세요.`);
       }
     }
   };
@@ -155,7 +170,6 @@ const UserInfo: React.FC = () => {
   return (
     <St.UserInfoContainer>
       <St.UserInfoWrap>
-        
         <St.ImageContainer>
           <St.ProfileImage src={profileImage} alt="프로필 이미지" />
           <input
@@ -201,12 +215,7 @@ const UserInfo: React.FC = () => {
 
         <St.InputContainer>
           <St.Label htmlFor="location">위치 정보</St.Label>
-          <input
-            type="text"
-            id="location"
-            readOnly
-            value="서울특별시 강남구"
-          />
+          <input type="text" id="location" readOnly value="서울특별시 강남구" />
         </St.InputContainer>
 
         <St.InputContainer>
@@ -237,7 +246,7 @@ const UserInfo: React.FC = () => {
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}
           />
-        <St.ErrorMessageJoin>{confirmPasswordError}</St.ErrorMessageJoin>
+          <St.ErrorMessageJoin>{confirmPasswordError}</St.ErrorMessageJoin>
         </St.InputContainer>
 
         <St.SubmitButtonWrap>
@@ -245,8 +254,8 @@ const UserInfo: React.FC = () => {
             수정
           </St.SubmitButton>
         </St.SubmitButtonWrap>
-
       </St.UserInfoWrap>
+      <ToastContainer />
     </St.UserInfoContainer>
   );
 };

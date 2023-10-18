@@ -155,13 +155,15 @@ export const updateUserInfo = async (
   nickname: string,
   intro: string,
   password: string,
-  confirmPassword: string
+  confirmPassword: string,
+  nicknameChanged: boolean
 ) => {
   try {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
       throw new Error("액세스 토큰이 없습니다.");
     }
+    console.log("함수 내부 intro:", intro);
     const response = await axiosInstance.patch(
       `users/${id}`,
       {
@@ -169,6 +171,7 @@ export const updateUserInfo = async (
         intro,
         password,
         confirmPassword,
+        nicknameChanged,
       },
       {
         headers: {
@@ -228,12 +231,9 @@ export const getEvents = async (userId: number) => {
     if (!accessToken) {
       throw new Error("액세스 토큰이 없습니다.");
     }
-    const response = await axiosInstance.get("events", {
+    const response = await axiosInstance.get(`users/${userId}/hostedEvents`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        userId, // userId를 쿼리 파라미터로 전달해
       },
     });
     return response.data;

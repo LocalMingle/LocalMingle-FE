@@ -70,7 +70,7 @@ const SignUpForm: React.FC = () => {
         email,
         password,
         confirmPassword,
-        bio,
+        intro: bio,
       });
 
       if (response.status === 201) {
@@ -97,6 +97,7 @@ const SignUpForm: React.FC = () => {
       } else {
         console.error("예상치 못한 응답:", response);
       }
+      console.log("서버 응답:", response);
     } catch (error: unknown) {
       console.error("회원가입 중 에러 발생:", error);
 
@@ -165,18 +166,14 @@ const SignUpForm: React.FC = () => {
       <ST.LabelWrapper>
         <label>닉네임</label>
         <div>
-          <input
-            type="text"
-            value={nickname}
-            onChange={handleNicknameChange}
-          />
+          <input type="text" value={nickname} onChange={handleNicknameChange} />
           <ST.DupCheckButtonWrap>
             <ST.DupCheckButton onClick={handleNicknameDupCheck}>
               중복 체크
             </ST.DupCheckButton>
           </ST.DupCheckButtonWrap>
         </div>
-      <ST.ErrorMessageJoin>{nicknameError}</ST.ErrorMessageJoin>
+        <ST.ErrorMessageJoin>{nicknameError}</ST.ErrorMessageJoin>
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
@@ -189,7 +186,7 @@ const SignUpForm: React.FC = () => {
             </ST.DupCheckButton>
           </ST.DupCheckButtonWrap>
         </div>
-      <ST.ErrorMessageJoin>{emailError}</ST.ErrorMessageJoin>
+        <ST.ErrorMessageJoin>{emailError}</ST.ErrorMessageJoin>
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
@@ -200,15 +197,15 @@ const SignUpForm: React.FC = () => {
             value={password}
             onChange={handlePasswordChange}
           />
-            <ST.EyeToggleButton onClick={togglePasswordVisibility}>
-              {showPassword ? (
-                <FontAwesomeIcon icon={faEye} />
-              ) : (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              )}
-            </ST.EyeToggleButton>
+          <ST.EyeToggleButton onClick={togglePasswordVisibility}>
+            {showPassword ? (
+              <FontAwesomeIcon icon={faEye} />
+            ) : (
+              <FontAwesomeIcon icon={faEyeSlash} />
+            )}
+          </ST.EyeToggleButton>
         </ST.EyleToggleWrap>
-      <ST.ErrorMessageJoin>{passwordError}</ST.ErrorMessageJoin>
+        <ST.ErrorMessageJoin>{passwordError}</ST.ErrorMessageJoin>
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
@@ -218,13 +215,13 @@ const SignUpForm: React.FC = () => {
           value={confirmPassword}
           onChange={handleConfirmPasswordChange}
         />
-      <ST.ErrorMessageJoin>{confirmPasswordError}</ST.ErrorMessageJoin>
+        <ST.ErrorMessageJoin>{confirmPasswordError}</ST.ErrorMessageJoin>
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
         <label>한줄 자기 소개</label>
         <input type="text" value={bio} onChange={handleBioChange} />
-      <ST.ErrorMessageJoin>{bioError}</ST.ErrorMessageJoin>
+        <ST.ErrorMessageJoin>{bioError}</ST.ErrorMessageJoin>
       </ST.LabelWrapper>
       {isLoading && <div>회원가입 중...</div>}
       <Button onClick={handleSignUp}>회원가입</Button>
