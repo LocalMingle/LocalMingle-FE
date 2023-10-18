@@ -64,8 +64,7 @@ export const SignupText = styled.div`
 `;
 
 export const ErrorMessageLogin = styled.div`
-  font-size: 10px;
+  font-size: 12px;
   color: #da7969;
-  text-align: center;
   width: 100%;
 `;
