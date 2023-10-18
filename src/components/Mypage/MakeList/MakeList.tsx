@@ -7,12 +7,14 @@ import { getEvents, deleteEvent } from "../../../api/api";
 interface Event {
   eventId: number;
   eventName: string;
-  hostUser: { UserId: number }[];
-}
-
-interface EventItem {
-  event: Event;
-  hostUser: { UserId: number }[];
+  eventDate: string;
+  eventImg: string;
+  eventLocation: string;
+  content: string;
+  category: string;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const MakeList: React.FC = () => {
@@ -25,10 +27,17 @@ const MakeList: React.FC = () => {
       if (!userId) throw new Error("User not logged in");
       const data = await getEvents(Number(userId));
       console.log(data);
-      const userEvents = data
-        .filter((item: EventItem) => item.hostUser[0].UserId === Number(userId))
-        .map((item: EventItem) => item.event);
-      setEvents(userEvents);
+      const userEvents = data.HostEvents.map(
+        (item: { Event: Event }) => item.Event
+      ).filter((event: Event) => !event.isDeleted); // 백엔드에서 수정완료되면 빼자.
+
+      const sortedEvents = userEvents.sort((a: Event, b: Event) => {
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+        return dateB.getTime() - dateA.getTime(); // 최신 글이 상단에 오도록 정렬
+      });
+
+      setEvents(sortedEvents);
     } catch (error) {
       console.error("글목록 불러오기 실패:", error);
     }

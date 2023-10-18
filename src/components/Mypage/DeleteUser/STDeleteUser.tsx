@@ -5,7 +5,7 @@ export const DeleteUserContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 export const DeleteUserWrap = styled.div`
   align-self: flex-start;
   width: 100%;
@@ -22,7 +22,7 @@ export const DeleteUserWrap = styled.div`
 
   & input {
     width: 100%;
-    border: 1px solid #E7E7E7;
+    border: 1px solid #e7e7e7;
     background: #fff;
     border-radius: 5px;
     padding: 10px;
@@ -30,7 +30,7 @@ export const DeleteUserWrap = styled.div`
 
   & > div {
     border-radius: 34px;
-    border: 1px solid #E7E7E7;
+    border: 1px solid #e7e7e7;
     background: #fff;
     padding: 5px;
     margin-bottom: 30px;
@@ -38,17 +38,21 @@ export const DeleteUserWrap = styled.div`
 
   & textarea {
     border-radius: 29px;
-    border: 1px solid #ADADAD;
+    border: 1px solid #adadad;
     resize: none;
     min-height: 335px;
     width: 330px;
     width: 100%;
     padding: 15px;
   }
-`
+`;
 export const AnimationContainer = styled.div`
-  width: 300px; // 너비 설정
-  height: 300px; // 높이 설정
-  margin: auto; // 화면 중앙에 배치
+  width: 300px;
+  height: 300px;
+  margin: auto;
   position: relative;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;

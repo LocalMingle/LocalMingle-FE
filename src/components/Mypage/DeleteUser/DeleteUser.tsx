@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as St from "./STDeleteUser";
-import { deleteUser } from "../../../api/api"; // <-- 이 부분 수정됨
+import { deleteUser } from "../../../api/api";
 import lottie from "lottie-web";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../common/Button";
@@ -69,7 +69,7 @@ const DeleteUser: React.FC = () => {
         </div>
       </St.DeleteUserWrap>
       <Button onClick={handleDelete}>탈퇴하기</Button>
-      {/* <St.AnimationContainer ref={lottieContainer}></St.AnimationContainer> */}
+      <St.AnimationContainer ref={lottieContainer}></St.AnimationContainer>
     </St.DeleteUserContainer>
   );
 };
