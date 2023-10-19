@@ -45,7 +45,7 @@ export const StyledInput = styled.input`
   padding: 10px;
   min-width: 300px;
   border-radius: 5px;
-  border: 1px solid #E7E7E7;
+  border: 1px solid #e7e7e7;
   margin-bottom: 10px;
   background: #fff;
 `;
@@ -54,7 +54,7 @@ export const SignupText = styled.div`
   margin-top: 20px;
   font-size: 14px;
   user-select: none;
-  color: #ADADAD;
+  color: #adadad;
 
   span {
     color: #da7969;
@@ -67,4 +67,16 @@ export const ErrorMessageLogin = styled.div`
   font-size: 12px;
   color: #da7969;
   width: 100%;
+`;
+
+export const KakaoButton = styled.button`
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: #fefbf6;
+  margin-top: 5px;
+
+  img {
+    border-radius: 12px;
+  }
 `;

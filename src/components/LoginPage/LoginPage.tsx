@@ -72,6 +72,15 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  const kakaoLoginHandler = () => {
+    const REST_API_KEY: string = import.meta.env
+      .VITE_REACT_APP_KAKAO_CLIENT_ID as string;
+    const REDIRECT_URI: string = import.meta.env
+      .VITE_REACT_APP_KAKAO_REDIRECT_URI as string;
+    const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+    window.location.href = link;
+  };
+
   const handleJoinClick = () => {
     navigate("/join");
   };
@@ -126,6 +135,14 @@ const LoginPage: React.FC = () => {
       </ST.LabelWrapper>
 
       <Button onClick={handleLogin}>로그인</Button>
+      <div>
+        <ST.KakaoButton onClick={kakaoLoginHandler}>
+          <img
+            src="https://developers.kakao.com/tool/resource/static/img/button/login/simple/ko/kakao_login_small.png"
+            width="70"
+          />
+        </ST.KakaoButton>
+      </div>
 
       <ST.SignupText>
         로컬밍글의 회원이 아니신가요?{" "}

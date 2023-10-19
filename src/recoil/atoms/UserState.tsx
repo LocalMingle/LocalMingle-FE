@@ -1,7 +1,10 @@
 import { atom } from "recoil";
 
-// 사용자 정보 관리 atom
-export const userState = atom({
+type UserType = {
+  userId: number | null;
+};
+
+export const userState = atom<UserType>({
   key: "userState",
   default: {
     userId: null,
