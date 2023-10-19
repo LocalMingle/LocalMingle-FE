@@ -90,6 +90,11 @@ const UserInfo: React.FC = () => {
       setNicknameError("");
     }
 
+    if (!password) {
+      warnToast("비밀번호를 입력해주세요.");
+      return;
+    }
+
     if (password && password !== confirmPassword) {
       setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
       return;
@@ -125,7 +130,7 @@ const UserInfo: React.FC = () => {
         다시 시도해주세요.`);
       } else {
         console.error(error);
-        warnToast(`닉에임 중복 오류가 발생했습니다.
+        warnToast(`닉네임 중복 오류가 발생했습니다.
         다시 시도해주세요.`);
       }
     }
