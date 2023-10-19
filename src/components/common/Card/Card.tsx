@@ -31,12 +31,16 @@ interface CardProps {
 }
 
 const setDateFormat = (date:string):string => {
-  return new String(date).split("T")[0] + ' ' + (new Date(date)).toLocaleString('ko-KR',{
-    timeZone: 'Asia/Seoul',
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-  });
+  // 날짜 + 시간
+  // return new String(date).split("T")[0] + ' ' + (new Date(date)).toLocaleString('ko-KR',{
+  //   timeZone: 'Asia/Seoul',
+  //   hour: 'numeric',
+  //   minute: 'numeric',
+  //   hour12: true,
+  // });
+
+  // 날짜만 
+  return new String(date).split("T")[0];
 }
 
 const Card: React.FC<CardProps> = ( {event, guestList, hostUser} ) => {
