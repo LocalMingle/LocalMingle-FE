@@ -2,16 +2,16 @@ import styled from "styled-components";
 
 export const UserInfoContainer = styled.div`
   margin-top: 30px;
-  border: 1px solid #E7E7E7;
+  border: 1px solid #e7e7e7;
   border-radius: 34px;
   padding: 5px;
   background: #fff;
-`
+`;
 
 export const UserInfoWrap = styled.div`
   background: #fff;
   width: 100%;
-  border: 1px solid #ADADAD;
+  border: 1px solid #adadad;
   border-radius: 29px;
   padding: 20px;
   display: flex;
@@ -62,7 +62,7 @@ export const InputContainer = styled.div`
   }
 
   & input {
-    border: 1px solid #E7E7E7;
+    border: 1px solid #e7e7e7;
     background: #fff;
     border-radius: 5px;
     padding: 10px;
@@ -71,16 +71,16 @@ export const InputContainer = styled.div`
 `;
 
 export const DupCheckButtonWrap = styled.div`
-  border: 1px solid #E7E7E7;
+  border: 1px solid #e7e7e7;
   padding: 2px;
   margin-left: 5px;
   border-radius: 23px;
-`
+`;
 
 export const DupCheckButton = styled.button`
-  border: 1px solid #ADADAD;
+  border: 1px solid #adadad;
   border-radius: 20px;
-  background-color: #F7D16F;
+  background-color: #f7d16f;
   cursor: pointer;
   font-size: 12px;
   padding: 5px;
@@ -95,13 +95,14 @@ export const Label = styled.label`
 
 export const EyleToggleWrap = styled.div`
   position: relative;
-`
+`;
 
 export const EyeToggleButton = styled.button`
   position: absolute;
   right: 5px;
   top: 50%;
   transform: translateY(-50%);
+  color: #adadad;
   background: none;
   border: none;
   cursor: pointer;
@@ -118,8 +119,8 @@ export const SubmitButtonWrap = styled.div`
   border-radius: 23px;
   border: 1px solid #e7e7e7;
   background: #fff;
-  padding: 3px; 
-`
+  padding: 3px;
+`;
 
 export const SubmitButton = styled.button`
   box-sizing: border-box;
