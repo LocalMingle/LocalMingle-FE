@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
-import { userState } from "../recoil/atoms/UserState"; // atom 경로명 넣어주기
-import { kakaoLogin } from "../api/api"; // API 경로명 넣어주기
+import { userState } from "../recoil/atoms/UserState";
+import { kakaoLogin } from "../api/api";
 
 export default function RedirectionPage() {
   const code = new URLSearchParams(window.location.search).get("code") || "";
