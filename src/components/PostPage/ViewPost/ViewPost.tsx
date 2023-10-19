@@ -1,6 +1,7 @@
 import React from 'react'
+import * as St from './STViewPost'
 
-function ViewPost() {
+const ViewPost: React.FC = () => {
   return (
     <div>ViewPost</div>
   )

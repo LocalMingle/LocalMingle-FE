@@ -1,6 +1,7 @@
 import React from 'react'
+import * as St from './STWritePost'
 
-function STWritePost() {
+const STWritePost: React.FC = () => {
   return (
     <div>STWritePost</div>
   )

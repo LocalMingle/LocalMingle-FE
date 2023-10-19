@@ -1,6 +1,7 @@
 import React from 'react'
+import * as St from './STJoinPost'
 
-function JoinPost() {
+const JoinPost: React.FC = () => {
   return (
     <div>JoinPost</div>
   )
