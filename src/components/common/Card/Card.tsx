@@ -54,7 +54,11 @@ const Card: React.FC<CardProps> = ( {event, guestList, hostUser} ) => {
         <St.Title>{event.eventName}</St.Title>
         <St.CardMiddle>
           <Tag bgcolor="orange">{event.eventLocation}</Tag>
-          <Tag bgcolor="pink">{event.isVerified}</Tag>
+          {event.isVerified === "yes" ? (
+            <Tag bgcolor="pink">우리 동네</Tag>
+          ) : (
+            <Tag bgcolor="pink">아무나 환영</Tag>
+          )}
         </St.CardMiddle>
         <St.CardBottom>
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
