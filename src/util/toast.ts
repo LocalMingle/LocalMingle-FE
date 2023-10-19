@@ -24,7 +24,7 @@ export const StyledToastContainer = styled(ToastContainer)`
 export const successToast = (message: string) => {
   toast.success(message, {
     position: "top-center",
-    autoClose: 3000,
+    autoClose: 1000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -38,7 +38,7 @@ export const successToast = (message: string) => {
 export const warnToast = (message: string) => {
   toast.warn(message, {
     position: "top-center",
-    autoClose: 3000,
+    autoClose: 1000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
