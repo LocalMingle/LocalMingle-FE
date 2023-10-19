@@ -1,5 +1,5 @@
 import { axiosInstance } from "../api/axiosInstance";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import {
   setAccessToken,
   setRefreshToken,
@@ -40,6 +40,34 @@ export const loginUser = async (email: string, password: string) => {
 export const logoutUser = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
+};
+
+// 카카오 로그인
+type KakaoResponse = {
+  accessToken: string;
+  refreshToken: string;
+  userId: number;
+};
+
+export const kakaoLogin = async (
+  code: string
+): Promise<AxiosResponse<KakaoResponse>> => {
+  const data = await axiosInstance.get<KakaoResponse>(
+    `users/login/kakao?code=${code}`,
+    {
+      headers: {
+        "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+      },
+      params: {
+        grant_type: "authorization_code",
+        client_id: import.meta.env.VITE_REACT_APP_KAKAO_CLIENT_ID,
+        redirect_uri: import.meta.env.VITE_REACT_APP_KAKAO_REDIRECT_URI,
+        code,
+      },
+    }
+  );
+
+  return data;
 };
 
 // 회원 탈퇴
