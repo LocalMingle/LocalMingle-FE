@@ -84,11 +84,11 @@ const UserInfo: React.FC = () => {
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-    const nicknameChanged = nickname !== initialNickname;
+    const nameChanged = nickname !== initialNickname;
 
-    if (nickname === initialNickname && nicknameError === "중복된 닉네임") {
-      setNicknameError("");
-    }
+    // if (nickname === initialNickname && nicknameError === "중복된 닉네임") {
+    //   setNicknameError("");
+    // }
 
     if (!password) {
       warnToast("비밀번호를 입력해주세요.");
@@ -112,7 +112,7 @@ const UserInfo: React.FC = () => {
           intro,
           password,
           confirmPassword,
-          nicknameChanged
+          nameChanged
         );
 
         console.log("업데이트 응답:", response);

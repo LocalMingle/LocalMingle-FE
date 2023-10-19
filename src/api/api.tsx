@@ -190,7 +190,7 @@ export const updateUserInfo = async (
   intro: string,
   password: string,
   confirmPassword: string,
-  nicknameChanged: boolean
+  nameChanged: boolean
 ) => {
   try {
     const accessToken = localStorage.getItem("accessToken");
@@ -205,7 +205,7 @@ export const updateUserInfo = async (
         intro,
         password,
         confirmPassword,
-        nicknameChanged,
+        nameChanged,
       },
       {
         headers: {
