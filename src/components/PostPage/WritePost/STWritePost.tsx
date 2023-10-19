@@ -7,6 +7,7 @@ export const PostSection = styled.section`
 export const SelectorWrap = styled.div`
   display: flex;
   margin-bottom: 20px;
+  gap: 10px;
 `
 
 export const TitleWrap = styled.div`
@@ -15,7 +16,7 @@ export const TitleWrap = styled.div`
   & input {
     border: 1px solid #E7E7E7;
     border-radius: 5px;
-    padding: 10px;
+    padding: 8px;
     width: 100%;
   }
 `
@@ -26,7 +27,7 @@ export const InputWrap = styled.div`
   & div {
     display: flex;
     align-items: center;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
 
     & p {
       color: #646464;
@@ -50,7 +51,7 @@ export const InputWrap = styled.div`
     }
 
     & input[type="number"] {
-      width: 50px;
+      width: 70px;
     }
   }
 `
@@ -72,10 +73,12 @@ export const ContentsWrap = styled.div`
     min-height: 300px;
     padding: 10px 15px;
     resize: none;
+    overflow-y: scroll;
   }
 `
 
 export const ButtonWrap = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap : 30px;
 `
