@@ -1,21 +1,20 @@
 import React, { useState } from 'react'
 import * as St from './STWritePost'
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import axios, {AxiosInstance} from 'axios';
 import { Selector } from '../../common/Selector'
 import { Button } from '../../common/Button';
 
 const STWritePost: React.FC = () => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const accessToken = localStorage.getItem('accessToken');
 
   // AxiosInstance & API 설정
   const customAxios:AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_REACT_APP_URL,
     headers: {
-      Authorization : `${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
     }
   });
   const mainAPI = {
@@ -26,7 +25,7 @@ const STWritePost: React.FC = () => {
 
   // 게시글 작성 interface (console.log 기준)
   interface WritePostData {
-    data : {
+    // data : {
     "eventName": string,
     "maxSize": number,
     "eventDate": string,
@@ -38,7 +37,7 @@ const STWritePost: React.FC = () => {
     "isDeleted": boolean,
     "isVerified": string,
     "eventImg": string | null,
-    }
+    // }
   }
 
   // 게시글 작성 - DB 연동
@@ -64,19 +63,17 @@ const STWritePost: React.FC = () => {
   const postAdd = async () => {
     try {
       const postData: WritePostData = {
-        data : {
-          eventName,
-          maxSize,
-          eventDate,
-          signupStartDate,
-          signupEndDate,
-          eventLocation,
-          content,
-          category,
-          isDeleted,
-          isVerified,
-          eventImg,
-        },
+        eventName,
+        maxSize,
+        eventDate: new Date(eventDate), // 문자열을 Date 객체로 변환
+        signupStartDate: new Date(signupStartDate),
+        signupEndDate: new Date(signupEndDate),
+        eventLocation,
+        content,
+        category,
+        isDeleted,
+        isVerified,
+        eventImg,
       };
       await writePostMutation.mutateAsync(postData);
     } catch (error) {
@@ -84,22 +81,30 @@ const STWritePost: React.FC = () => {
     }
   }
 
-  const [eventName, setEventName] = useState('');
-  const [eventDate, setEventDate] = useState('');
-  const [signupStartDate, setSignupStartDate] = useState('');
-  const [signupEndDate, setSignupEndDate] = useState('');
-  const [eventLocation, setEventLocation] = useState('');
-  const [maxSize, setMaxSize] = useState(0);
-  const [content, setContent] = useState('');
+  const [eventName, setEventName] = useState<string>('');
+  const [eventDate, setEventDate] = useState<string>();
+  const [signupStartDate, setSignupStartDate] = useState<string>();
+  const [signupEndDate, setSignupEndDate] = useState<string>();
+  const [eventLocation, setEventLocation] = useState<string>('');
+  const [maxSize, setMaxSize] = useState<number>(0);
+  const [content, setContent] = useState<string>('');
 
-  const [category, setCategory] = useState('test');
-  const [isDeleted, setIsDeleted] = useState(false);
-  const [isVerified, setIsVerified] = useState('test');
-  const [eventImg, setEventImg] = useState(null);
+  // 임시로 만들어둠
+  const [category, setCategory] = useState<string>('test');
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [isVerified, setIsVerified] = useState<string>('test');
+  const [eventImg, setEventImg] = useState<null>(null);
 
   // 사용하지 않는 변수임을 명시적으로 알리기
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const unusedVariables = { setCategory, setIsDeleted, setIsVerified, setEventImg };
+
+  function formatDateForInput(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
   return (
     <>
