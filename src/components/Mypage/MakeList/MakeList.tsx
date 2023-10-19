@@ -29,7 +29,7 @@ const MakeList: React.FC = () => {
       console.log(data);
       const userEvents = data.HostEvents.map(
         (item: { Event: Event }) => item.Event
-      ).filter((event: Event) => !event.isDeleted); // 백엔드에서 수정완료되면 빼자.
+      );
 
       const sortedEvents = userEvents.sort((a: Event, b: Event) => {
         const dateA = new Date(a.createdAt);

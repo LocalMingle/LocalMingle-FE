@@ -20,9 +20,7 @@ import { successToast, warnToast } from "../../../util/toast";
 
 const UserInfo: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [profileImage, setProfileImage] = useState<string>(
-    "https://pbs.twimg.com/profile_images/848505006722392065/qD5R22bp_400x400.jpg"
-  );
+  const [profileImage, setProfileImage] = useState<string>();
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

@@ -242,3 +242,92 @@ export const getEvents = async (userId: number) => {
     throw error;
   }
 };
+
+// 참가한 이벤트 목록 불러오기
+interface IEvent {
+  eventName: string;
+  eventDate: string;
+  eventLocation: string;
+  category: string;
+  createdAt: string;
+  eventId: number;
+}
+
+interface IGuestEvent {
+  Event: IEvent;
+}
+
+export const getJoinedEvents = async (userId: number) => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      throw new Error("액세스 토큰이 없습니다.");
+    }
+    const response = await axiosInstance.get(`users/${userId}/joinedEvents`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    console.log("서버에서 반환된 데이터:", response.data);
+    if (
+      response.data &&
+      response.data.GuestEvents &&
+      Array.isArray(response.data.GuestEvents)
+    ) {
+      return response.data.GuestEvents.map((guestEvent: IGuestEvent) => {
+        const event = guestEvent.Event;
+        return {
+          eventName: event.eventName,
+          eventDate: event.eventDate
+            ? event.eventDate.slice(0, 10)
+            : "날짜 없음",
+          category: event.category,
+          createdAt: event.createdAt,
+          eventId: event.eventId,
+        };
+      });
+    } else {
+      throw new Error("올바르지 않은 데이터 형식입니다.");
+    }
+  } catch (error) {
+    console.error("참가한 이벤트 목록 불러오기 중 오류 발생:", error);
+    throw error;
+  }
+};
+
+// 이벤트 참석 취소
+export const cancelParticipation = async (eventId: number) => {
+  console.log("cancelParticipation 함수 호출됨!");
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      throw new Error("액세스 토큰이 없습니다.");
+    }
+
+    const response = await axiosInstance.put(
+      `events/${eventId}/join`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    console.log("API 응답:", response.data);
+
+    if (
+      response.status === 200 &&
+      response.data.message === `${eventId}번 모임 참석 취소!`
+    ) {
+      console.log("참석 취소 성공!");
+      return response.data;
+    } else {
+      console.error("참석 취소 실패:", response);
+      return null;
+    }
+  } catch (error) {
+    console.error("참석 취소 중 오류 발생:", error);
+    throw error;
+  }
+};
