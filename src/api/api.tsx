@@ -52,7 +52,7 @@ type KakaoResponse = {
 export const kakaoLogin = async (
   code: string
 ): Promise<AxiosResponse<KakaoResponse>> => {
-  const data = await axiosInstance.get<KakaoResponse>(
+  const response = await axiosInstance.get<KakaoResponse>(
     `users/login/kakao?code=${code}`,
     {
       headers: {
@@ -67,7 +67,13 @@ export const kakaoLogin = async (
     }
   );
 
-  return data;
+  const accessToken = response.headers["accessToken"];
+  const refreshToken = response.headers["refreshToken"];
+
+  setAccessToken(accessToken);
+  setRefreshToken(refreshToken);
+
+  return response;
 };
 
 // 회원 탈퇴
