@@ -6,7 +6,7 @@ import {
   getNewAccessToken,
 } from "../util/token";
 import { isTokenExpired } from "../util/token";
-import { uploadInstance } from "./axiosInstance.tsx";
+import { uploadInstance } from "../api/axiosInstance";
 
 export const checkAndRefreshTokenIfNeeded = async () => {
   const accessToken = localStorage.getItem("accessToken");

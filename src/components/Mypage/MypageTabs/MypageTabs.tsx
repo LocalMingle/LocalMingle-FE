@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import * as St from "./STMypageTabs";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const MyPageTabs: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<string>("/mypage/userinfo");
+  const location = useLocation();
+  const initialTab =
+    location.pathname === "/mypage" ? "/mypage/userinfo" : location.pathname;
+  const [selectedTab, setSelectedTab] = useState<string>(initialTab);
   const navigate = useNavigate();
 
   return (
