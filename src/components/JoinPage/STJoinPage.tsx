@@ -82,3 +82,10 @@ export const DupCheckButton = styled.button`
   padding: 5px;
   color: #646464;
 `;
+
+export const ValidationColor = styled.div<{ isValid: boolean | null }>`
+  font-size: 12px;
+  color: ${({ isValid }) => (isValid ? "#14be1d" : "#da7969")};
+  text-align: left;
+  margin-top: 5px;
+`;

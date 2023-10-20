@@ -365,3 +365,62 @@ export const cancelParticipation = async (eventId: number) => {
     throw error;
   }
 };
+
+// 이벤트 상세 정보 조회
+interface EventDetailResponse {
+  event: {
+    eventId: number;
+    eventName: string;
+    maxSize: number;
+    eventDate: Date;
+    signupStartDate: Date;
+    signupEndDate: Date;
+    eventImg: string;
+    eventLocation: string;
+    content: string;
+    category: string;
+    isVerified: "yes" | "no";
+    isDeleted: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    _count: {
+      Viewlogs: number;
+    };
+  };
+  guestList: number;
+  hostUser: Array<{
+    userDetailId: number;
+    UserId: number;
+    nickname: string;
+    intro: string;
+    profileImg: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }>;
+  guestUser: Array<unknown>; // 빈 배열로 되있어서 타입을 모르겠다.
+}
+
+export const getEventDetail = async (
+  eventId: number
+): Promise<EventDetailResponse> => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      throw new Error("액세스 토큰이 없습니다.");
+    }
+
+    const response = await axiosInstance.get<EventDetailResponse>(
+      `events/${eventId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("이벤트 상세 정보 조회 중 오류 발생:", error);
+    throw error;
+  }
+};

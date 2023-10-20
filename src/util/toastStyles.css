@@ -1,0 +1,14 @@
+/* 토스트 컨테이너 스타일링 */
+.toast-container {
+  font-size: 12px;
+}
+
+.toast-error {
+  background-color: #fefbf6;
+  color: rgb(157, 76, 76);
+}
+
+.toast-success {
+  background-color: #fefbf6;
+  color: rgb(83, 158, 89);
+}

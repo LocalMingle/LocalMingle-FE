@@ -108,9 +108,9 @@ export const EyeToggleButton = styled.button`
   cursor: pointer;
 `;
 
-export const ErrorMessageJoin = styled.div`
+export const ErrorMessageJoin = styled.div<{ isValid: boolean | null }>`
   font-size: 12px;
-  color: #da7969;
+  color: ${({ isValid }) => (isValid ? "#14be1d" : "#da7969")};
   text-align: left;
   margin-top: 5px;
 `;
@@ -135,4 +135,11 @@ export const SubmitButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   width: 120px;
+`;
+
+export const ErrorMessagePassword = styled.div`
+  font-size: 12px;
+  color: #da7969;
+  text-align: left;
+  margin-top: 5px;
 `;

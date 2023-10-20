@@ -35,6 +35,8 @@ const SignUpForm: React.FC = () => {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [bioError, setBioError] = useState("");
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean | null>(null);
+  const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null);
 
   const handleSignUp = async () => {
     const newNicknameError = validateNickname(nickname);
@@ -145,11 +147,13 @@ const SignUpForm: React.FC = () => {
   const handleNicknameDupCheck = async () => {
     const errorMessage = await handleCheckNickname(nickname);
     setNicknameError(errorMessage);
+    setIsNicknameValid(errorMessage === "닉네임을 사용할 수 있습니다.");
   };
 
   const handleEmailDupCheck = async () => {
     const errorMessage = await handleCheckEmail(email);
     setEmailError(errorMessage);
+    setIsEmailValid(errorMessage === "이메일을 사용할 수 있습니다.");
   };
 
   const togglePasswordVisibility = () => {
@@ -173,7 +177,9 @@ const SignUpForm: React.FC = () => {
             </ST.DupCheckButton>
           </ST.DupCheckButtonWrap>
         </div>
-        <ST.ErrorMessageJoin>{nicknameError}</ST.ErrorMessageJoin>
+        <ST.ValidationColor isValid={isNicknameValid}>
+          {nicknameError}
+        </ST.ValidationColor>
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
@@ -186,7 +192,9 @@ const SignUpForm: React.FC = () => {
             </ST.DupCheckButton>
           </ST.DupCheckButtonWrap>
         </div>
-        <ST.ErrorMessageJoin>{emailError}</ST.ErrorMessageJoin>
+        <ST.ValidationColor isValid={isEmailValid}>
+          {emailError}
+        </ST.ValidationColor>
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
