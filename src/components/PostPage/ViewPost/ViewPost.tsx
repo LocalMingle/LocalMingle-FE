@@ -3,7 +3,7 @@ import * as St from './STViewPost'
 
 const ViewPost: React.FC = () => {
   return (
-    <div>ViewPost</div>
+    <div>작성자 본인이 본 페이지</div>
   )
 }
 

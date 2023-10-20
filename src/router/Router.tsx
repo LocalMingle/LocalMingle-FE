@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Post from "../pages/Post";
 import MyPage from "../pages/MyPage";
 import PostView from "../pages/PostView";
+import PostUpdate from "../pages/PostUpdate";
 import UserInfo from "../components/Mypage/UserInfo/UserInfo";
 import MakeList from "../components/Mypage/MakeList/MakeList";
 import JoinList from "../components/Mypage/JoinList/JoinList";
@@ -19,7 +20,11 @@ export default function Router() {
         <Route path="/join" element={<Join />} />
         <Route path="/login" element={<Login />} />
         <Route path="/post" element={<Post />} />
-        <Route path="/postview" element={<PostView />} />
+        {/* 작성자 본인 글 보기 */}
+        <Route path="/postview/:eventId" element={<PostView />} /> 
+        {/* 게시글 수정 */}
+        <Route path="/post/update/:eventId" element={<PostUpdate />} /> 
+
         <Route path="/mypage" element={<MyPage />}>
           <Route index element={<UserInfo />} />
           <Route path="userinfo" element={<UserInfo />} />
