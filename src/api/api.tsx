@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { axiosInstance } from "../api/axiosInstance";
 import axios, { AxiosResponse } from "axios";
 import {
@@ -397,8 +398,20 @@ interface EventDetailResponse {
     createdAt: Date;
     updatedAt: Date;
   }>;
-  guestUser: Array<unknown>; // 빈 배열로 되있어서 타입을 모르겠다.
+  guestUser: Array<Array<GuestUser>>;
 }
+
+type GuestUser = {
+  userDetailId: number;
+  UserId: number;
+  nickname: string;
+  intro: string;
+  profileImg: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type { EventDetailResponse };
 
 export const getEventDetail = async (
   eventId: number
@@ -417,10 +430,50 @@ export const getEventDetail = async (
         },
       }
     );
-
+    console.log("response.data", response.data);
     return response.data;
   } catch (error) {
     console.error("이벤트 상세 정보 조회 중 오류 발생:", error);
+    throw error;
+  }
+};
+
+// 게시물 상세보기 페이지 참가하기버튼 토글
+export const toggleParticipation = async (eventId: number) => {
+  console.log("toggleParticipation 함수 호출됨!");
+
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      throw new Error("액세스 토큰이 없습니다.");
+    }
+
+    const response = await axiosInstance.put(
+      `events/${eventId}/join`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    console.log("API 응답:", response.data);
+
+    if (response.status === 200) {
+      if (response.data === `${eventId}번 모임 참석 취소!`) {
+        console.log("참석 취소 성공!");
+        return "cancelled";
+      } else if (response.data === `${eventId}번 모임 참석 신청!`) {
+        console.log("참석 신청 성공!");
+        return "joined";
+      }
+    }
+
+    console.error("토글 실패:", response);
+    return null;
+  } catch (error) {
+    console.error("토글 중 오류 발생:", error);
     throw error;
   }
 };

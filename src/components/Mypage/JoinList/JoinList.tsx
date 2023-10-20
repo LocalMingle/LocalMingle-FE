@@ -60,27 +60,35 @@ const JoinList: React.FC = () => {
       console.error("참석 취소 중 오류 발생:", error);
     }
   };
-
+  const handlePostClick = (eventId: number) => {
+    navigate(`/postview/${eventId}`);
+  };
   return (
     <>
-      {events.map((event) => (
-        <St.JoinContainer key={event.createdAt}>
-          <div onClick={() => navigate(`/postview/${event.id}`)}>
-            <label>{event.eventName}</label>
+      {events.length > 0 ? (
+        events.map((event) => (
+          <St.JoinContainer key={event.eventId}>
+            <div onClick={() => handlePostClick(event.eventId)}>
+              <div>
+                <label>{event.eventName}</label>
+              </div>
+            </div>
             <St.CategoryLocationWrapper>
               <span>{event.category}</span>
               <span>{event.eventDate}</span>
             </St.CategoryLocationWrapper>
-          </div>
-          <div
-            onClick={() => {
-              handleCancel(event.eventId);
-            }}
-          >
-            <button>참가취소</button>
-          </div>
-        </St.JoinContainer>
-      ))}
+            <div
+              onClick={() => {
+                handleCancel(event.eventId);
+              }}
+            >
+              <button>참가취소</button>
+            </div>
+          </St.JoinContainer>
+        ))
+      ) : (
+        <St.NoEventMessage>참여하신 이벤트가 없습니다.</St.NoEventMessage>
+      )}
     </>
   );
 };

@@ -8,7 +8,6 @@ export default function RedirectionPage() {
   const code = new URLSearchParams(window.location.search).get("code") || "";
   const navigate = useNavigate();
   const setUserInfo = useSetRecoilState(userState);
-
   useEffect(() => {
     const socialLogin = async () => {
       try {
@@ -26,12 +25,19 @@ export default function RedirectionPage() {
           response.data;
 
         localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
-        localStorage.setItem("userId", userId.toString());
+        console.log("AccessToken saved:", accessToken);
 
+        localStorage.setItem("refreshToken", refreshToken);
+        console.log("RefreshToken saved:", refreshToken);
+
+        localStorage.setItem("userId", userId.toString());
+        console.log("UserId saved:", userId);
+        console.log(response.data);
         setUserInfo({
           userId: userId,
         });
+        console.log(response.data);
+        console.log("localStorage", localStorage);
 
         navigate("/");
       } catch (error) {

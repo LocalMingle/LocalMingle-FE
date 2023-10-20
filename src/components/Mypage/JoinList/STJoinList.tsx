@@ -60,3 +60,13 @@ export const CategoryLocationWrapper = styled.div`
     margin-left: 10px;
   }
 `;
+
+export const NoEventMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #888;
+  margin-top: 20px;
+  user-select: none;
+`;
