@@ -64,13 +64,11 @@ const MakeList: React.FC = () => {
   }, []);
 
   return (
-    {events.length > 0 ? (
-      <St.MyPageContainer>
-        <St.MyPageWrap>
-          <div>
-          {events.map((event) => {
-            console.log(event.eventName);
-            return (
+    <>
+      {events.length > 0 ? (
+        <St.MyPageContainer>
+          <St.MyPageWrap>
+            {events.map((event) => (
               <St.UserPostForm key={event.eventId}>
                 <h2 onClick={() => handlePostClick(event.eventId)}>
                   {event.eventName}
@@ -84,16 +82,14 @@ const MakeList: React.FC = () => {
                   </button>
                 </St.UserPostButtonWrap>
               </St.UserPostForm>
-            );
-          })}
-          </div>
-        </St.MyPageWrap>
-      </St.MyPageContainer>
-    ) : (
-      <St.NoEventMessage>생성하신 이벤트가 없습니다.</St.NoEventMessage>
-    )}
-    
-  );
+            ))}
+          </St.MyPageWrap>
+        </St.MyPageContainer>
+      ) : (
+        <St.NoEventMessage>생성하신 이벤트가 없습니다.</St.NoEventMessage>
+      )}
+    </>
+  )
 };
 
 export default MakeList;
