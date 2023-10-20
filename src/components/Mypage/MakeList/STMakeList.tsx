@@ -50,3 +50,13 @@ export const UserPostForm = styled.div`
     }
   }
 `;
+
+export const NoEventMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #888;
+  margin-top: 20px;
+  user-select: none;
+`;

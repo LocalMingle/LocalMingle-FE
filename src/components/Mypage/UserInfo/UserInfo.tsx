@@ -122,6 +122,7 @@ const UserInfo: React.FC = () => {
       toast.success("수정이 완료되었습니다.", {
         className: "toast-success toast-container",
       });
+      setNicknameError("");
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);

@@ -66,24 +66,28 @@ const MakeList: React.FC = () => {
 
   return (
     <div>
-      {events.map((event) => {
-        console.log(event.eventName);
-        return (
-          <ST.UserPostForm key={event.eventId}>
-            <label onClick={() => handlePostClick(event.eventId)}>
-              {event.eventName}
-            </label>
-            <div>
-              <button onClick={() => handleUpdateClick(event.eventId)}>
-                <UpdateIcon />
-              </button>
-              <button onClick={() => handleDeleteEvent(event.eventId)}>
-                <DeleteIcon />
-              </button>
-            </div>
-          </ST.UserPostForm>
-        );
-      })}
+      {events.length > 0 ? (
+        events.map((event) => {
+          console.log(event.eventName);
+          return (
+            <ST.UserPostForm key={event.eventId}>
+              <label onClick={() => handlePostClick(event.eventId)}>
+                {event.eventName}
+              </label>
+              <div>
+                <button onClick={() => handleUpdateClick(event.eventId)}>
+                  <UpdateIcon />
+                </button>
+                <button onClick={() => handleDeleteEvent(event.eventId)}>
+                  <DeleteIcon />
+                </button>
+              </div>
+            </ST.UserPostForm>
+          );
+        })
+      ) : (
+        <ST.NoEventMessage>생성하신 이벤트가 없습니다.</ST.NoEventMessage>
+      )}
     </div>
   );
 };

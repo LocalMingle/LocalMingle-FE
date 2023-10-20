@@ -21,10 +21,9 @@ export default function Router() {
         <Route path="/login" element={<Login />} />
         <Route path="/post" element={<Post />} />
         {/* 작성자 본인 글 보기 */}
-        <Route path="/postview/:eventId" element={<PostView />} /> 
+        <Route path="/postview/:eventId" element={<PostView />} />
         {/* 게시글 수정 */}
-        <Route path="/post/update/:eventId" element={<PostUpdate />} /> 
-
+        <Route path="/post/update/:eventId" element={<PostUpdate />} />
         <Route path="/mypage" element={<MyPage />}>
           <Route index element={<UserInfo />} />
           <Route path="userinfo" element={<UserInfo />} />
