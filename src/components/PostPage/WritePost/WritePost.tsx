@@ -5,8 +5,12 @@ import { useMutation } from 'react-query';
 import axios, {AxiosInstance} from 'axios';
 import { Selector } from '../../common/Selector'
 import { Button } from '../../common/Button';
+import { useRecoilValue } from 'recoil';
+import { sidoOptionsState, categoryOptionsState } from '../../../recoil/atoms/SelectState';
 
-const STWritePost: React.FC = () => {
+const WritePost: React.FC = () => {
+  const sidoOptions = useRecoilValue(sidoOptionsState);
+  const categoryOptions = useRecoilValue(categoryOptionsState);
   const navigate = useNavigate();
   const accessToken = localStorage.getItem('accessToken');
 
@@ -17,7 +21,7 @@ const STWritePost: React.FC = () => {
       Authorization: `Bearer ${accessToken}`,
     }
   });
-  const mainAPI = {
+  const writePostAPI = {
     WritePostApi : () => customAxios.post('events'),            // 게시글 작성
     // categoryApi :  () => customAxios.get('data/toss'),       // 카테고리
     // locationApi :  () => customAxios.get('data/toss'),       // 위치 인증 여부
@@ -45,7 +49,6 @@ const STWritePost: React.FC = () => {
     async (postData: WritePostData) => {
       try {
         const response = await customAxios.post('events', postData);
-        console.log('게시글 작성 성공', response);
         return response.data;
       } catch (error) {
         console.error('게시글 작성 실패', error);
@@ -76,6 +79,7 @@ const STWritePost: React.FC = () => {
         eventImg,
       };
       await writePostMutation.mutateAsync(postData);
+      navigate('/');
     } catch (error) {
       console.log('게시글 작성 실패', error);
     }
@@ -110,8 +114,8 @@ const STWritePost: React.FC = () => {
     <>
       <St.PostSection>
         <St.SelectorWrap>
-          <Selector></Selector>
-          <Selector></Selector>
+          <Selector options={sidoOptions}></Selector>
+          <Selector options={categoryOptions}></Selector>
         </St.SelectorWrap>
         <St.TitleWrap>
           <input type="text" placeholder='제목을 입력하세요' value={eventName} onChange={(e)=>{setEventName(e.target.value)}}/>
@@ -141,7 +145,7 @@ const STWritePost: React.FC = () => {
           <textarea placeholder='내용을 입력하세요' value={content} onChange={(e)=>{setContent(e.target.value)}}/>
         </St.ContentsWrap>
         <St.ButtonWrap>
-          <Button onClick={postCancel}>취소</Button>
+          <Button bgcolor="#fff" onClick={postCancel}>취소</Button>
           <Button onClick={postAdd}>등록</Button>
         </St.ButtonWrap>
       </St.PostSection>
@@ -149,4 +153,4 @@ const STWritePost: React.FC = () => {
   )
 }
 
-export default STWritePost
+export default WritePost
