@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 export const UserInfoContainer = styled.div`
-  margin-top: 30px;
+  position: relative;
+  z-index: 10;
+  top: -6px;
   border: 1px solid #e7e7e7;
   border-radius: 34px;
   padding: 5px;
