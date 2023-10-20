@@ -1,4 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+interface ButtonProps {
+  bgcolor?: string;
+}
 
 export const ButtonWrap = styled.div`
   border-radius: 23px;
@@ -7,11 +11,11 @@ export const ButtonWrap = styled.div`
   padding: 3px;
 `;
 
-export const Button = styled.button`
+export const Button = styled.button<ButtonProps>`
+  background: ${({ bgcolor }) => bgcolor || "#edf895"};
   box-sizing: border-box;
   border-radius: 20px;
   border: 1px solid #adadad;
-  background: #edf895;
   color: #646464;
   text-align: center;
   height: 45px;
