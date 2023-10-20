@@ -1,14 +1,17 @@
 import styled from "styled-components";
 
-export const UserInfoContainer = styled.div`
-  margin-top: 30px;
+export const MyPageContainer = styled.div`
+  position: relative;
+  z-index: 10;
+  top: -6px;
   border: 1px solid #e7e7e7;
   border-radius: 34px;
   padding: 5px;
   background: #fff;
+  min-height: 630px;
 `;
 
-export const UserInfoWrap = styled.div`
+export const MyPageWrap = styled.div`
   background: #fff;
   width: 100%;
   border: 1px solid #adadad;
@@ -17,6 +20,7 @@ export const UserInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 630px;
 `;
 
 export const ImageContainer = styled.div`
@@ -32,6 +36,7 @@ export const ProfileImage = styled.img`
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
+  border: 1px solid #292D32;
 `;
 
 export const ProfileTextButton = styled.button`

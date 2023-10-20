@@ -66,34 +66,38 @@ const DeleteUser: React.FC = () => {
   }, [showAnimation]);
 
   return (
-    <St.DeleteUserContainer>
-      <St.DeleteUserWrap>
-        <p>비밀번호 재입력</p>
-        <div className="input-wrap">
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {passwordError && <St.ErrorMessage>{passwordError}</St.ErrorMessage>}
-        </div>
-      </St.DeleteUserWrap>
-      <St.DeleteUserWrap>
-        <div className="textarea-wrap">
-          <textarea
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            placeholder="
-  탈퇴하는 사유를 입력해주세요 🙂
+    <St.MyPageContainer>
+      <St.MyPageWrap>
+        <St.DeleteUserWrap>
+          <p>비밀번호 재입력</p>
+          <St.InputWrap>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {passwordError && <St.ErrorMessage>{passwordError}</St.ErrorMessage>}
+          </St.InputWrap>
+        </St.DeleteUserWrap>
+        <St.DeleteUserWrap>
+          <St.TextareaWrap>
+            <textarea
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="
+탈퇴하는 사유를 입력해주세요 🙂
 
-  소중한 피드백은 더 좋은 서비스를 제공하기 위해
-  적극적으로 반영하도록 하겠습니다!"
-          />
-        </div>
-      </St.DeleteUserWrap>
-      <Button onClick={handleDelete}>탈퇴하기</Button>
-      <St.AnimationContainer ref={lottieContainer}></St.AnimationContainer>
-    </St.DeleteUserContainer>
+소중한 피드백은 더 좋은 서비스를 제공
+하기 위해 적극적으로 반영하도록 하겠습니다!"
+            />
+          </St.TextareaWrap>
+        </St.DeleteUserWrap>
+        <St.ButtonWrap>
+          <Button onClick={handleDelete}>탈퇴하기</Button>
+        </St.ButtonWrap>
+        <St.AnimationContainer ref={lottieContainer}></St.AnimationContainer>
+      </St.MyPageWrap>
+    </St.MyPageContainer>
   );
 };
 
