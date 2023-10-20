@@ -23,8 +23,6 @@ const WritePost: React.FC = () => {
   });
   const writePostAPI = {
     WritePostApi : () => customAxios.post('events'),            // 게시글 작성
-    // categoryApi :  () => customAxios.get('data/toss'),       // 카테고리
-    // locationApi :  () => customAxios.get('data/toss'),       // 위치 인증 여부
   }
 
   // 게시글 작성 interface (console.log 기준)
@@ -65,6 +63,11 @@ const WritePost: React.FC = () => {
   // 게시글 등록
   const postAdd = async () => {
     try {
+      if (!eventName || !eventDate || !signupStartDate || !signupEndDate || !eventLocation || !maxSize || !content) {
+        alert('내용을 모두 입력해주세요!');
+        return;
+      }
+
       const postData: WritePostData = {
         eventName,
         maxSize,
@@ -102,13 +105,6 @@ const WritePost: React.FC = () => {
   // 사용하지 않는 변수임을 명시적으로 알리기
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const unusedVariables = { setCategory, setIsDeleted, setIsVerified, setEventImg };
-
-  function formatDateForInput(date: Date): string {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
 
   return (
     <>
