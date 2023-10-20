@@ -1,5 +1,26 @@
 import styled from "styled-components";
 
+export const MyPageContainer = styled.div`
+  position: relative;
+  z-index: 10;
+  top: -6px;
+  border: 1px solid #e7e7e7;
+  border-radius: 34px;
+  padding: 5px;
+  background: #fff;
+`;
+
+export const MyPageWrap = styled.div`
+  background: #fff;
+  width: 100%;
+  border: 1px solid #adadad;
+  border-radius: 29px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 export const ErrorMessage = styled.div<{ isValid?: boolean | null }>`
   font-size: 12px;
   color: ${({ isValid }) =>
@@ -8,19 +29,13 @@ export const ErrorMessage = styled.div<{ isValid?: boolean | null }>`
   margin-top: 5px;
 `;
 
-export const DeleteUserContainer = styled.div`
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 export const DeleteUserWrap = styled.div`
   align-self: flex-start;
   width: 100%;
+  margin-top: 20px;
 
   &:first-child {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
 
   & > p {
@@ -28,14 +43,14 @@ export const DeleteUserWrap = styled.div`
     font-size: 15px;
     margin-bottom: 10px;
   }
+`;
 
-  & > div.input-wrap {
-    position: relative;
-    width: 100%;
-    margin-bottom: 30px;
-  }
+export const InputWrap = styled.div`
+  position: relative;
+  width: 100%;
+  margin-bottom: 30px;
 
-  & div.input-wrap > input {
+  & > input {
     width: 100%;
     border: 1px solid #e7e7e7;
     background: #fff;
@@ -43,36 +58,37 @@ export const DeleteUserWrap = styled.div`
     padding: 10px;
   }
 
-  & div.input-wrap > ${ErrorMessage} {
+  & > ${ErrorMessage} {
     position: absolute;
     top: 100%;
     left: 0;
   }
+`
 
-  & > div.textarea-wrap {
+export const TextareaWrap = styled.div`
     border-radius: 34px;
     border: 1px solid #e7e7e7;
     background: #fff;
     padding: 5px;
     position: relative;
-  }
 
-  & div.textarea-wrap > textarea {
-    border-radius: 29px;
-    border: 1px solid #adadad;
-    resize: none;
-    min-height: 335px;
-    width: 330px;
-    width: 100%;
-    padding: 15px;
-  }
+    & > textarea {
+      border-radius: 29px;
+      border: 1px solid #adadad;
+      resize: none;
+      min-height: 335px;
+      width: 330px;
+      width: 100%;
+      padding: 15px;
+    }
 
-  & div.textarea-wrap > ${ErrorMessage} {
-    position: absolute;
-    top: 100%;
-    left: 0;
-  }
-`;
+    & > ${ErrorMessage} {
+      position: absolute;
+      top: 100%;
+      left: 0;
+    }
+`
+
 export const AnimationContainer = styled.div`
   width: 300px;
   height: 300px;

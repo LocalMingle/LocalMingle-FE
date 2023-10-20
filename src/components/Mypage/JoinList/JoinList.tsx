@@ -62,26 +62,28 @@ const JoinList: React.FC = () => {
   };
 
   return (
-    <>
-      {events.map((event) => (
-        <St.JoinContainer key={event.createdAt}>
-          <div onClick={() => navigate(`/postview/${event.id}`)}>
-            <label>{event.eventName}</label>
-            <St.CategoryLocationWrapper>
-              <span>{event.category}</span>
-              <span>{event.eventDate}</span>
-            </St.CategoryLocationWrapper>
-          </div>
-          <div
-            onClick={() => {
-              handleCancel(event.eventId);
-            }}
-          >
-            <button>참가취소</button>
-          </div>
-        </St.JoinContainer>
-      ))}
-    </>
+    <St.MyPageContainer>
+      <St.MyPageWrap>
+        {events.map((event) => (
+          <St.JoinContainer key={event.createdAt}>
+            <div onClick={() => navigate(`/postview/${event.id}`)}>
+              <label>{event.eventName}</label>
+              <St.CategoryLocationWrapper>
+                <span>{event.category}</span>
+                <span>{event.eventDate}</span>
+              </St.CategoryLocationWrapper>
+            </div>
+            <div
+              onClick={() => {
+                handleCancel(event.eventId);
+              }}
+            >
+              <button>참가취소</button>
+            </div>
+          </St.JoinContainer>
+        ))}
+      </St.MyPageWrap>
+    </St.MyPageContainer>
   );
 };
 

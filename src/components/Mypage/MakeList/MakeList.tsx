@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UpdateIcon, DeleteIcon } from "../../../asset/icon/Icon";
-import * as ST from "./STMakeList";
+import * as St from "./STMakeList";
 import { getEvents, deleteEvent } from "../../../api/api";
 
 interface Event {
@@ -65,11 +65,12 @@ const MakeList: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <St.MyPageContainer>
+      <St.MyPageWrap>
       {events.map((event) => {
         console.log(event.eventName);
         return (
-          <ST.UserPostForm key={event.eventId}>
+          <St.UserPostForm key={event.eventId}>
             <label onClick={() => handlePostClick(event.eventId)}>
               {event.eventName}
             </label>
@@ -81,10 +82,11 @@ const MakeList: React.FC = () => {
                 <DeleteIcon />
               </button>
             </div>
-          </ST.UserPostForm>
+          </St.UserPostForm>
         );
       })}
-    </div>
+      </St.MyPageWrap>
+    </St.MyPageContainer>
   );
 };
 

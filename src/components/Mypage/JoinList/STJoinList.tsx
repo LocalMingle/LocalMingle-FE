@@ -1,5 +1,26 @@
 import styled from "styled-components";
 
+export const MyPageContainer = styled.div`
+  position: relative;
+  z-index: 10;
+  top: -6px;
+  border: 1px solid #e7e7e7;
+  border-radius: 34px;
+  padding: 5px;
+  background: #fff;
+`;
+
+export const MyPageWrap = styled.div`
+  background: #fff;
+  width: 100%;
+  border: 1px solid #adadad;
+  border-radius: 29px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 export const JoinContainer = styled.div`
   display: flex;
   justify-content: space-between;

@@ -167,8 +167,8 @@ const UserInfo: React.FC = () => {
     );
   };
   return (
-    <St.UserInfoContainer>
-      <St.UserInfoWrap>
+    <St.MyPageContainer>
+      <St.MyPageWrap>
         <St.ImageContainer>
           <St.ProfileImage src={profileImage} alt="프로필 이미지" />
           <input
@@ -257,8 +257,8 @@ const UserInfo: React.FC = () => {
             수정
           </St.SubmitButton>
         </St.SubmitButtonWrap>
-      </St.UserInfoWrap>
-    </St.UserInfoContainer>
+      </St.MyPageWrap>
+    </St.MyPageContainer>
   );
 };
 export default UserInfo;

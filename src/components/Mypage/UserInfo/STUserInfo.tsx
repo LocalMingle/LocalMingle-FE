@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const UserInfoContainer = styled.div`
+export const MyPageContainer = styled.div`
   position: relative;
   z-index: 10;
   top: -6px;
@@ -10,7 +10,7 @@ export const UserInfoContainer = styled.div`
   background: #fff;
 `;
 
-export const UserInfoWrap = styled.div`
+export const MyPageWrap = styled.div`
   background: #fff;
   width: 100%;
   border: 1px solid #adadad;
