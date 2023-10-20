@@ -8,6 +8,7 @@ export const MyPageContainer = styled.div`
   border-radius: 34px;
   padding: 5px;
   background: #fff;
+  min-height: 630px;
 `;
 
 export const MyPageWrap = styled.div`
@@ -19,6 +20,7 @@ export const MyPageWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 630px;
 `;
 
 export const ImageContainer = styled.div`

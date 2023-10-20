@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UpdateIcon, DeleteIcon } from "../../../asset/icon/Icon";
 import * as St from "./STMakeList";
 import { getEvents, deleteEvent } from "../../../api/api";
+import { Button } from "../../common/Button";
 
 interface Event {
   eventId: number;
@@ -71,17 +71,17 @@ const MakeList: React.FC = () => {
         console.log(event.eventName);
         return (
           <St.UserPostForm key={event.eventId}>
-            <label onClick={() => handlePostClick(event.eventId)}>
+            <h2 onClick={() => handlePostClick(event.eventId)}>
               {event.eventName}
-            </label>
-            <div>
+            </h2>
+            <St.UserPostButtonWrap>
               <button onClick={() => handleUpdateClick(event.eventId)}>
-                <UpdateIcon />
+                수정
               </button>
               <button onClick={() => handleDeleteEvent(event.eventId)}>
-                <DeleteIcon />
+                삭제
               </button>
-            </div>
+            </St.UserPostButtonWrap>
           </St.UserPostForm>
         );
       })}

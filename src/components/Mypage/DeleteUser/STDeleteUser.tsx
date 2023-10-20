@@ -9,7 +9,6 @@ export const MyPageContainer = styled.div`
   padding: 5px;
   background: #fff;
   min-height: 630px;
-  max-height: 630px;
 `;
 
 export const MyPageWrap = styled.div`
@@ -22,7 +21,6 @@ export const MyPageWrap = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 630px;
-  max-height: 630px;
 `;
 
 export const ErrorMessage = styled.div<{ isValid?: boolean | null }>`
@@ -72,7 +70,7 @@ export const TextareaWrap = styled.div`
       border-radius: 34px;
       border: 1px solid #E7E7E7;
       resize: none;
-      min-height: 350px;
+      min-height: 330px;
       width: 100%;
       padding: 20px;
     }
@@ -92,9 +90,9 @@ export const AnimationContainer = styled.div`
   width: 300px;
   height: 300px;
   margin: auto;
-  position: relative;
   position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: -1; // 231020 JSY 애니메이션으로 인해 textarea 특정 부분을 클릭해야 글 작성이 가능함
 `;
