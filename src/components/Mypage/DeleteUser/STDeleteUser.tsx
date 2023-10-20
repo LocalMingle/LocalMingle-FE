@@ -1,11 +1,20 @@
 import styled from "styled-components";
 
+export const ErrorMessage = styled.div<{ isValid?: boolean | null }>`
+  font-size: 12px;
+  color: ${({ isValid }) =>
+    isValid ? "#3ed643" : isValid === null ? "#e4381e" : "#da7969"};
+  text-align: left;
+  margin-top: 5px;
+`;
+
 export const DeleteUserContainer = styled.div`
   margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
 export const DeleteUserWrap = styled.div`
   align-self: flex-start;
   width: 100%;
@@ -20,7 +29,13 @@ export const DeleteUserWrap = styled.div`
     margin-bottom: 10px;
   }
 
-  & input {
+  & > div.input-wrap {
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  & div.input-wrap > input {
     width: 100%;
     border: 1px solid #e7e7e7;
     background: #fff;
@@ -28,15 +43,21 @@ export const DeleteUserWrap = styled.div`
     padding: 10px;
   }
 
-  & > div {
+  & div.input-wrap > ${ErrorMessage} {
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+
+  & > div.textarea-wrap {
     border-radius: 34px;
     border: 1px solid #e7e7e7;
     background: #fff;
     padding: 5px;
-    margin-bottom: 30px;
+    position: relative;
   }
 
-  & textarea {
+  & div.textarea-wrap > textarea {
     border-radius: 29px;
     border: 1px solid #adadad;
     resize: none;
@@ -44,6 +65,12 @@ export const DeleteUserWrap = styled.div`
     width: 330px;
     width: 100%;
     padding: 15px;
+  }
+
+  & div.textarea-wrap > ${ErrorMessage} {
+    position: absolute;
+    top: 100%;
+    left: 0;
   }
 `;
 export const AnimationContainer = styled.div`

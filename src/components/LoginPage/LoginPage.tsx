@@ -9,6 +9,7 @@ import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { validateEmail, validateLoginPassword } from "../../util/validation";
 import { setTokens } from "../../util/token";
 import { Button } from "../../components/common/Button";
+import toast, { Toaster } from "react-hot-toast";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -64,6 +65,9 @@ const LoginPage: React.FC = () => {
         setUser({ userId });
         console.log("로그인 후 userId:", userId);
         navigate("/");
+        toast.success("환영합니다!", {
+          className: "toast-success toast-container",
+        });
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -90,6 +94,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <ST.Container>
+      <Toaster />
       <h1 onClick={goToMain}>로그인</h1>
       {/* <img src="" alt="logo" onClick={goToMain}>로고</img> */}
       <ST.LabelWrapper>

@@ -160,3 +160,11 @@ export async function handleCheckEmail(email: string) {
     return "이메일 중복 확인 중 오류 발생.";
   }
 }
+
+// 탈퇴사유
+export function validateDeleteReason(reason: string) {
+  if (!reason) {
+    return "탈퇴 사유를 입력해주세요.";
+  }
+  return "";
+}

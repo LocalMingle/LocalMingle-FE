@@ -14,9 +14,7 @@ import {
   updateUserInfo,
 } from "../../../api/api";
 import { axiosInstance } from "../../../api/axiosInstance";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { successToast, warnToast } from "../../../util/toast";
+import toast from "react-hot-toast";
 
 const UserInfo: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,6 +27,7 @@ const UserInfo: React.FC = () => {
   const [nicknameError, setNicknameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean | null>(null);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -86,12 +85,10 @@ const UserInfo: React.FC = () => {
     e.preventDefault();
     const nameChanged = nickname !== initialNickname;
 
-    // if (nickname === initialNickname && nicknameError === "중복된 닉네임") {
-    //   setNicknameError("");
-    // }
-
     if (!password) {
-      warnToast("비밀번호를 입력해주세요.");
+      toast.error("비밀번호를 입력해주세요.", {
+        className: "toast-error toast-container",
+      });
       return;
     }
 
@@ -122,16 +119,14 @@ const UserInfo: React.FC = () => {
       } else {
         console.error("사용자 ID를 불러오지 못했습니다.");
       }
-      successToast("수정이 완료되었습니다.");
+      toast.success("수정이 완료되었습니다.", {
+        className: "toast-success toast-container",
+      });
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
-        warnToast(`수정 중 오류가 발생했습니다.
-        다시 시도해주세요.`);
       } else {
         console.error(error);
-        warnToast(`닉네임 중복 오류가 발생했습니다.
-        다시 시도해주세요.`);
       }
     }
   };
@@ -151,6 +146,7 @@ const UserInfo: React.FC = () => {
   const handleCheckNicknameClick = async () => {
     const errorMessage = await handleCheckNickname(nickname);
     setNicknameError(errorMessage);
+    setIsNicknameValid(errorMessage === "닉네임을 사용할 수 있습니다.");
   };
 
   const handleNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -203,7 +199,9 @@ const UserInfo: React.FC = () => {
               </St.DupCheckButton>
             </St.DupCheckButtonWrap>
           </div>
-          <St.ErrorMessageJoin>{nicknameError}</St.ErrorMessageJoin>
+          <St.ErrorMessageJoin isValid={isNicknameValid}>
+            {nicknameError}
+          </St.ErrorMessageJoin>
         </St.InputContainer>
 
         <St.InputContainer>
@@ -238,7 +236,7 @@ const UserInfo: React.FC = () => {
               )}
             </St.EyeToggleButton>
           </St.EyleToggleWrap>
-          <St.ErrorMessageJoin>{passwordError}</St.ErrorMessageJoin>
+          <St.ErrorMessagePassword>{passwordError}</St.ErrorMessagePassword>
         </St.InputContainer>
 
         <St.InputContainer>
@@ -249,7 +247,9 @@ const UserInfo: React.FC = () => {
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}
           />
-          <St.ErrorMessageJoin>{confirmPasswordError}</St.ErrorMessageJoin>
+          <St.ErrorMessagePassword>
+            {confirmPasswordError}
+          </St.ErrorMessagePassword>
         </St.InputContainer>
 
         <St.SubmitButtonWrap>
@@ -258,7 +258,6 @@ const UserInfo: React.FC = () => {
           </St.SubmitButton>
         </St.SubmitButtonWrap>
       </St.UserInfoWrap>
-      <ToastContainer />
     </St.UserInfoContainer>
   );
 };
