@@ -6,3 +6,5 @@ const ViewPost: React.FC = () => {
     <div>작성자 본인이 본 페이지</div>
   )
 }
+
+export default ViewPost;
