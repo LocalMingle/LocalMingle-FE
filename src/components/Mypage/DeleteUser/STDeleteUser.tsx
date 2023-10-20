@@ -8,6 +8,8 @@ export const MyPageContainer = styled.div`
   border-radius: 34px;
   padding: 5px;
   background: #fff;
+  min-height: 630px;
+  max-height: 630px;
 `;
 
 export const MyPageWrap = styled.div`
@@ -19,6 +21,8 @@ export const MyPageWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 630px;
+  max-height: 630px;
 `;
 
 export const ErrorMessage = styled.div<{ isValid?: boolean | null }>`
@@ -32,11 +36,7 @@ export const ErrorMessage = styled.div<{ isValid?: boolean | null }>`
 export const DeleteUserWrap = styled.div`
   align-self: flex-start;
   width: 100%;
-  margin-top: 20px;
-
-  &:first-child {
-    margin-bottom: 10px;
-  }
+  margin-top: 30px;
 
   & > p {
     color: #646464;
@@ -48,7 +48,7 @@ export const DeleteUserWrap = styled.div`
 export const InputWrap = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 
   & > input {
     width: 100%;
@@ -66,20 +66,15 @@ export const InputWrap = styled.div`
 `
 
 export const TextareaWrap = styled.div`
-    border-radius: 34px;
-    border: 1px solid #e7e7e7;
-    background: #fff;
-    padding: 5px;
     position: relative;
 
     & > textarea {
-      border-radius: 29px;
-      border: 1px solid #adadad;
+      border-radius: 34px;
+      border: 1px solid #E7E7E7;
       resize: none;
-      min-height: 335px;
-      width: 330px;
+      min-height: 350px;
       width: 100%;
-      padding: 15px;
+      padding: 20px;
     }
 
     & > ${ErrorMessage} {
@@ -87,6 +82,10 @@ export const TextareaWrap = styled.div`
       top: 100%;
       left: 0;
     }
+`
+
+export const ButtonWrap = styled.div`
+  margin: 30px 0;
 `
 
 export const AnimationContainer = styled.div`

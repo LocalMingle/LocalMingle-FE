@@ -92,7 +92,9 @@ const DeleteUser: React.FC = () => {
             />
           </St.TextareaWrap>
         </St.DeleteUserWrap>
-        <Button onClick={handleDelete}>탈퇴하기</Button>
+        <St.ButtonWrap>
+          <Button onClick={handleDelete}>탈퇴하기</Button>
+        </St.ButtonWrap>
         <St.AnimationContainer ref={lottieContainer}></St.AnimationContainer>
       </St.MyPageWrap>
     </St.MyPageContainer>
