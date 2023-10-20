@@ -8,6 +8,7 @@ export const MyPageContainer = styled.div`
   border-radius: 34px;
   padding: 5px;
   background: #fff;
+  min-height: 630px;
 `;
 
 export const MyPageWrap = styled.div`
@@ -19,65 +20,85 @@ export const MyPageWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 630px;
+  max-height: 630px;
+
+  & > div {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+  }
 `;
 
-export const JoinContainer = styled.div`
+export const UserJoinForm = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  padding: 10px 20px;
-  border-radius: 8px;
+  margin-top: 8px;
+  padding: 15px 8px;
+  border-radius: 4px;
   border: 1px solid #e5e5e5;
   cursor: pointer;
+  width: 100%;
 
   &:hover {
     background-color: #f5f5f5;
   }
 
-  label {
-    flex: 1;
-    font-size: 12px;
-    font-weight: 500;
-    color: #333;
-
-    white-space: nowrap;
+  h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+    width: 80%;
     overflow: hidden;
+    white-space: nowrap;
     text-overflow: ellipsis;
-
-    max-width: 70%;
-  }
-
-  > div:last-child {
-    display: flex;
-    align-items: center;
-
-    button {
-      margin-left: 10px;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-
-      svg {
-        fill: #777;
-        width: 20px;
-        height: 20px;
-        &:hover {
-          fill: #333;
-        }
-      }
-    }
+    line-height: 1.5;
   }
 `;
+
+export const UserJoinFormWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
 export const CategoryLocationWrapper = styled.div`
+  display: flex;
+  align-items: center;
   font-size: 10px;
-  color: #888;
+  color: #1E1E1E;
   margin-top: 5px;
 
-  span + span {
-    margin-left: 10px;
+  & span:first-child::after {
+    display: inline-block;
+    content: "";
+    border-right: 1px solid #1E1E1E;
+    width: 2px;
+    height: 10px;
+    margin: 0 3px 0 0;
   }
 `;
+
+export const UserPostButtonWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  & > button {
+    font-size: 12px;
+    border: 1px solid #ADADAD;
+    border-radius: 15px;
+    padding: 4px 8px;
+    cursor: pointer;
+
+    &:first-child {
+      background: #E7E7E7;
+      color: #646464;
+    }
+
+    &:last-child {
+      background: #646464;
+      color: #fff;
+    }
+  }
+`
