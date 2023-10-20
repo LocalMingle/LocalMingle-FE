@@ -32,6 +32,7 @@ export const ProfileImage = styled.img`
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
+  border: 1px solid #292D32;
 `;
 
 export const ProfileTextButton = styled.button`
