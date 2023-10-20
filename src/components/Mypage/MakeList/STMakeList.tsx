@@ -21,6 +21,13 @@ export const MyPageWrap = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 630px;
+  max-height: 630px;
+
+  & > div {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+  }
 `;
 
 export const UserPostForm = styled.div`
@@ -46,6 +53,7 @@ export const UserPostForm = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    line-height: 1.5;
   }
 `;
 

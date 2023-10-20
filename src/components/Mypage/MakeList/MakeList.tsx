@@ -67,24 +67,26 @@ const MakeList: React.FC = () => {
   return (
     <St.MyPageContainer>
       <St.MyPageWrap>
-      {events.map((event) => {
-        console.log(event.eventName);
-        return (
-          <St.UserPostForm key={event.eventId}>
-            <h2 onClick={() => handlePostClick(event.eventId)}>
-              {event.eventName}
-            </h2>
-            <St.UserPostButtonWrap>
-              <button onClick={() => handleUpdateClick(event.eventId)}>
-                수정
-              </button>
-              <button onClick={() => handleDeleteEvent(event.eventId)}>
-                삭제
-              </button>
-            </St.UserPostButtonWrap>
-          </St.UserPostForm>
-        );
-      })}
+        <div>
+        {events.map((event) => {
+          console.log(event.eventName);
+          return (
+            <St.UserPostForm key={event.eventId}>
+              <h2 onClick={() => handlePostClick(event.eventId)}>
+                {event.eventName}
+              </h2>
+              <St.UserPostButtonWrap>
+                <button onClick={() => handleUpdateClick(event.eventId)}>
+                  수정
+                </button>
+                <button onClick={() => handleDeleteEvent(event.eventId)}>
+                  삭제
+                </button>
+              </St.UserPostButtonWrap>
+            </St.UserPostForm>
+          );
+        })}
+        </div>
       </St.MyPageWrap>
     </St.MyPageContainer>
   );
