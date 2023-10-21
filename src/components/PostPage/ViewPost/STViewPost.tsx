@@ -112,7 +112,7 @@ export const ContentWrap = styled.div`
   border: 1px solid #E7E7E7;
   background: #FFF;
   padding: 3px;
-  min-height: 300px;
+  min-height: 350px;
   margin-bottom: 30px;
 `
 
@@ -124,7 +124,7 @@ export const Content = styled.p`
   line-height: 1.2;
   color: #131313;
   padding: 15px;
-  min-height: 300px;
+  min-height: 350px;
   overflow-y: auto;
 `;
 
