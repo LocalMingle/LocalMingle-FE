@@ -86,7 +86,11 @@ const MakeList: React.FC = () => {
           </St.MyPageWrap>
         </St.MyPageContainer>
       ) : (
-        <St.NoEventMessage>생성하신 이벤트가 없습니다.</St.NoEventMessage>
+        <St.MyPageContainer>
+          <St.MyPageWrap>
+            <St.NoEventMessage>생성하신 이벤트가 없습니다.</St.NoEventMessage>
+          </St.MyPageWrap>
+        </St.MyPageContainer>
       )}
     </>
   )
