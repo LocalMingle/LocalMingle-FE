@@ -75,7 +75,7 @@ export const UserPostButtonWrap = styled.div`
     }
 
     &:last-child {
-      background: #646464;
+      background: #FF5733;
       color: #fff;
     }
   }
