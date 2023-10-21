@@ -45,6 +45,17 @@ export const Join = styled.div`
   }
 `;
 
+export const NotJoin = styled.div`
+  & > h1 {
+    font-weight: 700;
+    font-size: 24px;
+    color: #131313;
+    margin: 10px 0;
+    line-height: 1.2;
+    width: 80%;
+  }
+`
+
 export const ProfileWrap = styled.div`
   display: flex;
   align-items: center;

@@ -29,7 +29,6 @@ const ViewPost: React.FC = () => {
   const loggedInUserId = Number(localStorage.getItem("userId"));
 
   const handleToggleParticipation = async () => {
-    console.log("버튼 함수가 호출됬다");
     if (!eventId) return;
     const eventIdNumber = parseInt(eventId, 10);
 
@@ -62,10 +61,10 @@ const ViewPost: React.FC = () => {
           console.log("로그인한 사용자의 ID:", loggedInUserId);
           console.log("작성자인가요?:", authorStatus);
           if (isJoined === null) {
-            const isUserJoined = data.guestUser.some((guestGroup) =>
-              guestGroup.some((guest) => guest.UserId === loggedInUserId)
-            );
-            setIsJoined(isUserJoined);
+          const isUserJoined = data.guestUser.some((guestGroup) =>
+            guestGroup.some((guest) => guest.UserId === loggedInUserId)
+          );
+          setIsJoined(isUserJoined);
           }
         }
       } catch (error) {
@@ -103,8 +102,7 @@ const ViewPost: React.FC = () => {
 
   return (
     <St.ViewSection>
-        {/* 카테고리, 글 제목 */}
-        {isAuthor? (
+        {isAuthor ? (
           // 작성자일 때 
           <St.TitleWrap>
             <St.Category>{category}</St.Category>
@@ -115,18 +113,19 @@ const ViewPost: React.FC = () => {
           <St.TitleWrap>
             <St.Category>{category}</St.Category>
             {isJoined === true ? (
+              // 참가완료
               <St.Join>
                 <h1>{eventName}</h1>
                 <span>참가완료</span>
               </St.Join>
             ) : (
-              <div>
+              // 미참가
+              <St.NotJoin>
                 <h1>{eventName}</h1>
-              </div>
+              </St.NotJoin>
             )}
           </St.TitleWrap>
         )}
-        
         {/* 작성자 프로필 */}
         <St.ProfileWrap>
           <St.ProfileImg src={profileImg} alt="Profile Image" />
@@ -185,14 +184,17 @@ const ViewPost: React.FC = () => {
           <div>{<Button bgcolor={"#9ECBFA"} onClick={handdleChat}>채팅하기</Button>}</div>
         ) : (
           <div>
-            {/* 이벤트 참여자일 때 */}
-            {isJoined !== null && (
-              <Button bgcolor={"#E7E7E7"} onClick={handleToggleParticipation}>
-                {isJoined ? "참가취소" : "참가하기"}
-              </Button>
-            )}
-            {isJoined && <Button bgcolor={"#9ECBFA"} onClick={handdleChat}>채팅하기</Button>}
-          </div>
+          {/* 이벤트 참여자일 때 */}
+          {isJoined !== null && (
+            <Button
+              bgcolor={isJoined ? "#E7E7E7" : "#F7D16F"}
+              onClick={handleToggleParticipation}
+            >
+              {isJoined ? "참가취소" : "참가하기"}
+            </Button>
+          )}
+          {isJoined && <Button bgcolor={"#9ECBFA"} onClick={handdleChat}>채팅하기</Button>}
+        </div>
         )}
         </St.ButtonWrap>
     </St.ViewSection>
