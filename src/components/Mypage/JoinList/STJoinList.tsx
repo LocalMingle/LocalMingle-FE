@@ -60,12 +60,12 @@ export const UserJoinForm = styled.div`
 export const UserJoinFormWrap = styled.div`
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  width: 70%;
 `
 
 export const CategoryLocationWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 10px;
+  font-size: 12px;
   color: #1E1E1E;
   margin-top: 5px;
 
@@ -94,11 +94,6 @@ export const UserPostButtonWrap = styled.div`
     &:first-child {
       background: #E7E7E7;
       color: #646464;
-    }
-
-    &:last-child {
-      background: #646464;
-      color: #fff;
     }
   }
 `
