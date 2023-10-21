@@ -8,6 +8,8 @@ import FixedButton from '../common/FixedButton/FixedButton';
 import { useQuery } from 'react-query';
 import axios, {AxiosInstance} from 'axios';
 import { Spinner } from '../common/Spinner';
+import styled from "styled-components";
+import { Link } from 'react-router-dom';
 
 const MainPage: React.FC = () => {
   const accessToken = localStorage.getItem('accessToken');
@@ -180,6 +182,12 @@ const MainPage: React.FC = () => {
     );
   }
 
+  // Link 컴포넌트에 스타일을 적용하기 위해 styled-components를 사용
+  const CustomLink = styled(Link)`
+    text-decoration: none;
+    color: inherit;
+  `;
+
   return (
     <>
       <Banner></Banner>
@@ -217,7 +225,9 @@ const MainPage: React.FC = () => {
       </St.SelectorWrap>
       {/* 카드 */}
       {postData.map((postDataItem, index) => (
+        <CustomLink to={`/postview/${postDataItem.event.eventId}`}>
           <Card key={index} {...postDataItem}></Card>
+        </CustomLink>
       ))}
       <FixedButton></FixedButton>
     </>
