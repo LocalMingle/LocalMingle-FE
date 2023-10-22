@@ -9,6 +9,7 @@ export const ButtonWrap = styled.div`
   border: 1px solid #e7e7e7;
   background: #fff;
   padding: 3px;
+  cursor: pointer;
 `;
 
 export const Button = styled.button<ButtonProps>`

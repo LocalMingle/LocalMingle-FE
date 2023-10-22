@@ -7,6 +7,9 @@ import {
   toggleParticipation,
 } from "../../../api/api";
 import { useParams } from "react-router-dom";
+import Modal from "../../common/Modal/Modal";
+import { useRecoilState } from "recoil";
+import { modalState } from "../../../recoil/atoms/ModalState";
 
 type GuestUser = {
   userDetailId: number;
@@ -27,6 +30,7 @@ const ViewPost: React.FC = () => {
   const [isJoined, setIsJoined] = useState<boolean | null>(null);
   // const [isVerified, setIsVerified] = useState(false);
   const loggedInUserId = Number(localStorage.getItem("userId"));
+  const [ , setIsModalOpen] = useRecoilState(modalState);
 
   const handleToggleParticipation = async () => {
     if (!eventId) return;
@@ -94,6 +98,10 @@ const ViewPost: React.FC = () => {
     []
   );
 
+  // 참가리 리스트 모달창 열기
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
   // 채팅하기 버튼 클릭 시
   const handdleChat = () => {
@@ -159,7 +167,7 @@ const ViewPost: React.FC = () => {
           </St.MaxSize>
           <St.GuestUserContainer>
             <p>참가리스트</p>
-            <span>
+            <span onClick={openModal}>
               {flattenedGuests.slice(0, 3).map((guest: GuestUser, idx: number) => (
                 <St.GuestProfileImg
                   key={idx}
@@ -170,6 +178,7 @@ const ViewPost: React.FC = () => {
               {flattenedGuests.length > 3 && <St.MoreUsers>...</St.MoreUsers>}
             </span>
           </St.GuestUserContainer>
+          <Modal />
         </St.Infowrap>
 
         {/* 게시글 컨텐츠 */}
