@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as St from "./STViewPost";
+import Button from "../../common/Button/Button";
 import {
   getEventDetail,
   EventDetailResponse,
@@ -28,7 +29,6 @@ const ViewPost: React.FC = () => {
   const loggedInUserId = Number(localStorage.getItem("userId"));
 
   const handleToggleParticipation = async () => {
-    console.log("버튼 함수가 호출됬다");
     if (!eventId) return;
     const eventIdNumber = parseInt(eventId, 10);
 
@@ -61,10 +61,10 @@ const ViewPost: React.FC = () => {
           console.log("로그인한 사용자의 ID:", loggedInUserId);
           console.log("작성자인가요?:", authorStatus);
           if (isJoined === null) {
-            const isUserJoined = data.guestUser.some((guestGroup) =>
-              guestGroup.some((guest) => guest.UserId === loggedInUserId)
-            );
-            setIsJoined(isUserJoined);
+          const isUserJoined = data.guestUser.some((guestGroup) =>
+            guestGroup.some((guest) => guest.UserId === loggedInUserId)
+          );
+          setIsJoined(isUserJoined);
           }
         }
       } catch (error) {
@@ -93,56 +93,111 @@ const ViewPost: React.FC = () => {
     (acc, val) => acc.concat(val),
     []
   );
+
+
+  // 채팅하기 버튼 클릭 시
+  const handdleChat = () => {
+    alert("[TEST] 채팅방으로 이동!");
+  };
+
   return (
-    <St.Container>
-      <St.Category>{category}</St.Category>
+    <St.ViewSection>
+        {isAuthor ? (
+          // 작성자일 때 
+          <St.TitleWrap>
+            <St.Category>{category}</St.Category>
+            <St.EventName>{eventName}</St.EventName>
+          </St.TitleWrap>
+        ) : (
+          // 이벤트 참여자일 때
+          <St.TitleWrap>
+            <St.Category>{category}</St.Category>
+            {isJoined === true ? (
+              // 참가완료
+              <St.Join>
+                <h1>{eventName}</h1>
+                <span>참가완료</span>
+              </St.Join>
+            ) : (
+              // 미참가
+              <St.NotJoin>
+                <h1>{eventName}</h1>
+              </St.NotJoin>
+            )}
+          </St.TitleWrap>
+        )}
+        {/* 작성자 프로필 */}
+        <St.ProfileWrap>
+          <St.ProfileImg src={profileImg} alt="Profile Image" />
+          <div>
+            <St.Nickname>{nickname}</St.Nickname>
+            <St.CreatedAt>{new Date(createdAt).toLocaleDateString()}</St.CreatedAt>
+          </div>
+        </St.ProfileWrap>
 
-      <St.EventName>{eventName}</St.EventName>
+        {/* 게시글 정보 */}
+        <St.Infowrap>
+          <St.EventDate>
+            <p>모임일시</p>
+            <span>{new Date(eventDate).toLocaleDateString()}</span>
+          </St.EventDate>
+          <St.SignupDate>
+            <p>참가신청 기간</p>
+            <span>
+              {new Date(signupStartDate).toLocaleDateString()}
+              &nbsp; ~ &nbsp;
+              {new Date(signupEndDate).toLocaleDateString()}
+            </span>
+          </St.SignupDate>
+          <St.EventLocation>
+            <p>모임주소</p>
+            <span>{eventLocation}</span>
+          </St.EventLocation>
+          <St.MaxSize>
+            <p>모집인원</p>
+            <span>{maxSize}</span>&nbsp;명
+          </St.MaxSize>
+          <St.GuestUserContainer>
+            <p>참가리스트</p>
+            <span>
+              {flattenedGuests.slice(0, 3).map((guest: GuestUser, idx: number) => (
+                <St.GuestProfileImg
+                  key={idx}
+                  src={guest.profileImg}
+                  alt={`Guest User ${idx}`}
+                />
+              ))}
+              {flattenedGuests.length > 3 && <St.MoreUsers>...</St.MoreUsers>}
+            </span>
+          </St.GuestUserContainer>
+        </St.Infowrap>
 
-      <St.ProfileImg src={profileImg} alt="Profile Image" />
+        {/* 게시글 컨텐츠 */}
+        <St.ContentWrap>
+          <St.Content>{content}</St.Content>
+        </St.ContentWrap>
 
-      <St.Nickname>{nickname}</St.Nickname>
-      <St.CreatedAt>{new Date(createdAt).toLocaleDateString()}</St.CreatedAt>
-
-      <St.EventDate>
-        모임일시: {new Date(eventDate).toLocaleDateString()}
-      </St.EventDate>
-      <St.SignupDate>
-        참가신청 기간: {new Date(signupStartDate).toLocaleDateString()} ~{" "}
-        {new Date(signupEndDate).toLocaleDateString()}
-      </St.SignupDate>
-
-      <St.EventLocation>모임주소: {eventLocation}</St.EventLocation>
-      <St.MaxSize>모집인원: {maxSize}명</St.MaxSize>
-
-      <St.GuestUserContainer>
-        {flattenedGuests.slice(0, 3).map((guest: GuestUser, idx: number) => (
-          <St.GuestProfileImg
-            key={idx}
-            src={guest.profileImg}
-            alt={`Guest User ${idx}`}
-          />
-        ))}
-        {flattenedGuests.length > 3 && <St.MoreUsers>...</St.MoreUsers>}
-      </St.GuestUserContainer>
-
-      <St.Content>{content}</St.Content>
-
-      {/* 작성자일 때 */}
-      {isAuthor ? (
-        <div>{<St.ChatButton>채팅하기</St.ChatButton>}</div>
-      ) : (
-        <div>
+        {/* 버튼 */}
+        <St.ButtonWrap>
+        {/* 작성자일 때 */}
+        {isAuthor ? (
+          <div>{<Button bgcolor={"#9ECBFA"} onClick={handdleChat}>채팅하기</Button>}</div>
+        ) : (
+          <div>
           {/* 이벤트 참여자일 때 */}
           {isJoined !== null && (
-            <St.Button onClick={handleToggleParticipation}>
+            <Button
+              bgcolor={isJoined ? "#E7E7E7" : "#F7D16F"}
+              onClick={handleToggleParticipation}
+            >
               {isJoined ? "참가취소" : "참가하기"}
-            </St.Button>
+            </Button>
           )}
-          {isJoined && <St.ChatButton>채팅하기</St.ChatButton>}
+          {isJoined && <Button bgcolor={"#9ECBFA"} onClick={handdleChat}>채팅하기</Button>}
         </div>
-      )}
-    </St.Container>
+        )}
+        </St.ButtonWrap>
+    </St.ViewSection>
   );
 };
 

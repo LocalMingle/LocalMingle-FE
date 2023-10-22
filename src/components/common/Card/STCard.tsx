@@ -7,10 +7,13 @@ export const CardSection = styled.div`
   border-radius: 34px;
   padding: 9px;
   margin-bottom: 20px;
+
+  &:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
 ` 
 
 export const CardWrap = styled.div`
-  /* min-height: 335px; */
   border: 1px solid #ADADAD;
   border-radius: 29px;
   padding: 20px;

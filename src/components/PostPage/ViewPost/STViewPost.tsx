@@ -1,106 +1,146 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+export const ViewSection = styled.div`
+  margin-top: 30px;
+`;
+
+export const TitleWrap = styled.div`
+  margin-bottom: 5px;
+
+  & > div {
+    display: flex;
+    align-items: center;
+
+    & > span {
+      border-radius: 20px;
+      border: 1px solid #ADADAD;
+      background: #A4EEC6;
+      padding: 6px 8px;
+      font-size: 12px;
+    }
+  }
 `;
 
 export const Category = styled.span`
-  font-size: 14px;
-  color: #888;
-  margin-bottom: 10px;
+  font-size: 15px;
+  color: #646464;
 `;
 
 export const EventName = styled.h1`
+  font-weight: 700;
   font-size: 24px;
-  color: #333;
-  margin-bottom: 20px;
+  color: #131313;
+  margin: 10px 0;
+  line-height: 1.2;
+`
+
+export const Join = styled.div`
+  & > h1 {
+    font-weight: 700;
+    font-size: 24px;
+    color: #131313;
+    margin: 10px 0;
+    line-height: 1.2;
+    width: 80%;
+  }
 `;
+
+export const NotJoin = styled.div`
+  & > h1 {
+    font-weight: 700;
+    font-size: 24px;
+    color: #131313;
+    margin: 10px 0;
+    line-height: 1.2;
+  }
+`
+
+export const ProfileWrap = styled.div`
+  display: flex;
+  align-items: center;
+
+  & > div {
+    margin-left: 15px;
+  }
+`
 
 export const ProfileImg = styled.img`
   width: 60px;
   height: 60px;
-  border-radius: 30px;
-  margin-bottom: 10px;
+  border-radius: 50%;
+  border: 1px solid #292D32;
+  object-fit: cover;
 `;
 
 export const Nickname = styled.div`
-  font-size: 16px;
-  color: #333;
+  font-size: 17px;
+  color: #646464;
   margin-bottom: 5px;
 `;
 
 export const CreatedAt = styled.div`
-  font-size: 14px;
-  color: #888;
+  font-size: 12px;
+  color: #ADADAD;
 `;
 
+export const Infowrap = styled.div`
+  margin: 20px 0;
+
+  & p {
+    color: #ADADAD;
+    font-size: 15px;
+    width: 110px;
+  }
+
+  & span {
+    color: #131313;
+    font-size: 15px;
+  }
+`
 export const EventDate = styled.div`
-  font-size: 16px;
-  color: #333;
-  margin-top: 20px;
+  display: flex;
   margin-bottom: 10px;
 `;
 
 export const SignupDate = styled.div`
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 20px;
+  display: flex;
+  margin-bottom: 10px;
 `;
 
 export const EventLocation = styled.div`
-  font-size: 16px;
-  color: #333;
+  display: flex;
   margin-bottom: 10px;
 `;
 
 export const MaxSize = styled.div`
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 20px;
+  display: flex;
+  margin-bottom: 10px;
 `;
 
+export const ContentWrap = styled.div`
+  border-radius: 26px;
+  border: 1px solid #E7E7E7;
+  background: #FFF;
+  padding: 3px;
+  min-height: 300px;
+  margin-bottom: 30px;
+`
+
 export const Content = styled.p`
-  font-size: 16px;
-  color: #555;
-  line-height: 1.5;
-  margin-bottom: 20px;
+  border-radius: 23px;
+  border: 1px solid #ADADAD;
+  background: #FFF;
+  font-size: 15px;
+  line-height: 1.2;
+  color: #131313;
+  padding: 15px;
+  min-height: 300px;
+  overflow-y: auto;
 `;
 
 export const PostInfo = styled.div`
   margin-bottom: 20px;
   font-size: 16px;
-`;
-
-export const Button = styled.button`
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: none;
-  background-color: #ffd700;
-  color: #fff;
-  cursor: pointer;
-  &:hover {
-    background-color: #ffc300;
-  }
-`;
-
-export const ChatButton = styled.button`
-  margin-top: 10px;
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: 2px solid #ffd700;
-  background-color: transparent;
-  color: #ffd700;
-  cursor: pointer;
-  &:hover {
-    background-color: #ffd700;
-    color: #fff;
-  }
 `;
 
 export const GuestUserContainer = styled.div`
@@ -109,12 +149,23 @@ export const GuestUserContainer = styled.div`
 `;
 
 export const GuestProfileImg = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #292D32;
   border-radius: 50%;
-  margin-right: 8px; // 혹은 원하는 간격을 설정해줘!
+  margin-right: 3px;
+  object-fit: cover;
 `;
 
+export const ButtonWrap = styled.div`
+  & div {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+`
+
 export const MoreUsers = styled.div`
-  font-size: 20px; // 원하는 폰트 크기로 설정해줘!
+  font-size: 20px;
+  color: #ADADAD;
 `;
