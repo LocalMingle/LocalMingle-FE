@@ -42,6 +42,7 @@ export const Join = styled.div`
     margin: 10px 0;
     line-height: 1.2;
     width: 80%;
+    flex-grow: 1;
   }
 `;
 
