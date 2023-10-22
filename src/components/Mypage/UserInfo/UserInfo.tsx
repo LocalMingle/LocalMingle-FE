@@ -15,6 +15,7 @@ import {
 } from "../../../api/api";
 import { axiosInstance } from "../../../api/axiosInstance";
 import toast from "react-hot-toast";
+import { useLanguage } from "../../../util/Locales/useLanguage";
 
 const UserInfo: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +29,7 @@ const UserInfo: React.FC = () => {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isNicknameValid, setIsNicknameValid] = useState<boolean | null>(null);
+  const { t } = useLanguage();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -181,12 +183,12 @@ const UserInfo: React.FC = () => {
           <St.ProfileTextButton
             onClick={() => document.getElementById("imageInput")?.click()}
           >
-            이미지 업로드
+            {t("이미지 업로드")}
           </St.ProfileTextButton>
         </St.ImageContainer>
 
         <St.InputContainer>
-          <St.Label htmlFor="nickname">닉네임</St.Label>
+          <St.Label htmlFor="nickname">{t("닉네임")}</St.Label>
           <div>
             <input
               type="text"
@@ -196,7 +198,7 @@ const UserInfo: React.FC = () => {
             />
             <St.DupCheckButtonWrap>
               <St.DupCheckButton onClick={handleCheckNicknameClick}>
-                중복 체크
+                {t("중복 체크")}
               </St.DupCheckButton>
             </St.DupCheckButtonWrap>
           </div>
@@ -206,7 +208,7 @@ const UserInfo: React.FC = () => {
         </St.InputContainer>
 
         <St.InputContainer>
-          <St.Label htmlFor="introduce">한 줄 자기소개</St.Label>
+          <St.Label htmlFor="introduce">{t("한줄 자기소개")}</St.Label>
           <input
             type="text"
             id="introduce"
@@ -216,12 +218,17 @@ const UserInfo: React.FC = () => {
         </St.InputContainer>
 
         <St.InputContainer>
-          <St.Label htmlFor="location">위치 정보</St.Label>
-          <input type="text" id="location" readOnly value="서울특별시 강남구" />
+          <St.Label htmlFor="location">{t("위치 정보")}</St.Label>
+          <input
+            type="text"
+            id="location"
+            readOnly
+            value={t("서울특별시 강남구")}
+          />
         </St.InputContainer>
 
         <St.InputContainer>
-          <St.Label htmlFor="password">비밀번호</St.Label>
+          <St.Label htmlFor="password">{t("비밀번호")}</St.Label>
           <St.EyleToggleWrap>
             <input
               type={showPassword ? "text" : "password"}
@@ -241,7 +248,7 @@ const UserInfo: React.FC = () => {
         </St.InputContainer>
 
         <St.InputContainer>
-          <St.Label htmlFor="passwordConfirm">비밀번호 확인</St.Label>
+          <St.Label htmlFor="passwordConfirm">{t("비밀번호 확인")}</St.Label>
           <input
             type="password"
             id="passwordConfirm"
@@ -255,7 +262,7 @@ const UserInfo: React.FC = () => {
 
         <St.SubmitButtonWrap>
           <St.SubmitButton type="button" onClick={handleUpdate}>
-            수정
+            {t("수정")}
           </St.SubmitButton>
         </St.SubmitButtonWrap>
       </St.MyPageWrap>

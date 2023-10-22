@@ -3,19 +3,19 @@ import i18n from "i18next";
 // React와 i18next를 연동하기 위한 부분
 import { initReactI18next } from "react-i18next";
 
-import tranEn from "../Locales/lngFile/en.json";
-import tranKo from "../Locales/lngFile/ko.json";
-import tranJp from "../Locales/lngFile/jp.json";
+import translationEn from "./lngFile/en.json";
+import translationKo from "./lngFile/ko.json";
+import translationJp from "./lngFile/jp.json";
 
 // 다국어 리소스 객체를 정의
 const resources = {
-  en: { translation: tranEn },
-  ko: { translation: tranKo },
-  jp: { translation: tranJp },
+  en: { translation: translationEn },
+  ko: { translation: translationKo },
+  jp: { translation: translationJp },
 };
 
 // 사용자의 브라우저 언어 설정을 확인하고, 설정이 없으면 기본값으로 사용할 언어를 결정
-const userLanguage = window.navigator.language || window.navigator.language;
+const userLanguage = window.navigator.language || "ko";
 
 i18n.use(initReactI18next).init({
   resources,

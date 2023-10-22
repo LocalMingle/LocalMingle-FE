@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as St from "./STJoinList";
 import { getJoinedEvents, cancelParticipation } from "../../../api/api";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../../../util/Locales/useLanguage";
 
 type Event = {
   id?: number;
@@ -17,7 +18,7 @@ const JoinList: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
+  const { t } = useLanguage();
   const fetchEvents = async () => {
     try {
       const userId = localStorage.getItem("userId");
@@ -58,35 +59,43 @@ const JoinList: React.FC = () => {
 
   return (
     <>
-    {events.length > 0 ? (
-      <St.MyPageContainer>
-      <St.MyPageWrap>
-        <div>
-          {events.map((event) => (
-            <St.UserJoinForm key={event.createdAt}>
-              <St.UserJoinFormWrap>
-                <h2 onClick={() => handlePostClick(event.eventId)}>
-                  {event.eventName}
-                </h2>
-                <St.CategoryLocationWrapper>
-                  <span>{event.category}</span>
-                  <span>{event.eventDate}</span>
-                </St.CategoryLocationWrapper>
-              </St.UserJoinFormWrap>
-              <St.UserPostButtonWrap>
-                <button onClick={() => {handleCancel(event.eventId);}}>참가취소</button>
-              </St.UserPostButtonWrap>
-            </St.UserJoinForm>
-          ))}
-        </div>
-      </St.MyPageWrap>
-    </St.MyPageContainer>
-    ) : (
-      <St.MyPageContainer>
-        <St.MyPageWrap>
-          <St.NoEventMessage>참여하신 이벤트가 없습니다.</St.NoEventMessage>
-        </St.MyPageWrap>
-      </St.MyPageContainer>
+      {events.length > 0 ? (
+        <St.MyPageContainer>
+          <St.MyPageWrap>
+            <div>
+              {events.map((event) => (
+                <St.UserJoinForm key={event.createdAt}>
+                  <St.UserJoinFormWrap>
+                    <h2 onClick={() => handlePostClick(event.eventId)}>
+                      {event.eventName}
+                    </h2>
+                    <St.CategoryLocationWrapper>
+                      <span>{event.category}</span>
+                      <span>{event.eventDate}</span>
+                    </St.CategoryLocationWrapper>
+                  </St.UserJoinFormWrap>
+                  <St.UserPostButtonWrap>
+                    <button
+                      onClick={() => {
+                        handleCancel(event.eventId);
+                      }}
+                    >
+                      {t("참가취소")}
+                    </button>
+                  </St.UserPostButtonWrap>
+                </St.UserJoinForm>
+              ))}
+            </div>
+          </St.MyPageWrap>
+        </St.MyPageContainer>
+      ) : (
+        <St.MyPageContainer>
+          <St.MyPageWrap>
+            <St.NoEventMessage>
+              {t("참여하신 이벤트가 없습니다.")}
+            </St.NoEventMessage>
+          </St.MyPageWrap>
+        </St.MyPageContainer>
       )}
     </>
   );
