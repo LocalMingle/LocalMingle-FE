@@ -17,8 +17,11 @@ import {
   handleCheckEmail,
 } from "../../util/validation";
 import JSConfetti from "js-confetti";
+import { useLanguage } from "../../util/Locales/useLanguage";
 
 const SignUpForm: React.FC = () => {
+  const { currentLang, t, changeLanguage } = useLanguage();
+
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -165,15 +168,18 @@ const SignUpForm: React.FC = () => {
   };
   return (
     <ST.Wrapper>
-      <div onClick={goToMain}>회원가입</div>
+      <div onClick={goToMain}>{t("회원가입")}</div>
+      <button onClick={changeLanguage}>
+        {currentLang === "ko" ? "🇰🇷" : currentLang === "en" ? "🇺🇸" : "🇯🇵"}
+      </button>
       {/* <img src="" alt="logo" onClick={goToMain}>로고</img> */}
       <ST.LabelWrapper>
-        <label>닉네임</label>
+        <label>{t("닉네임")}</label>
         <div>
           <input type="text" value={nickname} onChange={handleNicknameChange} />
           <ST.DupCheckButtonWrap>
             <ST.DupCheckButton onClick={handleNicknameDupCheck}>
-              중복 체크
+              {t("중복 체크")}
             </ST.DupCheckButton>
           </ST.DupCheckButtonWrap>
         </div>
@@ -183,12 +189,12 @@ const SignUpForm: React.FC = () => {
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
-        <label>이메일</label>
+        <label>{t("이메일")}</label>
         <div>
           <input type="email" value={email} onChange={handleEmailChange} />
           <ST.DupCheckButtonWrap>
             <ST.DupCheckButton onClick={handleEmailDupCheck}>
-              중복 체크
+              {t("중복 체크")}
             </ST.DupCheckButton>
           </ST.DupCheckButtonWrap>
         </div>
@@ -198,7 +204,7 @@ const SignUpForm: React.FC = () => {
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
-        <label>비밀번호</label>
+        <label>{t("비밀번호")}</label>
         <ST.EyleToggleWrap>
           <input
             type={showPassword ? "text" : "password"}
@@ -217,7 +223,7 @@ const SignUpForm: React.FC = () => {
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
-        <label>비밀번호 확인</label>
+        <label>{t("비밀번호 확인")}</label>
         <input
           type="password"
           value={confirmPassword}
@@ -227,12 +233,12 @@ const SignUpForm: React.FC = () => {
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
-        <label>한줄 자기 소개</label>
+        <label>{t("한줄 자기소개")}</label>
         <input type="text" value={bio} onChange={handleBioChange} />
         <ST.ErrorMessageJoin>{bioError}</ST.ErrorMessageJoin>
       </ST.LabelWrapper>
-      {isLoading && <div>회원가입 중...</div>}
-      <Button onClick={handleSignUp}>회원가입</Button>
+      {isLoading && <div>{t("회원가입 중...")}</div>}
+      <Button onClick={handleSignUp}>{t("회원가입")}</Button>
     </ST.Wrapper>
   );
 };

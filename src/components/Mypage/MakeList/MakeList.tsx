@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as St from "./STMakeList";
 import { getEvents, deleteEvent } from "../../../api/api";
+import { useLanguage } from "../../../util/Locales/useLanguage";
 
 interface Event {
   eventId: number;
@@ -19,7 +20,7 @@ interface Event {
 const MakeList: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const navigate = useNavigate();
-
+  const { t } = useLanguage();
   const fetchEvents = async () => {
     try {
       const userId = localStorage.getItem("userId");
@@ -75,10 +76,10 @@ const MakeList: React.FC = () => {
                 </h2>
                 <St.UserPostButtonWrap>
                   <button onClick={() => handleUpdateClick(event.eventId)}>
-                    수정
+                    {t("수정")}
                   </button>
                   <button onClick={() => handleDeleteEvent(event.eventId)}>
-                    삭제
+                    {t("삭제")}
                   </button>
                 </St.UserPostButtonWrap>
               </St.UserPostForm>
@@ -88,7 +89,9 @@ const MakeList: React.FC = () => {
       ) : (
         <St.MyPageContainer>
           <St.MyPageWrap>
-            <St.NoEventMessage>생성하신 이벤트가 없습니다.</St.NoEventMessage>
+            <St.NoEventMessage>
+              {t("생성하신 이벤트가 없습니다.")}
+            </St.NoEventMessage>
           </St.MyPageWrap>
         </St.MyPageContainer>
       )}

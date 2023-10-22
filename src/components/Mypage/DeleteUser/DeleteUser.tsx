@@ -7,6 +7,7 @@ import { Button } from "../../common/Button";
 import { validateLoginPassword } from "../../../util/validation";
 import toast from "react-hot-toast";
 import { AnimationItem } from "lottie-web";
+import { useLanguage } from "../../../util/Locales/useLanguage";
 
 const DeleteUser: React.FC = () => {
   const [password, setPassword] = useState<string>("");
@@ -14,7 +15,7 @@ const DeleteUser: React.FC = () => {
   const lottieContainer = useRef(null);
   const [showAnimation, setShowAnimation] = useState<boolean>(false);
   const navigate = useNavigate();
-
+  const { t } = useLanguage();
   const [passwordError, setPasswordError] = useState<string>("");
 
   const animationRef = useRef<AnimationItem | null>(null);
@@ -69,14 +70,16 @@ const DeleteUser: React.FC = () => {
     <St.MyPageContainer>
       <St.MyPageWrap>
         <St.DeleteUserWrap>
-          <p>비밀번호 재입력</p>
+          <p>{t("비밀번호 재입력")}</p>
           <St.InputWrap>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            {passwordError && <St.ErrorMessage>{passwordError}</St.ErrorMessage>}
+            {passwordError && (
+              <St.ErrorMessage>{passwordError}</St.ErrorMessage>
+            )}
           </St.InputWrap>
         </St.DeleteUserWrap>
         <St.DeleteUserWrap>
@@ -84,16 +87,14 @@ const DeleteUser: React.FC = () => {
             <textarea
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder="
-탈퇴하는 사유를 입력해주세요 🙂
-
-소중한 피드백은 더 좋은 서비스를 제공
-하기 위해 적극적으로 반영하도록 하겠습니다!"
+              placeholder={`${t("탈퇴하는 사유를 입력해주세요 🙂")}\n\n${t(
+                "소중한 피드백은 더 좋은 서비스를 제공하기 위해 적극적으로 반영하도록 하겠습니다!"
+              )}`}
             />
           </St.TextareaWrap>
         </St.DeleteUserWrap>
         <St.ButtonWrap>
-          <Button onClick={handleDelete}>탈퇴하기</Button>
+          <Button onClick={handleDelete}>{t("탈퇴하기")}</Button>
         </St.ButtonWrap>
         <St.AnimationContainer ref={lottieContainer}></St.AnimationContainer>
       </St.MyPageWrap>

@@ -10,9 +10,11 @@ import { validateEmail, validateLoginPassword } from "../../util/validation";
 import { setTokens } from "../../util/token";
 import { Button } from "../../components/common/Button";
 import toast, { Toaster } from "react-hot-toast";
+import { useLanguage } from "../../util/Locales/useLanguage";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const { currentLang, t, changeLanguage } = useLanguage();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -103,10 +105,13 @@ const LoginPage: React.FC = () => {
   return (
     <ST.Container>
       <Toaster />
-      <h1 onClick={goToMain}>로그인</h1>
+      <h1 onClick={goToMain}>{t("로그인")}</h1>
+      <button onClick={changeLanguage}>
+        {currentLang === "ko" ? "🇰🇷" : currentLang === "en" ? "🇺🇸" : "🇯🇵"}
+      </button>
       {/* <img src="" alt="logo" onClick={goToMain}>로고</img> */}
       <ST.LabelWrapper>
-        <label>이메일</label>
+        <label>{t("이메일")}</label>
         <ST.InputWithIcon>
           <ST.StyledInput
             type="email"
@@ -127,7 +132,7 @@ const LoginPage: React.FC = () => {
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
-        <label>비밀번호</label>
+        <label>{t("비밀번호")}</label>
         <ST.InputWithIcon>
           <ST.StyledInput
             type="password"
@@ -147,7 +152,7 @@ const LoginPage: React.FC = () => {
         <ST.ErrorMessageLogin>{passwordError}</ST.ErrorMessageLogin>
       </ST.LabelWrapper>
 
-      <Button onClick={handleLogin}>로그인</Button>
+      <Button onClick={handleLogin}>{t("로그인")}</Button>
       <div>
         <ST.KakaoButton onClick={kakaoLoginHandler}>
           <img
@@ -158,8 +163,8 @@ const LoginPage: React.FC = () => {
       </div>
 
       <ST.SignupText>
-        로컬밍글의 회원이 아니신가요?{" "}
-        <span onClick={handleJoinClick}>회원가입</span>
+        {t("로컬밍글의 회원이 아니신가요?")}{" "}
+        <span onClick={handleJoinClick}>{t("회원가입")}</span>
       </ST.SignupText>
     </ST.Container>
   );
