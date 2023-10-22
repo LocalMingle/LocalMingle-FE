@@ -38,7 +38,7 @@ const UserInfo: React.FC = () => {
       try {
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken) {
-          const profileImgURL = await getUserProfileImage(accessToken);
+          const profileImgURL = await getUserProfileImage();
           setProfileImage(profileImgURL);
         }
       } catch (error) {

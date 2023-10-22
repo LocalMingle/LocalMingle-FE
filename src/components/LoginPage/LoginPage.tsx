@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
     }
     try {
       const response = await axiosInstance.post(
-        `${import.meta.env.VITE_REACT_APP_URL}users/login`,
+        `/users/login`,
         {
           email: email,
           password: password,
@@ -52,10 +52,11 @@ const LoginPage: React.FC = () => {
           withCredentials: true,
         }
       );
-
+      console.log("response.headers", response.headers);
       if (response.status === 200) {
         const accessToken = response.headers["accesstoken"];
         const refreshToken = response.headers["refreshtoken"];
+        console.log(accessToken, refreshToken);
         setTokens(accessToken, refreshToken);
         console.log("response", response.data);
         const userId = response.data.userId;
@@ -75,14 +76,21 @@ const LoginPage: React.FC = () => {
       }
     }
   };
+  // 쿠키로 받는다
+  // const kakaoLoginHandler = () => {
+  //   const REACT_APP_URL = "http://localhost:3000";
+  //   const kakaoOauthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&redirect_uri=${encodeURIComponent(
+  //     `${REACT_APP_URL}/users/login/kakao`
+  //   )}&client_id=${import.meta.env.VITE_REACT_APP_KAKAO_CLIENT_ID}`;
+  //   window.location.href = kakaoOauthURL;
+  // };
 
   const kakaoLoginHandler = () => {
-    const REST_API_KEY: string = import.meta.env
-      .VITE_REACT_APP_KAKAO_CLIENT_ID as string;
-    const REDIRECT_URI: string = import.meta.env
-      .VITE_REACT_APP_KAKAO_REDIRECT_URI as string;
-    const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-    window.location.href = link;
+    const REACT_APP_URL = "https://www.totobon6125.store";
+    const kakaoOauthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&redirect_uri=${encodeURIComponent(
+      `${REACT_APP_URL}/users/login/kakao`
+    )}&client_id=${import.meta.env.VITE_REACT_APP_KAKAO_CLIENT_ID}`;
+    window.location.href = kakaoOauthURL;
   };
 
   const handleJoinClick = () => {

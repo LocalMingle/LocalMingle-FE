@@ -110,7 +110,8 @@ export function UpdateValidatePasswordConfirmation(
 
 // 이미지 업로드 유효성 검사
 export function validateImageUpload(file: File | null) {
-  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB // 리사이징을해서 압축하고 백으로 보내기 // 이미지압축 라이브러리 활용하자.
+  // 미리 압출을해서 보내야 빠르고 좋다.
   const SUPPORTED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif"];
 
   if (!file) {

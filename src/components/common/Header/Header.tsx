@@ -3,12 +3,22 @@ import * as St from "./STHeader";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import "../../../util/toastStyles.css";
+import { useRecoilState } from "recoil";
+import { isLoginState } from "../../../recoil/atoms/UserState";
+import { useEffect } from "react";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
 
-  // 로그인 여부
-  const isLogin: boolean = localStorage.getItem("accessToken") ? true : false;
+  const [isLogin, setIsLoginState] = useRecoilState(isLoginState);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    accessToken ? setIsLoginState(true) : setIsLoginState(false);
+  }, [setIsLoginState]);
+
+  // // 로그인 여부
+  // const isLogin: boolean = localStorage.getItem("accessToken") ? true : false;
 
   // (로고)메인 페이지로 이동
   const goToMain = () => {
@@ -32,6 +42,8 @@ const Header: React.FC = () => {
     });
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userId");
+    setIsLoginState(false);
     navigate("/");
   };
 

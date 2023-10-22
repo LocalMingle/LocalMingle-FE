@@ -10,7 +10,7 @@ import UserInfo from "../components/Mypage/UserInfo/UserInfo";
 import MakeList from "../components/Mypage/MakeList/MakeList";
 import JoinList from "../components/Mypage/JoinList/JoinList";
 import DeleteUser from "../components/Mypage/DeleteUser/DeleteUser";
-import RedirectionPage from "../pages/RedirectionPage";
+// import RedirectionPage from "../pages/RedirectionPage";
 
 export default function Router() {
   return (
@@ -31,7 +31,7 @@ export default function Router() {
           <Route path="joinlist" element={<JoinList />} />
           <Route path="deleteuser" element={<DeleteUser />} />
         </Route>
-        <Route path="/users/login/kakao" element={<RedirectionPage />} />
+        {/* <Route path="/users/login/kakao" element={<RedirectionPage />} /> */}
       </Routes>
     </BrowserRouter>
   );
