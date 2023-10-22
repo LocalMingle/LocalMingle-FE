@@ -1,8 +1,9 @@
 import ReactDOM from "react-dom/client";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
-import App from "./App.tsx";
+import App from "./App";
 import "./index.css";
+import "./util/Locales/il8n"; // 번역 설정을 앱 전체에 전용하는 곳
 
 const queryClient = new QueryClient();
 

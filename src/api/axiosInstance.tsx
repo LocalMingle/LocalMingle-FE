@@ -5,85 +5,55 @@ interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
 }
 
-const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_REACT_APP_URL,
-  headers: { "Content-Type": "application/json" },
-  withCredentials: true,
+const createAxiosInstance = (headers: AxiosRequestConfig["headers"]) => {
+  const instance = axios.create({
+    baseURL: import.meta.env.VITE_REACT_APP_URL,
+    headers,
+    withCredentials: true,
+  });
+
+  instance.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
+
+  instance.interceptors.response.use(
+    (response: AxiosResponse) => response,
+    async (error) => {
+      const originalRequest = error.config as CustomAxiosRequestConfig;
+      if (
+        error.response &&
+        error.response.status === 401 &&
+        !originalRequest._retry
+      ) {
+        originalRequest._retry = true;
+        const newAccessToken: string | null = await getNewAccessToken();
+        if (newAccessToken) {
+          originalRequest.headers = {
+            ...originalRequest.headers,
+            Authorization: `Bearer ${newAccessToken}`,
+          } as AxiosRequestConfig["headers"]; // 타입을 명시해줌
+          return instance(originalRequest);
+        }
+      }
+      return Promise.reject(error);
+    }
+  );
+
+  return instance;
+};
+
+const axiosInstance = createAxiosInstance({
+  "Content-Type": "application/json",
+});
+const uploadInstance = createAxiosInstance({
+  "Content-Type": "multipart/form-data",
 });
 
-// 이미지업로드용
-export const uploadInstance = axios.create({
-  baseURL: import.meta.env.VITE_REACT_APP_URL,
-  headers: { "Content-Type": "multipart/form-data" },
-  withCredentials: true,
-});
-
-uploadInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("accessToken");
-    console.log("Current Token:", token);
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-uploadInstance.interceptors.response.use(
-  (response: AxiosResponse) => {
-    console.log("Server Response:", response);
-    return response;
-  },
-  async (error) => {
-    console.error("Upload Error:", error);
-    const originalRequest = error.config;
-    console.log(originalRequest.headers);
-    if (
-      error.response &&
-      error.response.status === 401 &&
-      !originalRequest._retry
-    ) {
-      originalRequest._retry = true;
-      const newAccessToken: string | null = await getNewAccessToken();
-      console.log("New Access Token:", newAccessToken);
-      if (newAccessToken) {
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return uploadInstance(originalRequest);
-      }
-    }
-    return Promise.reject(error);
-  }
-);
-
-// 엑세스 토큰 만료시 리프레시 토큰 이용해서 새로운 엑세스 토큰 받아오는 코드!
-axiosInstance.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response;
-  },
-  async (error) => {
-    const originalRequest = error.config as CustomAxiosRequestConfig;
-
-    if (
-      error.response &&
-      error.response.status === 401 &&
-      !originalRequest._retry
-    ) {
-      originalRequest._retry = true;
-
-      const newAccessToken: string | null = await getNewAccessToken();
-      if (newAccessToken) {
-        originalRequest.headers = {
-          ...originalRequest.headers,
-          Authorization: `Bearer ${newAccessToken}`,
-        };
-        return axiosInstance(originalRequest);
-      }
-    }
-    return Promise.reject(error);
-  }
-);
-
-export { axiosInstance };
+export { axiosInstance, uploadInstance };

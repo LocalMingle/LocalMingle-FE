@@ -44,7 +44,6 @@ export const isTokenExpired = (token: string): boolean => {
 export const getNewAccessToken = async (): Promise<string | null> => {
   try {
     const refreshToken = getRefreshToken();
-    console.log("Refresh Token:", refreshToken); // 리프레시 토큰 출력
 
     if (!refreshToken) return null;
 

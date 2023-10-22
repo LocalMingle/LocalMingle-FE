@@ -33,7 +33,7 @@ const MakeList: React.FC = () => {
       const sortedEvents = userEvents.sort((a: Event, b: Event) => {
         const dateA = new Date(a.createdAt);
         const dateB = new Date(b.createdAt);
-        return dateB.getTime() - dateA.getTime(); // 최신 글이 상단에 오도록 정렬
+        return dateB.getTime() - dateA.getTime();
       });
 
       setEvents(sortedEvents);
@@ -89,7 +89,7 @@ const MakeList: React.FC = () => {
         <St.NoEventMessage>생성하신 이벤트가 없습니다.</St.NoEventMessage>
       )}
     </>
-  )
+  );
 };
 
 export default MakeList;

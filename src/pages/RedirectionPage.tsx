@@ -1,53 +1,47 @@
-import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
-import { useNavigate } from "react-router-dom";
-import { userState } from "../recoil/atoms/UserState";
-import { kakaoLogin } from "../api/api";
+// import { useEffect } from "react";
+// import { useSetRecoilState } from "recoil";
+// import { useNavigate } from "react-router-dom";
+// import { userState } from "../recoil/atoms/UserState";
+// import { kakaoLogin } from "../api/api";
 
-export default function RedirectionPage() {
-  const code = new URLSearchParams(window.location.search).get("code") || "";
-  const navigate = useNavigate();
-  const setUserInfo = useSetRecoilState(userState);
-  useEffect(() => {
-    const socialLogin = async () => {
-      try {
-        const response = await kakaoLogin(code);
+// export default function RedirectionPage() {
+//   const code = new URLSearchParams(window.location.search).get("code") || "";
+//   const navigate = useNavigate();
+//   const setUserInfo = useSetRecoilState(userState);
 
-        if (!response.data || !response.data.userId) {
-          throw new Error("서버에서 userId 정보가 없습니다.");
-        }
+//   useEffect(() => {
+//     const socialLogin = async () => {
+//       try {
+//         const response = await kakaoLogin(code);
 
-        const {
-          accessToken,
-          refreshToken,
-          userId,
-        }: { accessToken: string; refreshToken: string; userId: number } =
-          response.data;
+//         if (!response.data || !response.data.userId) {
+//           throw new Error("서버에서 userId 정보가 없습니다.");
+//         }
 
-        localStorage.setItem("accessToken", accessToken);
-        console.log("AccessToken saved:", accessToken);
+//         const {
+//           accessToken,
+//           refreshToken,
+//           userId,
+//         }: { accessToken: string; refreshToken: string; userId: number } =
+//           response.data;
 
-        localStorage.setItem("refreshToken", refreshToken);
-        console.log("RefreshToken saved:", refreshToken);
+//         localStorage.setItem("accessToken", accessToken);
+//         localStorage.setItem("refreshToken", refreshToken);
+//         localStorage.setItem("userId", userId.toString());
 
-        localStorage.setItem("userId", userId.toString());
-        console.log("UserId saved:", userId);
-        console.log(response.data);
-        setUserInfo({
-          userId: userId,
-        });
-        console.log(response.data);
-        console.log("localStorage", localStorage);
+//         setUserInfo({
+//           userId: userId,
+//         });
 
-        navigate("/");
-      } catch (error) {
-        console.error(error);
-        alert("로그인 중 에러가 발생했습니다. 다시 시도해주세요.");
-      }
-    };
+//         navigate("/");
+//       } catch (error) {
+//         console.error(error);
+//         alert("로그인 중 에러가 발생했습니다. 다시 시도해주세요.");
+//       }
+//     };
 
-    socialLogin();
-  }, [code, navigate, setUserInfo]);
+//     socialLogin();
+//   }, [code, navigate, setUserInfo]);
 
-  return <div>카카오 로그인 중입니다.</div>;
-}
+//   return <div>카카오 로그인 중입니다. 🔄</div>;
+// }

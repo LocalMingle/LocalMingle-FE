@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { axiosInstance } from "../api/axiosInstance";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import {
   setAccessToken,
   setRefreshToken,
@@ -26,7 +26,7 @@ export const checkAndRefreshTokenIfNeeded = async () => {
 
 // 로그인
 export const loginUser = async (email: string, password: string) => {
-  const response = await axiosInstance.post(`users/login`, {
+  const response = await axiosInstance.post(`/users/login`, {
     email,
     password,
   });
@@ -44,43 +44,50 @@ export const logoutUser = () => {
 };
 
 // 카카오 로그인
-type KakaoResponse = {
-  accessToken: string;
-  refreshToken: string;
-  userId: number;
-};
+// type KakaoResponse = {
+//   accessToken: string;
+//   refreshToken: string;
+//   userId: number;
+// };
 
-export const kakaoLogin = async (
-  code: string
-): Promise<AxiosResponse<KakaoResponse>> => {
-  const response = await axiosInstance.get<KakaoResponse>(
-    `users/login/kakao?code=${code}`,
-    {
-      headers: {
-        "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-      },
-      params: {
-        grant_type: "authorization_code",
-        client_id: import.meta.env.VITE_REACT_APP_KAKAO_CLIENT_ID,
-        redirect_uri: import.meta.env.VITE_REACT_APP_KAKAO_REDIRECT_URI,
-        code,
-      },
-    }
-  );
+// export const kakaoLogin = async (
+//   code: string
+// ): Promise<AxiosResponse<KakaoResponse>> => {
+//   const response = await axiosInstance.get<KakaoResponse>(`users/login/kakao`, {
+//     headers: {
+//       "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+//     },
+//     params: {
+//       grant_type: "authorization_code",
+//       client_id: import.meta.env.VITE_REACT_APP_KAKAO_CLIENT_ID,
+//       redirect_uri: import.meta.env.VITE_REACT_APP_KAKAO_REDIRECT_URI,
+//       code,
+//     },
+//   });
 
-  const accessToken = response.headers["accessToken"];
-  const refreshToken = response.headers["refreshToken"];
+//   // const accessToken = response.headers["AccessToken"];
+//   // const refreshToken = response.headers["RefreshToken"];
+//   // const userId = response.headers["Userid"];
+//   const accessToken = response.data.accessToken;
+//   const refreshToken = response.data.refreshToken;
+//   const userId = response.data.userId;
 
-  setAccessToken(accessToken);
-  setRefreshToken(refreshToken);
+//   setAccessToken(accessToken);
+//   setRefreshToken(refreshToken);
 
-  return response;
-};
+//   if (accessToken && refreshToken && userId) {
+//     localStorage.setItem("accesstoken", accessToken);
+//     localStorage.setItem("refreshtoken", refreshToken);
+//     localStorage.setItem("userid", userId.toString());
+//   }
+
+//   return response;
+// };
 
 // 회원 탈퇴
 export const deleteUser = async (password: string) => {
   try {
-    const response = await axiosInstance.delete(`users/withdrawal`, {
+    const response = await axiosInstance.delete(`/users/withdrawal`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
@@ -99,13 +106,13 @@ export const deleteUser = async (password: string) => {
 
 // 게시글 전체 조회
 export const getPosts = async () => {
-  const response = await axiosInstance.get("events");
+  const response = await axiosInstance.get("/events");
   return response.data;
 };
 
 // 게시글 삭제
 export const deletePost = async (postId: string) => {
-  const { data } = await axiosInstance.delete(`posts/${postId}`);
+  const { data } = await axiosInstance.delete(`/posts/${postId}`);
   return data;
 };
 
@@ -123,7 +130,7 @@ interface PostUpdate {
 }
 
 export const updatePost = async (eventId: number, post: PostUpdate) => {
-  const { data } = await axiosInstance.patch(`event/${eventId}`, post);
+  const { data } = await axiosInstance.patch(`/event/${eventId}`, post);
   return data;
 };
 
@@ -145,7 +152,7 @@ interface PostDetail {
 }
 
 export const getOnePost = async (eventId: number): Promise<PostDetail> => {
-  const { data } = await axiosInstance.get(`event/${eventId}`);
+  const { data } = await axiosInstance.get(`/event/${eventId}`);
   return data.data;
 };
 
@@ -155,7 +162,7 @@ export const uploadProfileImage = async (file: File) => {
   formData.append("file", file);
   console.log("formData", formData.get("file"));
   try {
-    const response = await uploadInstance.post("users/upload", formData);
+    const response = await uploadInstance.post("/users/upload", formData);
     if (response.status === 201) {
       const imageUrl = response.data.profileImgURL;
       return imageUrl;
@@ -170,13 +177,9 @@ export const uploadProfileImage = async (file: File) => {
 };
 
 // 유저이미지 get
-export const getUserProfileImage = async (accessToken: string) => {
+export const getUserProfileImage = async () => {
   try {
-    const response = await axiosInstance.get("users/me", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await axiosInstance.get("/users/me");
     return response.data.UserDetail[0].profileImg;
   } catch (error) {
     console.error("프로필 이미지를 가져오는 중 오류 발생:", error);
@@ -200,7 +203,7 @@ export const updateUserInfo = async (
     }
     console.log("함수 내부 intro:", intro);
     const response = await axiosInstance.patch(
-      `users/${id}`,
+      `/users/${id}`,
       {
         nickname,
         intro,
@@ -227,7 +230,7 @@ export const updateUserInfo = async (
 // 닉네임 중복 확인
 export const checkNickname = async (nickname: string) => {
   try {
-    const response = await axiosInstance.post("users/checkNickname", {
+    const response = await axiosInstance.post("/users/checkNickname", {
       nickname,
     });
     return response.data;
@@ -240,7 +243,7 @@ export const checkNickname = async (nickname: string) => {
 // 이메일 중복 확인
 export const checkEmail = async (email: string) => {
   try {
-    const response = await axiosInstance.post("users/checkEmail", { email });
+    const response = await axiosInstance.post("/users/checkEmail", { email });
     return response.data;
   } catch (error) {
     console.error("이메일 중복 확인 중 오류 발생:", error);
@@ -266,7 +269,7 @@ export const getEvents = async (userId: number) => {
     if (!accessToken) {
       throw new Error("액세스 토큰이 없습니다.");
     }
-    const response = await axiosInstance.get(`users/${userId}/hostedEvents`, {
+    const response = await axiosInstance.get(`/users/${userId}/hostedEvents`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -298,7 +301,7 @@ export const getJoinedEvents = async (userId: number) => {
     if (!accessToken) {
       throw new Error("액세스 토큰이 없습니다.");
     }
-    const response = await axiosInstance.get(`users/${userId}/joinedEvents`, {
+    const response = await axiosInstance.get(`/users/${userId}/joinedEvents`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -332,7 +335,6 @@ export const getJoinedEvents = async (userId: number) => {
 
 // 이벤트 참석 취소
 export const cancelParticipation = async (eventId: number) => {
-  console.log("cancelParticipation 함수 호출됨!");
   try {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
@@ -340,7 +342,7 @@ export const cancelParticipation = async (eventId: number) => {
     }
 
     const response = await axiosInstance.put(
-      `events/${eventId}/join`,
+      `/events/${eventId}/join`,
       {},
       {
         headers: {
@@ -355,10 +357,10 @@ export const cancelParticipation = async (eventId: number) => {
       response.status === 200 &&
       response.data.message === `${eventId}번 모임 참석 취소!`
     ) {
-      console.log("참석 취소 성공!");
+      console.log("참석 신청 성공!");
       return response.data;
     } else {
-      console.error("참석 취소 실패:", response);
+      console.log("참석 취소 성공!", response);
       return null;
     }
   } catch (error) {
@@ -423,7 +425,7 @@ export const getEventDetail = async (
     }
 
     const response = await axiosInstance.get<EventDetailResponse>(
-      `events/${eventId}`,
+      `/events/${eventId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -449,7 +451,7 @@ export const toggleParticipation = async (eventId: number) => {
     }
 
     const response = await axiosInstance.put(
-      `events/${eventId}/join`,
+      `/events/${eventId}/join`,
       {},
       {
         headers: {
@@ -477,3 +479,5 @@ export const toggleParticipation = async (eventId: number) => {
     throw error;
   }
 };
+
+// 소셜로그인용 리프레쉬 토큰이용해서(로그인 후) 바로 새로운 엑세스토큰 재발급되게끔.

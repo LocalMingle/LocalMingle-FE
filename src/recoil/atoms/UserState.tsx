@@ -10,3 +10,8 @@ export const userState = atom<UserType>({
     userId: null,
   },
 });
+
+export const isLoginState = atom<boolean>({
+  key: "isLoginState",
+  default: false,
+});
