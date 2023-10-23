@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import * as St from './STMainPage';
-import Banner from '../common/Banner/Banner';
-import Search from '../common/Search/Search';
-import Selector from '../common/Selector/Selector';
-import Card from '../common/Card/Card';
-import FixedButton from '../common/FixedButton/FixedButton';
-import { useQuery } from 'react-query';
-import axios, {AxiosInstance} from 'axios';
-import { Spinner } from '../common/Spinner';
+import React, { useState, useEffect } from "react";
+import * as St from "./STMainPage";
+import Banner from "../common/Banner/Banner";
+import Search from "../common/Search/Search";
+import Selector from "../common/Selector/Selector";
+import Card from "../common/Card/Card";
+import FixedButton from "../common/FixedButton/FixedButton";
+import { useQuery } from "react-query";
+import axios, { AxiosInstance } from "axios";
+import { Spinner } from "../common/Spinner";
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { useLanguage } from "../../util/Locales/useLanguage";
 
 const MainPage: React.FC = () => {
+  const { t } = useLanguage();
   const accessToken = localStorage.getItem("accessToken");
   const [selectedVerify, setSelectedVerify] = useState<string>(""); // 위치 인증 여부
   const [selectedSido, setSelectedSido] = useState<string>("서울특별시"); // 시도
@@ -96,11 +98,13 @@ const MainPage: React.FC = () => {
   const { data: gugunOptionsData, refetch: refetchGugunOptions } = useQuery<
     GugunOptionsProps[]
   >(
-    "gugunOptions",
+    // queryKey를 배열로 감싸서 설정
+    ["gugunOptions", selectedSido],
     async () => {
       const response = await mainAPI
         .gugunApi(selectedSido)
         .then((response) => {
+          console.log("구/군 데이터:", gugunOptionsData);
           return response.data;
         })
         .catch((error) => {
@@ -212,8 +216,8 @@ const MainPage: React.FC = () => {
         {/* 위치 인증 여부 : 아무나 환영 | 우리 동네만 */}
         <Selector
           options={locationOptionsData?.map((item) => ({
-            value: item,
-            label: item,
+            value: t(item),
+            label: t(item),
           }))}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedVerify(selectedOption.target.value);
@@ -222,8 +226,8 @@ const MainPage: React.FC = () => {
         {/* 시/도 */}
         <Selector
           options={sidoOptionsData?.map((item) => ({
-            value: item.doName,
-            label: item.doName,
+            value: t(item.doName),
+            label: t(item.doName),
           }))}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedSido(selectedOption.target.value);
@@ -232,8 +236,8 @@ const MainPage: React.FC = () => {
         {/* 구/군 */}
         <Selector
           options={gugunOptionsData?.map((item) => ({
-            value: item.guName,
-            label: item.guName,
+            value: t(item.guName),
+            label: t(item.guName),
           }))}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedGugun(selectedOption.target.value);
@@ -242,8 +246,8 @@ const MainPage: React.FC = () => {
         {/* 카테고리 : 맛집/커피, 운동/건강, 애완동물, 공부/교육 */}
         <Selector
           options={categoryOptionsData?.map((item) => ({
-            value: item,
-            label: item,
+            value: t(item),
+            label: t(item),
           }))}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedCategory(selectedOption.target.value);

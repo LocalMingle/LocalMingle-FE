@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import Modal from "../../common/Modal/Modal";
 import { useRecoilState } from "recoil";
 import { modalState } from "../../../recoil/atoms/ModalState";
+import { useLanguage } from "../../../util/Locales/useLanguage";
 
 type GuestUser = {
   userDetailId: number;
@@ -28,10 +29,9 @@ const ViewPost: React.FC = () => {
   );
   const [isAuthor, setIsAuthor] = useState(false);
   const [isJoined, setIsJoined] = useState<boolean | null>(null);
-  // const [isVerified, setIsVerified] = useState(false);
   const loggedInUserId = Number(localStorage.getItem("userId"));
-  const [ , setIsModalOpen] = useRecoilState(modalState);
-
+  const [, setIsModalOpen] = useRecoilState(modalState);
+  const { t } = useLanguage();
   const handleToggleParticipation = async () => {
     if (!eventId) return;
     const eventIdNumber = parseInt(eventId, 10);
@@ -48,6 +48,7 @@ const ViewPost: React.FC = () => {
     } catch (error) {
       console.error("토글 참가 중 오류 발생:", error);
     }
+    setIsJoined(!isJoined);
   };
 
   useEffect(() => {
@@ -65,10 +66,10 @@ const ViewPost: React.FC = () => {
           console.log("로그인한 사용자의 ID:", loggedInUserId);
           console.log("작성자인가요?:", authorStatus);
           if (isJoined === null) {
-          const isUserJoined = data.guestUser.some((guestGroup) =>
-            guestGroup.some((guest) => guest.UserId === loggedInUserId)
-          );
-          setIsJoined(isUserJoined);
+            const isUserJoined = data.guestUser.some((guestGroup) =>
+              guestGroup.some((guest) => guest.UserId === loggedInUserId)
+            );
+            setIsJoined(isUserJoined);
           }
         }
       } catch (error) {
@@ -110,102 +111,116 @@ const ViewPost: React.FC = () => {
 
   return (
     <St.ViewSection>
-        {isAuthor ? (
-          // 작성자일 때 
-          <St.TitleWrap>
-            <St.Category>{category}</St.Category>
-            <St.EventName>{eventName}</St.EventName>
-          </St.TitleWrap>
-        ) : (
-          // 이벤트 참여자일 때
-          <St.TitleWrap>
-            <St.Category>{category}</St.Category>
-            {isJoined === true ? (
-              // 참가완료
-              <St.Join>
-                <h1>{eventName}</h1>
-                <span>참가완료</span>
-              </St.Join>
-            ) : (
-              // 미참가
-              <St.NotJoin>
-                <h1>{eventName}</h1>
-              </St.NotJoin>
-            )}
-          </St.TitleWrap>
-        )}
-        {/* 작성자 프로필 */}
-        <St.ProfileWrap>
-          <St.ProfileImg src={profileImg} alt="Profile Image" />
-          <div>
-            <St.Nickname>{nickname}</St.Nickname>
-            <St.CreatedAt>{new Date(createdAt).toLocaleDateString()}</St.CreatedAt>
-          </div>
-        </St.ProfileWrap>
+      {isAuthor ? (
+        // 작성자일 때
+        <St.TitleWrap>
+          <St.Category>{t(category)}</St.Category>
+          <St.EventName>{t(eventName)}</St.EventName>
+        </St.TitleWrap>
+      ) : (
+        // 이벤트 참여자일 때
+        <St.TitleWrap>
+          <St.Category>{t(category)}</St.Category>
+          {isJoined === true ? (
+            // 참가완료
+            <St.Join>
+              <h1>{t(eventName)}</h1>
+              <span>{t("참가완료")}</span>
+            </St.Join>
+          ) : (
+            // 미참가
+            <St.NotJoin>
+              <h1>{t(eventName)}</h1>
+            </St.NotJoin>
+          )}
+        </St.TitleWrap>
+      )}
+      {/* 작성자 프로필 */}
+      <St.ProfileWrap>
+        <St.ProfileImg src={profileImg} alt="Profile Image" />
+        <div>
+          <St.Nickname>{nickname}</St.Nickname>
+          <St.CreatedAt>
+            {new Date(createdAt).toLocaleDateString()}
+          </St.CreatedAt>
+        </div>
+      </St.ProfileWrap>
 
-        {/* 게시글 정보 */}
-        <St.Infowrap>
-          <St.EventDate>
-            <p>모임일시</p>
-            <span>{new Date(eventDate).toLocaleDateString()}</span>
-          </St.EventDate>
-          <St.SignupDate>
-            <p>참가신청 기간</p>
-            <span>
-              {new Date(signupStartDate).toLocaleDateString()}
-              &nbsp; ~ &nbsp;
-              {new Date(signupEndDate).toLocaleDateString()}
-            </span>
-          </St.SignupDate>
-          <St.EventLocation>
-            <p>모임주소</p>
-            <span>{eventLocation}</span>
-          </St.EventLocation>
-          <St.MaxSize>
-            <p>모집인원</p>
-            <span>{maxSize}</span>&nbsp;명
-          </St.MaxSize>
-          <St.GuestUserContainer>
-            <p>참가리스트</p>
-            <span onClick={openModal}>
-              {flattenedGuests.slice(0, 3).map((guest: GuestUser, idx: number) => (
+      {/* 게시글 정보 */}
+      <St.Infowrap>
+        <St.EventDate>
+          <p>{t("모임일시")}</p>
+          <span>{new Date(eventDate).toLocaleDateString()}</span>
+        </St.EventDate>
+        <St.SignupDate>
+          <p>{t("참가신청 기간")}</p>
+          <span>
+            {new Date(signupStartDate).toLocaleDateString()}
+            &nbsp; ~ &nbsp;
+            {new Date(signupEndDate).toLocaleDateString()}
+          </span>
+        </St.SignupDate>
+        <St.EventLocation>
+          <p>{t("모임주소")}</p>
+          <span>{eventLocation}</span>
+        </St.EventLocation>
+        <St.MaxSize>
+          <p>{t("모집인원")}</p>
+          <span>{maxSize}</span>&nbsp;{t("명")}
+        </St.MaxSize>
+        <St.GuestUserContainer>
+          <p>{t("참가리스트")}</p>
+          <span onClick={openModal}>
+            {flattenedGuests
+              .slice(0, 3)
+              .map((guest: GuestUser, idx: number) => (
                 <St.GuestProfileImg
                   key={idx}
                   src={guest.profileImg}
                   alt={`Guest User ${idx}`}
                 />
               ))}
-              {flattenedGuests.length > 3 && <St.MoreUsers>...</St.MoreUsers>}
-            </span>
-          </St.GuestUserContainer>
-          <Modal />
-        </St.Infowrap>
+            {flattenedGuests.length > 3 && <St.MoreUsers>...</St.MoreUsers>}
+          </span>
+        </St.GuestUserContainer>
+        <Modal />
+      </St.Infowrap>
 
-        {/* 게시글 컨텐츠 */}
-        <St.ContentWrap>
-          <St.Content>{content}</St.Content>
-        </St.ContentWrap>
+      {/* 게시글 컨텐츠 */}
+      <St.ContentWrap>
+        <St.Content>{content}</St.Content>
+      </St.ContentWrap>
 
-        {/* 버튼 */}
-        <St.ButtonWrap>
+      {/* 버튼 */}
+      <St.ButtonWrap>
         {/* 작성자일 때 */}
         {isAuthor ? (
-          <div>{<Button bgcolor={"#9ECBFA"} onClick={handdleChat}>채팅하기</Button>}</div>
+          <div>
+            {
+              <Button bgcolor={"#9ECBFA"} onClick={handdleChat}>
+                {t("채팅하기")}
+              </Button>
+            }
+          </div>
         ) : (
           <div>
-          {/* 이벤트 참여자일 때 */}
-          {isJoined !== null && (
-            <Button
-              bgcolor={isJoined ? "#E7E7E7" : "#F7D16F"}
-              onClick={handleToggleParticipation}
-            >
-              {isJoined ? "참가취소" : "참가하기"}
-            </Button>
-          )}
-          {isJoined && <Button bgcolor={"#9ECBFA"} onClick={handdleChat}>채팅하기</Button>}
-        </div>
+            {/* 이벤트 참여자일 때 */}
+            {isJoined !== null && (
+              <Button
+                bgcolor={isJoined ? "#E7E7E7" : "#F7D16F"}
+                onClick={handleToggleParticipation}
+              >
+                {isJoined ? t("참가취소") : t("참가하기")}
+              </Button>
+            )}
+            {isJoined && (
+              <Button bgcolor={"#9ECBFA"} onClick={handdleChat}>
+                {t("채팅하기")}
+              </Button>
+            )}
+          </div>
         )}
-        </St.ButtonWrap>
+      </St.ButtonWrap>
     </St.ViewSection>
   );
 };
