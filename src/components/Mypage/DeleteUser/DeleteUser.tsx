@@ -29,7 +29,7 @@ const DeleteUser: React.FC = () => {
     }
 
     if (reason === "") {
-      toast.error("탈퇴 사유를 입력해주세요!", {
+      toast.error(t("탈퇴 사유를 입력해주세요!"), {
         className: "toast-error toast-container",
       });
       return;

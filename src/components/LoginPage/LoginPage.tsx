@@ -11,7 +11,11 @@ import { setTokens } from "../../util/token";
 import { Button } from "../../components/common/Button";
 import toast, { Toaster } from "react-hot-toast";
 import { useLanguage } from "../../util/Locales/useLanguage";
+import jwtDecode from "jwt-decode";
 
+interface DecodedToken {
+  sub: number;
+}
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { currentLang, t, changeLanguage } = useLanguage();
@@ -58,17 +62,14 @@ const LoginPage: React.FC = () => {
       if (response.status === 200) {
         const accessToken = response.headers["accesstoken"];
         const refreshToken = response.headers["refreshtoken"];
-        console.log(accessToken, refreshToken);
         setTokens(accessToken, refreshToken);
-        console.log("response", response.data);
-        const userId = response.data.userId;
-
-        localStorage.setItem("userId", userId);
+        const userId = (jwtDecode(accessToken) as DecodedToken).sub;
+        console.log("userId", userId);
 
         setUser({ userId });
-        console.log("로그인 후 userId:", userId);
+
         navigate("/");
-        toast.success("환영합니다!", {
+        toast.success(t("환영합니다!"), {
           className: "toast-success toast-container",
         });
       }
