@@ -30,13 +30,6 @@ const SignUpForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [, setUser] = useRecoilState(userState);
   const [isLoading, setIsLoading] = useState(false);
-  // 성별 state
-  // const [gender, setGender] = useState("");
-  // const [genderError, setGenderError] = useState("");
-  // 생년월일 state
-  const [birthYear, setBirthYear] = useState("");
-  const [birthMonth, setBirthMonth] = useState("");
-  const [birthDay, setBirthDay] = useState("");
   const navigate = useNavigate();
   const jsConfetti = new JSConfetti();
 
@@ -154,25 +147,6 @@ const SignUpForm: React.FC = () => {
     setBioError(validateBio(newValue));
   };
 
-  // 성별 체인지 체인지
-  // const handleGenderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const newValue = e.target.value;
-  //   setGender(newValue);
-  //   setGenderError(newValue ? "" : "필수 정보입니다.");
-  // };
-  // 생년 월 일 체인지
-  const handleBirthYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBirthYear(e.target.value);
-  };
-
-  const handleBirthMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setBirthMonth(e.target.value);
-  };
-
-  const handleBirthDayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBirthDay(e.target.value);
-  };
-
   const handleNicknameDupCheck = async () => {
     const errorMessage = await handleCheckNickname(nickname);
     setNicknameError(errorMessage);
@@ -257,83 +231,6 @@ const SignUpForm: React.FC = () => {
         />
         <ST.ErrorMessageJoin>{confirmPasswordError}</ST.ErrorMessageJoin>
       </ST.LabelWrapper>
-      <ST.LabelWrapper>
-        <label>{t("생년월일")}</label>
-        <div id="bir_wrap">
-          {/* BIRTH_YY */}
-          <div id="bir_yy">
-            <span className="box">
-              <input
-                type="text"
-                id="yy"
-                className="int"
-                maxLength={4}
-                placeholder="YYYY"
-                value={birthYear}
-                onChange={handleBirthYearChange}
-              />
-            </span>
-          </div>
-
-          {/* BIRTH_MM */}
-          <div id="bir_mm">
-            <span className="box">
-              <select
-                id="mm"
-                className="sel"
-                value={birthMonth}
-                onChange={handleBirthMonthChange}
-              >
-                <option>월</option>
-                <option value="01">1</option>
-                <option value="02">2</option>
-                <option value="03">3</option>
-                <option value="04">4</option>
-                <option value="05">5</option>
-                <option value="06">6</option>
-                <option value="07">7</option>
-                <option value="08">8</option>
-                <option value="09">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-              </select>
-            </span>
-          </div>
-
-          {/* BIRTH_DD */}
-          <div id="bir_dd">
-            <span className="box">
-              <input
-                type="text"
-                id="dd"
-                className="int"
-                maxLength={2}
-                placeholder="DD"
-                value={birthDay}
-                onChange={handleBirthDayChange}
-              />
-            </span>
-          </div>
-        </div>
-        {/* 에러 메시지를 표시할 수 있는 부분 (선택사항) */}
-        {/* <ST.ErrorMessageJoin>{birthError}</ST.ErrorMessageJoin> */}
-      </ST.LabelWrapper>
-      {/* <ST.LabelWrapper>
-        <label>{t("성별")}</label>
-        <div className="box gender_code">
-          <select
-            id="gender"
-            className="sel"
-            value={gender}
-            onChange={handleGenderChange}
-          >
-            <option value="M">남자</option>
-            <option value="F">여자</option>
-          </select>
-        </div>
-        <ST.ErrorMessageJoin>{genderError}</ST.ErrorMessageJoin>
-      </ST.LabelWrapper> */}
       <ST.LabelWrapper>
         <label>{t("한줄 자기소개")}</label>
         <input type="text" value={bio} onChange={handleBioChange} />
