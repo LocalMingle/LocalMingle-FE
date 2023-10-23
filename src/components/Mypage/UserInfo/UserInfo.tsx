@@ -16,8 +16,12 @@ import {
 import { axiosInstance } from "../../../api/axiosInstance";
 import toast from "react-hot-toast";
 import { useLanguage } from "../../../util/Locales/useLanguage";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../recoil/atoms/UserState";
 
 const UserInfo: React.FC = () => {
+  const user = useRecoilValue(userState);
+  const userId = user.userId;
   const [showPassword, setShowPassword] = useState(false);
   const [profileImage, setProfileImage] = useState<string>();
   const [nickname, setNickname] = useState("");
@@ -88,7 +92,7 @@ const UserInfo: React.FC = () => {
     const nameChanged = nickname !== initialNickname;
 
     if (!password) {
-      toast.error("비밀번호를 입력해주세요.", {
+      toast.error(t("비밀번호를 입력해주세요."), {
         className: "toast-error toast-container",
       });
       return;
@@ -100,13 +104,11 @@ const UserInfo: React.FC = () => {
     }
 
     try {
-      console.log("사용자 ID를 가져오는 중...");
-      const userId = localStorage.getItem("userId");
-      console.log("사용자 ID:", userId);
+      console.log("회원 정보를 업데이트하는 중...");
       if (userId) {
         console.log("회원 정보를 업데이트하는 중...");
         const response = await updateUserInfo(
-          userId,
+          userId.toString(),
           nickname,
           intro,
           password,
@@ -121,7 +123,7 @@ const UserInfo: React.FC = () => {
       } else {
         console.error("사용자 ID를 불러오지 못했습니다.");
       }
-      toast.success("수정이 완료되었습니다.", {
+      toast.success(t("수정이 완료되었습니다."), {
         className: "toast-success toast-container",
       });
       setNicknameError("");

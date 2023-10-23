@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import * as St from "./STJoinList";
 import { getJoinedEvents, cancelParticipation } from "../../../api/api";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../util/Locales/useLanguage";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../recoil/atoms/UserState";
 
 type Event = {
   id?: number;
@@ -15,13 +17,15 @@ type Event = {
 };
 
 const JoinList: React.FC = () => {
+  const user = useRecoilValue(userState);
+  const userId = user.userId;
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const fetchEvents = async () => {
+
+  const fetchEvents = useCallback(async () => {
     try {
-      const userId = localStorage.getItem("userId");
       if (!userId) throw new Error("User not logged in");
 
       const joinedEvents: Event[] = await getJoinedEvents(Number(userId));
@@ -37,11 +41,11 @@ const JoinList: React.FC = () => {
     } catch (error) {
       console.error("이벤트 불러오기 오류:", error);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     fetchEvents();
-  }, [isLoading]);
+  }, [isLoading, fetchEvents]);
 
   const handleCancel = async (eventId: number) => {
     try {

@@ -35,7 +35,7 @@ const Header: React.FC = () => {
 
   // 로그아웃 : 토큰 삭제
   const logout = () => {
-    toast.success("로그아웃이 완료되었습니다.", {
+    toast.success(t("로그아웃이 완료되었습니다."), {
       className: "toast-success toast-container",
     });
     localStorage.removeItem("accessToken");

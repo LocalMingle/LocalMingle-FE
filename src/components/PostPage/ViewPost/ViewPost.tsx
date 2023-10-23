@@ -11,6 +11,8 @@ import Modal from "../../common/Modal/Modal";
 import { useRecoilState } from "recoil";
 import { modalState } from "../../../recoil/atoms/ModalState";
 import { useLanguage } from "../../../util/Locales/useLanguage";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../recoil/atoms/UserState";
 
 type GuestUser = {
   userDetailId: number;
@@ -23,13 +25,14 @@ type GuestUser = {
 };
 
 const ViewPost: React.FC = () => {
+  const user = useRecoilValue(userState);
+  const loggedInUserId = user.userId;
   const { eventId } = useParams<{ eventId?: string }>();
   const [eventDetail, setEventDetail] = useState<EventDetailResponse | null>(
     null
   );
   const [isAuthor, setIsAuthor] = useState(false);
   const [isJoined, setIsJoined] = useState<boolean | null>(null);
-  const loggedInUserId = Number(localStorage.getItem("userId"));
   const [, setIsModalOpen] = useRecoilState(modalState);
   const { t } = useLanguage();
   const handleToggleParticipation = async () => {
