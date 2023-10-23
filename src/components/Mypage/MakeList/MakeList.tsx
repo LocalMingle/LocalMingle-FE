@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import * as St from "./STMakeList";
 import { getEvents, deleteEvent } from "../../../api/api";
 import { useLanguage } from "../../../util/Locales/useLanguage";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../recoil/atoms/UserState";
 
 interface Event {
   eventId: number;
@@ -18,12 +20,14 @@ interface Event {
 }
 
 const MakeList: React.FC = () => {
+  const user = useRecoilValue(userState); // Recoil에서 user 정보 가져오기
+  const userId = user.userId;
   const [events, setEvents] = useState<Event[]>([]);
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const fetchEvents = async () => {
+
+  const fetchEvents = useCallback(async () => {
     try {
-      const userId = localStorage.getItem("userId");
       if (!userId) throw new Error("User not logged in");
       const data = await getEvents(Number(userId));
       console.log(data);
@@ -41,7 +45,7 @@ const MakeList: React.FC = () => {
     } catch (error) {
       console.error("글목록 불러오기 실패:", error);
     }
-  };
+  }, [userId]);
 
   const handleDeleteEvent = async (eventId: number) => {
     try {
@@ -62,7 +66,7 @@ const MakeList: React.FC = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [fetchEvents]);
 
   return (
     <>
