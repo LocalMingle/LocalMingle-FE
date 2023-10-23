@@ -11,20 +11,10 @@ import { Spinner } from "../common/Spinner";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../../util/Locales/useLanguage";
-import { useRecoilState } from "recoil";
-import { locationState, sidoOptionsState, gugunOptionsState, categoryOptionsState } from "../../recoil/atoms/SelectState";
 
 const MainPage: React.FC = () => {
   const { t } = useLanguage();
   const accessToken = localStorage.getItem("accessToken");
-
-  // 각 샐랙터에 대한 Recoil 전역 상태 관리
-  const [ , setLocationOptions] = useRecoilState(locationState);
-  const [ , setSidoOptions] = useRecoilState(sidoOptionsState);
-  const [ , setGugunOptions] = useRecoilState(gugunOptionsState);
-  const [ , setCategoryOptions] = useRecoilState(categoryOptionsState);
-
-  // 선택된 옵션에 대한 상태 관리
   const [selectedVerify, setSelectedVerify] = useState<string>(""); // 위치 인증 여부
   const [selectedSido, setSelectedSido] = useState<string>("서울특별시"); // 시도
   const [selectedGugun, setSelectedGugun] = useState<string>(""); // 구군
@@ -67,9 +57,7 @@ const MainPage: React.FC = () => {
       const response = await mainAPI
         .locationApi()
         .then((response) => {
-          const verifyOptions = response.data.verify;
-          setLocationOptions(verifyOptions);
-          return verifyOptions;
+          return response.data.verify;
         })
         .catch((error) => {
           console.log("위치 인증 여부 불러오기 실패", error);
@@ -91,9 +79,7 @@ const MainPage: React.FC = () => {
       const response = await mainAPI
         .sidoApi()
         .then((response) => {
-          const sidoOptions = response.data;
-          setSidoOptions(sidoOptions);
-          return sidoOptions;
+          return response.data;
         })
         .catch((error) => {
           console.log("시/도 불러오기 실패", error);
@@ -118,9 +104,8 @@ const MainPage: React.FC = () => {
       const response = await mainAPI
         .gugunApi(selectedSido)
         .then((response) => {
-          const gugunOptions = response.data;
-          setGugunOptions(gugunOptions);
-          return gugunOptions;
+          console.log("구/군 데이터:", gugunOptionsData);
+          return response.data;
         })
         .catch((error) => {
           console.log("구/군 불러오기 실패", error);
@@ -145,8 +130,6 @@ const MainPage: React.FC = () => {
       const response = await mainAPI
         .categoryApi()
         .then((response) => {
-          const categoryOptions = response.data.category;
-          setCategoryOptions(categoryOptions);
           return response.data.category;
         })
         .catch((error) => {
