@@ -17,12 +17,12 @@ const WritePost: React.FC = () => {
   const [eventDate, setEventDate] = useState<string>();
   const [signupStartDate, setSignupStartDate] = useState<string>();
   const [signupEndDate, setSignupEndDate] = useState<string>();
-  const [eventLocation, setEventLocation] = useState<string>('서울특별시');
+  const [eventLocation, setEventLocation] = useState<string>('');
   const [maxSize, setMaxSize] = useState<number>(0);
   const [content, setContent] = useState<string>('');
-  const [category, setCategory] = useState<string>('🙋‍♀️아무나');
+  const [category, setCategory] = useState<string>('☕맛집/커피');
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
-  const [isVerified, setIsVerified] = useState<string>('☕맛집/커피');
+  const [isVerified, setIsVerified] = useState<string>('🙋‍♀️아무나');
   const [eventImg, setEventImg] = useState<null>(null);
 
   // 사용하지 않는 변수임을 명시적으로 알리기
@@ -186,6 +186,11 @@ const WritePost: React.FC = () => {
         return;
       }
 
+      if (maxSize <= 0) {
+        alert("모임인원은 1명 이상이어야 합니다!");
+        return;
+      }
+
       const postData: WritePostData = {
         eventName,
         maxSize,
@@ -209,26 +214,29 @@ const WritePost: React.FC = () => {
   return (
     <St.PostSection>
       <St.SelectorWrap>
-      <Selector
-          options={locationOptionsData?.map((item) => ({
-            value: t(item),
-            label: t(item),
-          }))}
-          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-            setIsVerified(selectedOption.target.value);
-          }}
-        ></Selector>
-        
+
+          {/* 카테고리 */}
+          <Selector
+            options={categoryOptionsData?.map((item) => ({
+              value: t(item),
+              label: t(item),
+            }))}
+            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+              setCategory(selectedOption.target.value);
+            }}
+          ></Selector>
+
+          {/* 위치인증 */}
         <Selector
-          options={categoryOptionsData?.map((item) => ({
-            value: t(item),
-            label: t(item),
-          }))}
-          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-            setCategory(selectedOption.target.value);
-          }}
-        ></Selector>
-        
+            options={locationOptionsData?.map((item) => ({
+              value: t(item),
+              label: t(item),
+            }))}
+            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+              setIsVerified(selectedOption.target.value);
+            }}
+          ></Selector>
+
       </St.SelectorWrap>
       <St.TitleWrap>
         <input type="text" placeholder='제목을 입력하세요' value={eventName} onChange={(e)=>{setEventName(e.target.value)}}/>

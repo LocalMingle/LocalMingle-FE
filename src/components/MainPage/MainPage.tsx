@@ -171,6 +171,7 @@ const MainPage: React.FC = () => {
       const response = await mainAPI
         .cardListApi()
         .then((response) => {
+          // console.log('게시글 전체조회 데이터:', response.data);
           return response.data;
         })
         .catch((error) => {
