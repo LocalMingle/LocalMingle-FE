@@ -63,7 +63,6 @@ export const ErrorMessageJoin = styled.div`
   font-size: 12px;
   color: #da7969;
   text-align: left;
-  margin-top: 5px;
 `;
 
 export const DupCheckButtonWrap = styled.div`
@@ -95,4 +94,12 @@ export const ValidationColor = styled.div<{ isValid: boolean | null }>`
   font-size: 12px;
   text-align: left;
   margin-top: 5px;
+`;
+
+export const CountdownText = styled.span`
+  font-size: 12px;
+  color: #da7969;
+  text-align: center;
+  margin-left: 170px;
+  margin-top: 6px;
 `;
