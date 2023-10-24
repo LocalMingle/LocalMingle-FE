@@ -182,7 +182,7 @@ const WritePost: React.FC = () => {
   const postAdd = async () => {
     try {
       // 필수 입력값 체크
-      if (!eventName || !eventDate || !signupStartDate || !signupEndDate || !eventLocation || !maxSize || !content) {
+      if (!eventName || !eventDate || !signupStartDate || !signupEndDate || !eventLocation || !content) {
         alert('내용을 모두 입력해주세요!');
         return;
       }
@@ -193,9 +193,9 @@ const WritePost: React.FC = () => {
         return;
       }
 
-      // 참가신청 기간 첫번째 input이 두번째 input보다 빠른 경우 체크
+      // 참가신청 기간 두번째 input이 첫번째 input보다 빠른 경우 체크
       if (new Date(signupStartDate) > new Date(signupEndDate)) {
-        alert("참가신청 기간은 시작일이 종료일보다 빠를 수 없습니다!");
+        alert("참가신청 기간은 종료일이 시작일보다 빠를 수 없습니다!");
         return;
       }
 
@@ -206,13 +206,13 @@ const WritePost: React.FC = () => {
       }
 
       // 모임일시보다 참가신청 기간이 늦는 경우 체크
-      if (new Date(eventDate) > new Date(signupEndDate)) {
+      if (new Date(eventDate) < new Date(signupEndDate)) {
         alert("참가신청 기간은 모임일시보다 늦을 수 없습니다!");
         return;
       }
 
       // 모임인원 체크
-      if (maxSize <= 0) {
+      if (maxSize < 0 || maxSize == 0) {
         alert("모임인원은 1명 이상이어야 합니다!");
         return;
       }
