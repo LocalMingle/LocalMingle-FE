@@ -7,6 +7,7 @@ import {
   UpdateValidatePassword,
   UpdateValidatePasswordConfirmation,
   handleCheckNickname,
+  validateImageUpload,
 } from "../../../util/validation";
 import {
   uploadProfileImage,
@@ -139,36 +140,46 @@ const UserInfo: React.FC = () => {
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      const validationError = validateImageUpload(file);
+
+      if (validationError) {
+        console.error(validationError);
+        toast.error(t(validationError), {
+          className: "toast-error toast-container",
+        });
+        return;
+      }
+
       try {
         const uploadedImage = await uploadProfileImage(file);
         setProfileImage(uploadedImage.profileImgURL);
       } catch (error) {
-        console.error("이미지 업로드 중 오류 발생:", error);
+        console.error(t("이미지 업로드 중 오류 발생:"), error);
       }
     }
   };
 
   const handleCheckNicknameClick = async () => {
-    const errorMessage = await handleCheckNickname(nickname);
+    const errorMessage = t(await handleCheckNickname(nickname));
     setNicknameError(errorMessage);
-    setIsNicknameValid(errorMessage === "닉네임을 사용할 수 있습니다.");
+    setIsNicknameValid(errorMessage === t("닉네임을 사용할 수 있습니다."));
   };
 
   const handleNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setNickname(newValue);
-    setNicknameError(UpdateValidateNickname(newValue));
+    setNicknameError(t(UpdateValidateNickname(newValue)));
   };
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setPassword(newValue);
-    setPasswordError(UpdateValidatePassword(newValue));
+    setPasswordError(t(UpdateValidatePassword(newValue)));
   };
   const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setConfirmPassword(newValue);
     setConfirmPasswordError(
-      UpdateValidatePasswordConfirmation(password, newValue)
+      t(UpdateValidatePasswordConfirmation(password, newValue))
     );
   };
   return (

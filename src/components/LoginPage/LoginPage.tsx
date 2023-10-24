@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import naverLogo from "../../asset/buttonImages/naverlogin.png";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../../api/axiosInstance";
 import * as ST from "./STLoginPage";
@@ -30,18 +31,18 @@ const LoginPage: React.FC = () => {
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setEmail(newValue);
-    setEmailError(validateEmail(newValue));
+    setEmailError(t(validateEmail(newValue)));
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setPassword(newValue);
-    setPasswordError(validateLoginPassword(newValue));
+    setPasswordError(t(validateLoginPassword(newValue)));
   };
 
   const handleLogin = async () => {
     setEmailError(validateEmail(email));
-    setPasswordError(validateLoginPassword(password));
+    setPasswordError(t(validateLoginPassword(password)));
 
     if (emailError || passwordError) {
       return;
@@ -80,20 +81,61 @@ const LoginPage: React.FC = () => {
     }
   };
   // 쿠키로 받는다
-  // const kakaoLoginHandler = () => {
-  //   const REACT_APP_URL = "http://localhost:3000";
+  // const handleKakaoLogin = () => {
+  //   const SERVER_URL =
+  //     process.env.REACT_APP_SERVER_URL || "http://localhost:8000";
   //   const kakaoOauthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&redirect_uri=${encodeURIComponent(
-  //     `${REACT_APP_URL}/users/login/kakao`
-  //   )}&client_id=${import.meta.env.VITE_REACT_APP_KAKAO_CLIENT_ID}`;
+  //     `${SERVER_URL}/api/kakao/callback`
+  //   )}&client_id=${process.env.REACT_APP_KAKAO_ID}`;
   //   window.location.href = kakaoOauthURL;
   // };
 
   const kakaoLoginHandler = () => {
-    const REACT_APP_URL = "https://www.totobon6125.store";
+    const REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
+    // "https://www.totobon6125.store";
     const kakaoOauthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&redirect_uri=${encodeURIComponent(
       `${REACT_APP_URL}/users/login/kakao`
     )}&client_id=${import.meta.env.VITE_REACT_APP_KAKAO_CLIENT_ID}`;
     window.location.href = kakaoOauthURL;
+  };
+
+  // const handleGoogleLogin = () => {
+  //   const SERVER_URL =
+  //     process.env.REACT_APP_SERVER_URL || "http://localhost:8000";
+  //   const googleOauthURL = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${
+  //     process.env.REACT_APP_GOOGLE_CLIENT_ID
+  //   }&scope=openid%20profile%20email&redirect_uri=${encodeURIComponent(
+  //     `${SERVER_URL}/api/google/callback`
+  //   )}&access_type=offline`;
+  //   window.location.href = googleOauthURL;
+  // };
+
+  const googleLoginHandler = () => {
+    const REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
+    const googleOauthURL = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${
+      import.meta.env.VITE_GOOGLE_CLIENT_ID
+    }&scope=openid%20profile%20email&redirect_uri=${encodeURIComponent(
+      `${REACT_APP_URL}/users/login/google`
+    )}&access_type=offline`;
+    window.location.href = googleOauthURL;
+  };
+
+  // const generateRandomString = () => {
+  //   return (
+  //     Math.random().toString(36).substring(2, 15) +
+  //     Math.random().toString(36).substring(2, 15)
+  //   );
+  // };
+
+  const naverLoginHandler = () => {
+    const REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
+    const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID;
+    const STATE = "false";
+    const naverOauthURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=${STATE}&redirect_uri=${encodeURIComponent(
+      `${REACT_APP_URL}/users/login/naver`
+    )}`;
+
+    window.location.href = naverOauthURL;
   };
 
   const handleJoinClick = () => {
@@ -131,7 +173,6 @@ const LoginPage: React.FC = () => {
         </ST.InputWithIcon>
         <ST.ErrorMessageLogin>{emailError}</ST.ErrorMessageLogin>
       </ST.LabelWrapper>
-
       <ST.LabelWrapper>
         <label>{t("비밀번호")}</label>
         <ST.InputWithIcon>
@@ -152,7 +193,6 @@ const LoginPage: React.FC = () => {
         </ST.InputWithIcon>
         <ST.ErrorMessageLogin>{passwordError}</ST.ErrorMessageLogin>
       </ST.LabelWrapper>
-
       <Button onClick={handleLogin}>{t("로그인")}</Button>
       <div>
         <ST.KakaoButton onClick={kakaoLoginHandler}>
@@ -162,7 +202,18 @@ const LoginPage: React.FC = () => {
           />
         </ST.KakaoButton>
       </div>
-
+      <ST.GoogleLoginButton onClick={googleLoginHandler}>
+        <ST.Icon
+          src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+          alt="Google logo"
+        />
+        구글 로그인
+      </ST.GoogleLoginButton>
+      <ST.NaverLoginBtn
+        onClick={naverLoginHandler}
+        src={naverLogo}
+        alt="naverlogin"
+      ></ST.NaverLoginBtn>
       <ST.SignupText>
         {t("로컬밍글의 회원이 아니신가요?")}{" "}
         <span onClick={handleJoinClick}>{t("회원가입")}</span>
