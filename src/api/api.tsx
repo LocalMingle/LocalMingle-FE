@@ -480,4 +480,44 @@ export const toggleParticipation = async (eventId: number) => {
   }
 };
 
-// 소셜로그인용 리프레쉬 토큰이용해서(로그인 후) 바로 새로운 엑세스토큰 재발급되게끔.
+// 시/도 데이터 불러오기
+export const getCityData = async (lang: string) => {
+  try {
+    const response = await axiosInstance.get("/data/city", {
+      params: { lang },
+    });
+
+    if (response.status === 200) {
+      console.log("데이터 가져옴!", response.data);
+      return response.data;
+    } else {
+      console.error("데이터 가져오기 실패ㅠ", response);
+      return null;
+    }
+  } catch (error) {
+    console.error(`시/도 데이터 가져오기 실패: ${error}`);
+    throw error;
+  }
+};
+
+// 구/군 데이터 불러오기
+export const getGuNames = async (doName: string) => {
+  try {
+    const response = await axiosInstance.get("/data/gu_name", {
+      params: {
+        doName,
+      },
+    });
+
+    console.log("서버에서 반환된 데이터:", response.data);
+
+    if (Array.isArray(response.data)) {
+      return response.data;
+    } else {
+      throw new Error("올바르지 않은 데이터 형식입니다.");
+    }
+  } catch (error) {
+    console.error("구/군 데이터 불러오기 중 오류 발생:", error);
+    throw error;
+  }
+};

@@ -40,7 +40,7 @@ const ModifyPost: React.FC = () => {
           </div>
           <div>
             <p>{t("모임주소")}</p>
-            <input type="text" placeholder="ex. 서울시 마포구" />
+            <input type="text" placeholder={t("ex. 서울시 마포구")} />
           </div>
           <div>
             <p>{t("모임인원")}</p>

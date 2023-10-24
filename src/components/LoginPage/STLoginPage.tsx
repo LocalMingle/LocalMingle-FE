@@ -80,3 +80,31 @@ export const KakaoButton = styled.button`
     border-radius: 12px;
   }
 `;
+
+// 구글 로그인 버튼
+export const GoogleLoginButton = styled.button`
+  width: 200px;
+  height: 40px;
+  background-color: #9ca5b4;
+  border-radius: 2px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: #357ae8;
+  }
+`;
+
+export const Icon = styled.img`
+  margin-right: 10px;
+`;
+
+// 네이버 버튼
+export const NaverLoginBtn = styled.img`
+  width: 50px;
+  height: 50px;
+`;

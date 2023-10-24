@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil";
 import { isLoginState, userState } from "../recoil/atoms/UserState";
 
 const Main: React.FC = () => {
-  const [, setisLoginState] = useRecoilState(isLoginState);
+  const [, setIsLoginState] = useRecoilState(isLoginState);
   const [, setUser] = useRecoilState(userState);
 
   useEffect(() => {
@@ -14,16 +14,18 @@ const Main: React.FC = () => {
     const userId = urlParams.get("userId");
     const accessToken = urlParams.get("accessToken");
     const refreshToken = urlParams.get("refreshToken");
-    console.log(accessToken, refreshToken);
     if (urlParams.size) {
-      // localStorage.setItem("userId", userId!);
-      setUser({ userId: Number(userId) });
+      if (userId !== null) {
+        setUser({ userId: Number(userId) });
+      } else {
+        console.error("userId is null");
+      }
       localStorage.setItem("accessToken", accessToken!);
       localStorage.setItem("refreshToken", refreshToken!);
-      setisLoginState(true);
+      setIsLoginState(true);
     }
     window.history.replaceState({}, document.title, "/");
-  }, [setisLoginState, setUser]);
+  }, [setIsLoginState, setUser]);
 
   return (
     <>

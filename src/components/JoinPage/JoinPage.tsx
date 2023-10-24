@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as ST from "./STJoinPage";
 import { Button } from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +14,8 @@ import {
   validateEmail,
   validateBio,
   handleCheckNickname,
-  handleCheckEmail,
+  validateAuthCodeTimer,
+  validateEmailVerification,
 } from "../../util/validation";
 import JSConfetti from "js-confetti";
 import { useLanguage } from "../../util/Locales/useLanguage";
@@ -40,16 +41,22 @@ const SignUpForm: React.FC = () => {
   const [bioError, setBioError] = useState("");
   const [isNicknameValid, setIsNicknameValid] = useState<boolean | null>(null);
   const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null);
+  const [authCode, setAuthCode] = useState(""); // 인증코드 입력 상태값
+  const [emailSent, setEmailSent] = useState(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const [isTimerExpired, setIsTimerExpired] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const timerValidationMessage = validateAuthCodeTimer(isTimerExpired);
+  const emailValidationMessage = validateEmailVerification(isEmailVerified);
 
   const handleSignUp = async () => {
-    const newNicknameError = validateNickname(nickname);
-    const newEmailError = validateEmail(email);
-    const newPasswordError = validatePassword(password);
-    const newConfirmPasswordError = validatePasswordConfirmation(
-      password,
-      confirmPassword
+    const newNicknameError = t(validateNickname(nickname));
+    const newEmailError = t(validateEmail(email));
+    const newPasswordError = t(validatePassword(password));
+    const newConfirmPasswordError = t(
+      validatePasswordConfirmation(password, confirmPassword)
     );
-    const newBioError = validateBio(bio);
+    const newBioError = t(validateBio(bio));
 
     setNicknameError(newNicknameError);
     setEmailError(newEmailError);
@@ -115,22 +122,64 @@ const SignUpForm: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    let timer: number;
+
+    if (emailSent) {
+      setCountdown(180);
+      timer = setInterval(() => {
+        setCountdown((prevCountdown) =>
+          prevCountdown !== null ? prevCountdown - 1 : null
+        );
+      }, 1000);
+    }
+
+    return () => {
+      if (timer) {
+        clearInterval(timer);
+      }
+    };
+  }, [emailSent]);
+
+  const handleSendEmail = async () => {
+    // 이메일 보내기 로직
+    setEmailSent(true);
+
+    // 타이머 시작
+    setIsTimerExpired(false);
+    // ...여기에 실제 타이머 로직 추가. 타이머가 끝나면 setIsTimerExpired(true)로 설정
+  };
+
+  const handleAuth = async () => {
+    // 인증코드 확인 로직
+    // 성공하면 이메일 상태를 valid하게 만들거나 다른 처리
+    setIsEmailVerified(true); // 예를 들어 인증 성공했을 때
+  };
+
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setNickname(newValue);
-    setNicknameError(validateNickname(newValue));
+    setNicknameError(t(validateNickname(newValue)));
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setEmail(newValue);
-    setEmailError(validateEmail(newValue));
+
+    const errorMessage = t(validateEmail(newValue));
+    setEmailError(errorMessage);
+
+    if (errorMessage) {
+      setIsEmailValid(false);
+    } else {
+      setIsEmailValid(true);
+    }
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setPassword(newValue);
-    setPasswordError(validatePassword(newValue));
+    setPasswordError(t(validatePassword(newValue)));
   };
 
   const handleConfirmPasswordChange = (
@@ -138,26 +187,28 @@ const SignUpForm: React.FC = () => {
   ) => {
     const newValue = e.target.value;
     setConfirmPassword(newValue);
-    setConfirmPasswordError(validatePasswordConfirmation(password, newValue));
+    setConfirmPasswordError(
+      t(validatePasswordConfirmation(password, newValue))
+    );
   };
 
   const handleBioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setBio(newValue);
-    setBioError(validateBio(newValue));
+    setBioError(t(validateBio(newValue)));
   };
 
   const handleNicknameDupCheck = async () => {
-    const errorMessage = await handleCheckNickname(nickname);
+    const errorMessage = t(await handleCheckNickname(nickname));
     setNicknameError(errorMessage);
-    setIsNicknameValid(errorMessage === "닉네임을 사용할 수 있습니다.");
+    setIsNicknameValid(errorMessage === t("닉네임을 사용할 수 있습니다."));
   };
 
-  const handleEmailDupCheck = async () => {
-    const errorMessage = await handleCheckEmail(email);
-    setEmailError(errorMessage);
-    setIsEmailValid(errorMessage === "이메일을 사용할 수 있습니다.");
-  };
+  // const handleEmailDupCheck = async () => {
+  //   const errorMessage = t(await handleCheckEmail(email));
+  //   setEmailError(errorMessage);
+  //   setIsEmailValid(errorMessage === t("이메일을 사용할 수 있습니다."));
+  // };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -186,23 +237,45 @@ const SignUpForm: React.FC = () => {
         <ST.ValidationColor isValid={isNicknameValid}>
           {nicknameError}
         </ST.ValidationColor>
+        {countdown !== null && (
+          <span>{`남은 시간: ${Math.floor(countdown / 60)}분 ${
+            countdown % 60
+          }초`}</span>
+        )}
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
         <label>{t("이메일")}</label>
         <div>
           <input type="email" value={email} onChange={handleEmailChange} />
-          <ST.DupCheckButtonWrap>
-            <ST.DupCheckButton onClick={handleEmailDupCheck}>
-              {t("중복 체크")}
-            </ST.DupCheckButton>
-          </ST.DupCheckButtonWrap>
+          {emailSent ? (
+            <>
+              <input
+                type="text"
+                value={authCode}
+                onChange={(e) => setAuthCode(e.target.value)}
+                placeholder="인증코드"
+              />
+              <button onClick={handleAuth}>인증</button>
+            </>
+          ) : (
+            <ST.DupCheckButtonWrap>
+              <ST.DupCheckButton
+                onClick={handleSendEmail}
+                disabled={!isEmailValid}
+              >
+                {t("인증코드 보내기")}
+              </ST.DupCheckButton>
+            </ST.DupCheckButtonWrap>
+          )}
         </div>
         <ST.ValidationColor isValid={isEmailValid}>
           {emailError}
         </ST.ValidationColor>
+        {/* 이 부분에 메시지 추가! */}
+        {timerValidationMessage && <div>{timerValidationMessage}</div>}
+        {emailValidationMessage && <div>{emailValidationMessage}</div>}
       </ST.LabelWrapper>
-
       <ST.LabelWrapper>
         <label>{t("비밀번호")}</label>
         <ST.EyleToggleWrap>

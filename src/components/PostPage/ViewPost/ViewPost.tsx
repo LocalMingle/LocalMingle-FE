@@ -118,7 +118,7 @@ const ViewPost: React.FC = () => {
         // 작성자일 때
         <St.TitleWrap>
           <St.Category>{t(category)}</St.Category>
-          <St.EventName>{t(eventName)}</St.EventName>
+          <St.EventName>{eventName}</St.EventName>
         </St.TitleWrap>
       ) : (
         // 이벤트 참여자일 때
