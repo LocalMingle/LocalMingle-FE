@@ -181,20 +181,53 @@ const WritePost: React.FC = () => {
   // 게시글 등록
   const postAdd = async () => {
     try {
+      // 필수 입력값 체크
       if (!eventName || !eventDate || !signupStartDate || !signupEndDate || !eventLocation || !maxSize || !content) {
         alert('내용을 모두 입력해주세요!');
         return;
       }
 
+      // 모임일시가 참가신청 기간보다 빠른 경우 체크
+      if (new Date(eventDate) < new Date(signupStartDate)) {
+        alert("모임일시는 참가신청 기간보다 빠를 수 없습니다!");
+        return;
+      }
+
+      // 참가신청 기간 첫번째 input이 두번째 input보다 빠른 경우 체크
+      if (new Date(signupStartDate) > new Date(signupEndDate)) {
+        alert("참가신청 기간은 시작일이 종료일보다 빠를 수 없습니다!");
+        return;
+      }
+
+      // 참가신청 기간 두번째 input이 모임일시보다 빠른 경우 체크
+      if (new Date(eventDate) < new Date(signupEndDate)) {
+        alert("참가신청 기간은 모임일시보다 빠를 수 없습니다!");
+        return;
+      }
+
+      // 모임일시보다 참가신청 기간이 늦는 경우 체크
+      if (new Date(eventDate) > new Date(signupEndDate)) {
+        alert("참가신청 기간은 모임일시보다 늦을 수 없습니다!");
+        return;
+      }
+
+      // 모임인원 체크
       if (maxSize <= 0) {
         alert("모임인원은 1명 이상이어야 합니다!");
+        return;
+      }
+
+      // 본문 내용 길이 체크
+      const contentLength = 200;
+      if (content.length > contentLength) {
+        alert(`본문 내용은 ${contentLength}자 이내로 입력해주세요!`);
         return;
       }
 
       const postData: WritePostData = {
         eventName,
         maxSize,
-        eventDate: new Date(eventDate), // 문자열을 Date 객체로 변환
+        eventDate: new Date(eventDate),
         signupStartDate: new Date(signupStartDate),
         signupEndDate: new Date(signupEndDate),
         eventLocation,
