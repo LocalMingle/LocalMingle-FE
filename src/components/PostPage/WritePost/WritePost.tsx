@@ -182,7 +182,7 @@ const WritePost: React.FC = () => {
   const postAdd = async () => {
     try {
       // 필수 입력값 체크
-      if (!eventName || !eventDate || !signupStartDate || !signupEndDate || !eventLocation || !content) {
+      if (!eventName || !eventDate || !signupStartDate || !signupEndDate || !content) {
         alert('내용을 모두 입력해주세요!');
         return;
       }
