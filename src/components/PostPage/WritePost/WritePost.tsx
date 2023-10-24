@@ -1,18 +1,33 @@
 import React, { useState } from 'react'
 import * as St from './STWritePost'
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import axios, {AxiosInstance} from 'axios';
 import { Selector } from '../../common/Selector'
 import { Button } from '../../common/Button';
-import { useRecoilValue } from 'recoil';
-import { sidoOptionsState, categoryOptionsState } from '../../../recoil/atoms/SelectState';
+import { useLanguage } from '../../../util/Locales/useLanguage';
 
 const WritePost: React.FC = () => {
-  const sidoOptions = useRecoilValue(sidoOptionsState);
-  const categoryOptions = useRecoilValue(categoryOptionsState);
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const accessToken = localStorage.getItem('accessToken');
+
+  // 게시글 작성 state
+  const [eventName, setEventName] = useState<string>('');
+  const [eventDate, setEventDate] = useState<string>();
+  const [signupStartDate, setSignupStartDate] = useState<string>();
+  const [signupEndDate, setSignupEndDate] = useState<string>();
+  const [eventLocation, setEventLocation] = useState<string>('서울특별시');
+  const [maxSize, setMaxSize] = useState<number>(0);
+  const [content, setContent] = useState<string>('');
+  const [category, setCategory] = useState<string>('🙋‍♀️아무나');
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [isVerified, setIsVerified] = useState<string>('☕맛집/커피');
+  const [eventImg, setEventImg] = useState<null>(null);
+
+  // 사용하지 않는 변수임을 명시적으로 알리기
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const unusedVariables = { setCategory, setIsDeleted, setIsVerified, setEventImg };
 
   // AxiosInstance & API 설정
   const customAxios:AxiosInstance = axios.create({
@@ -22,12 +37,116 @@ const WritePost: React.FC = () => {
     }
   });
   const writePostAPI = {
-    WritePostApi : () => customAxios.post('events'),            // 게시글 작성
+    locationApi: () => customAxios.get("data/toss"), // 위치 인증 여부
+    // sidoApi: () => customAxios.get("data/city"),    // 시도
+    // gugunApi: (sido: string) =>
+    //   customAxios.get("data/gu_name", {
+        // 구군
+    //     params: { doName: sido },
+    //   }),
+    categoryApi: () => customAxios.get("data/toss"), // 카테고리
+    WritePostApi : () => customAxios.post('events'), // 게시글 작성
   }
+
+  // 위치 인증 여부 interface (console.log 기준)
+  interface CategoryOptionsProps {
+    data: {
+      category: string[];
+      verify: string[];
+    };
+  }
+
+  // 위치 인증 여부 - DB 연동
+  const { data: locationOptionsData } = useQuery<CategoryOptionsProps[], Error>(
+    "locationOptions",
+    async () => {
+      const response = await writePostAPI
+            .locationApi()
+            .then((response) => {
+              return response.data.verify;
+            })
+        .catch((error) => {
+          console.log("위치 인증 여부 불러오기 실패", error);
+          throw error;
+        });
+      return response;
+    }
+  );
+
+  // 시/도 옵션 interface (console.log 기준)
+  interface SidoOptionsProps {
+    doName: string[];
+  }
+
+  // 시/도 옵션 - DB 연동
+  const { data: sidoOptionsData } = useQuery<SidoOptionsProps[]>(
+    "sidoOptions",
+    async () => {
+      const response = await writePostAPI
+        .sidoApi()
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          console.log("시/도 불러오기 실패", error);
+          throw error;
+        });
+      return response;
+    }
+  );
+
+  // 구/군 옵션 interface (console.log 기준)
+  // interface GugunOptionsProps {
+  //   guName: string[];
+  // }
+
+  // 구/군 옵션 - DB 연동
+  // const { data: gugunOptionsData, refetch: refetchGugunOptions } = useQuery<
+  //   GugunOptionsProps[]
+  // >(
+  //   // queryKey를 배열로 감싸서 설정
+  //   ["gugunOptions", selectedSido],
+  //   async () => {
+  //     const response = await writePostAPI
+  //       .gugunApi(selectedSido)
+  //       .then((response) => {
+  //         return response.data;
+  //       })
+  //       .catch((error) => {
+  //         console.log("구/군 불러오기 실패", error);
+  //         throw error;
+  //       });
+  //     return response;
+  //   },
+  //   {
+  //     enabled: !!selectedSido, // 선택된 시/도가 있을 때만 요청을 보내도록 설정
+  //   }
+  // );
+
+  // refetch를 통해 시/도 옵션이 바뀌면 구/군 옵션이 바로 바뀌도록 설정
+  // useEffect(() => {
+  //   refetchGugunOptions();
+  // }, [selectedSido]);
+
+  // 카테고리 옵션 - DB 연동
+  const { data: categoryOptionsData } = useQuery<CategoryOptionsProps[]>(
+    "categoryOptions",
+    async () => {
+      const response = await writePostAPI
+        .categoryApi()
+        .then((response) => {
+          return response.data.category;
+        })
+        .catch((error) => {
+          console.log("카테고리 옵션 카테고리 불러오기 실패", error);
+          throw error;
+        });
+      return response;
+    }
+  );
 
   // 게시글 작성 interface (console.log 기준)
   interface WritePostData {
-    // data : {
     "eventName": string,
     "maxSize": number,
     "eventDate": string,
@@ -38,8 +157,7 @@ const WritePost: React.FC = () => {
     "category": string,
     "isDeleted": boolean,
     "isVerified": string,
-    "eventImg": string | null,
-    // }
+    "eventImg": string | null
   }
 
   // 게시글 작성 - DB 연동
@@ -88,29 +206,29 @@ const WritePost: React.FC = () => {
     }
   }
 
-  const [eventName, setEventName] = useState<string>('');
-  const [eventDate, setEventDate] = useState<string>();
-  const [signupStartDate, setSignupStartDate] = useState<string>();
-  const [signupEndDate, setSignupEndDate] = useState<string>();
-  const [eventLocation, setEventLocation] = useState<string>('');
-  const [maxSize, setMaxSize] = useState<number>(0);
-  const [content, setContent] = useState<string>('');
-
-  // 임시로 만들어둠
-  const [category, setCategory] = useState<string>('test');
-  const [isDeleted, setIsDeleted] = useState<boolean>(false);
-  const [isVerified, setIsVerified] = useState<string>('test');
-  const [eventImg, setEventImg] = useState<null>(null);
-
-  // 사용하지 않는 변수임을 명시적으로 알리기
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const unusedVariables = { setCategory, setIsDeleted, setIsVerified, setEventImg };
-
   return (
     <St.PostSection>
       <St.SelectorWrap>
-        <Selector options={sidoOptions}></Selector>
-        <Selector options={categoryOptions}></Selector>
+      <Selector
+          options={locationOptionsData?.map((item) => ({
+            value: t(item),
+            label: t(item),
+          }))}
+          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+            setIsVerified(selectedOption.target.value);
+          }}
+        ></Selector>
+        
+        <Selector
+          options={categoryOptionsData?.map((item) => ({
+            value: t(item),
+            label: t(item),
+          }))}
+          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+            setCategory(selectedOption.target.value);
+          }}
+        ></Selector>
+        
       </St.SelectorWrap>
       <St.TitleWrap>
         <input type="text" placeholder='제목을 입력하세요' value={eventName} onChange={(e)=>{setEventName(e.target.value)}}/>
@@ -128,6 +246,16 @@ const WritePost: React.FC = () => {
         </div>
         <div>
           <p>모임주소</p>
+          {/* <Selector
+            options={sidoOptionsData?.map((item) => ({
+              value: t(item.doName),
+              label: t(item.doName),
+            }))}
+            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+              setEventLocation(selectedOption.target.value);
+              console.log(selectedOption.target.value)
+            }}
+          ></Selector> */}
           <input type="text" placeholder='ex. 서울시 마포구' value={eventLocation} onChange={(e)=>{setEventLocation(e.target.value)}}/>
         </div>
         <div>
