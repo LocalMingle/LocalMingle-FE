@@ -16,6 +16,7 @@ import {
   handleCheckNickname,
   validateAuthCodeTimer,
   validateEmailVerification,
+  handleCheckEmail,
 } from "../../util/validation";
 import JSConfetti from "js-confetti";
 import { useLanguage } from "../../util/Locales/useLanguage";
@@ -25,7 +26,7 @@ const SignUpForm: React.FC = () => {
   const { currentLang, t, changeLanguage } = useLanguage();
 
   const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [bio, setBio] = useState("");
@@ -36,20 +37,19 @@ const SignUpForm: React.FC = () => {
   const jsConfetti = new JSConfetti();
 
   const [nicknameError, setNicknameError] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [bioError, setBioError] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null);
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
   const [authCode, setAuthCode] = useState("");
   const [emailSent, setEmailSent] = useState(false);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [isTimerExpired, setIsTimerExpired] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
-  const timerValidationMessage = validateAuthCodeTimer(isTimerExpired);
-  const emailValidationMessage = validateEmailVerification(isEmailVerified);
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState<null | boolean>(null);
 
   const handleSignUp = async () => {
     const newNicknameError = t(validateNickname(nickname));
@@ -128,7 +128,7 @@ const SignUpForm: React.FC = () => {
     let timer: NodeJS.Timeout;
 
     if (emailSent) {
-      setCountdown(10);
+      setCountdown(300);
       timer = setInterval(() => {
         setCountdown((prevCountdown) => {
           if (prevCountdown !== null) {
@@ -149,7 +149,7 @@ const SignUpForm: React.FC = () => {
         clearInterval(timer);
       }
     };
-  }, [emailSent]);
+  }, [emailSent, t]);
 
   const handleSendEmail = async () => {
     try {
@@ -163,12 +163,49 @@ const SignUpForm: React.FC = () => {
   };
 
   const handleAuth = async () => {
+    // 로딩 시작
+    setIsLoading(true);
+
     try {
-      await verifyEmailCode(Number(authCode));
-      setIsEmailVerified(true);
+      // 이메일 인증 API 호출
+      const response = await verifyEmailCode(Number(authCode));
+
+      // 로딩 끝
+      setIsLoading(false);
+
+      if (response.status === 201) {
+        if (response.data.message === "인증 성공") {
+          setIsEmailVerified(true);
+          setAuthError(t("인증이 되었습니다."));
+          setIsSuccess(true);
+        } else if (response.data.message === "인증 실패") {
+          setAuthError(t("인증코드를 다시 확인해주세요."));
+          setIsSuccess(false);
+        }
+      } else {
+        // 그 외 상황. 에러 처리 등
+      }
+
+      // 타이머 유효성 검사
+      const timerMessage = validateAuthCodeTimer(isTimerExpired);
+      if (timerMessage) {
+        setAuthError(timerMessage);
+        setIsSuccess(false);
+      }
+
+      // 이메일 인증 유효성 검사
+      const emailMessage = validateEmailVerification(isEmailVerified);
+      if (emailMessage) {
+        setAuthError(emailMessage);
+        setIsSuccess(false);
+      }
     } catch (error) {
+      // 로딩 끝
+      setIsLoading(false);
+
       console.error("인증 실패:", error);
       setAuthError(t("인증코드를 다시 확인해주세요."));
+      setIsSuccess(false);
     }
   };
 
@@ -265,12 +302,6 @@ const SignUpForm: React.FC = () => {
         >
           {nicknameError}
         </ST.ValidationColor>
-        {countdown !== null && (
-          <span>
-            {t("남은 시간:")} {Math.floor(countdown / 60)} {t("분")}{" "}
-            {countdown % 60} {t("초")}
-          </span>
-        )}
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
@@ -291,27 +322,42 @@ const SignUpForm: React.FC = () => {
             <>
               <ST.DupCheckButtonWrap>
                 <ST.DupCheckButton
-                  onClick={handleSendEmail}
-                  disabled={!isEmailValid}
-                >
-                  {t("인증코드 보내기")}
-                </ST.DupCheckButton>
-              </ST.DupCheckButtonWrap>
-              <ST.DupCheckButtonWrap>
-                <ST.DupCheckButton
                   onClick={handleEmailDupCheck}
                   disabled={!isEmailValid}
                 >
                   {t("중복 체크")}
                 </ST.DupCheckButton>
               </ST.DupCheckButtonWrap>
+              <ST.DupCheckButtonWrap>
+                <ST.DupCheckButton
+                  onClick={handleSendEmail}
+                  disabled={!isEmailValid}
+                >
+                  {t("인증코드 보내기")}
+                </ST.DupCheckButton>
+              </ST.DupCheckButtonWrap>
+              {authError && (
+                <ST.ErrorMessageJoin>{authError}</ST.ErrorMessageJoin>
+              )}
             </>
           )}
         </div>
+        <ST.CountdownText>
+          {countdown !== null && (
+            <span>
+              {t("남은 시간:")} {Math.floor(countdown / 60)} {t("분")}{" "}
+              {countdown % 60} {t("초")}
+            </span>
+          )}
+        </ST.CountdownText>
         <ST.ValidationColor isValid={isEmailValid}>
           {emailError}
         </ST.ValidationColor>
-        {authError && <ST.ErrorMessageJoin>{authError}</ST.ErrorMessageJoin>}
+        {authError && (
+          <ST.ValidationColor isValid={isSuccess}>
+            {authError}
+          </ST.ValidationColor>
+        )}
       </ST.LabelWrapper>
       <ST.LabelWrapper>
         <label>{t("비밀번호")}</label>
