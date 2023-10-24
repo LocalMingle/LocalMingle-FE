@@ -84,8 +84,15 @@ export const DupCheckButton = styled.button`
 `;
 
 export const ValidationColor = styled.div<{ isValid: boolean | null }>`
+  color: ${
+    (props) =>
+      props.isValid === null
+        ? "gray" // 초기 상태
+        : props.isValid
+        ? "#14be1d" // 사용 가능할 때
+        : "#da7969" // 사용 불가능할 때
+  };
   font-size: 12px;
-  color: ${({ isValid }) => (isValid ? "#14be1d" : "#da7969")};
   text-align: left;
   margin-top: 5px;
 `;

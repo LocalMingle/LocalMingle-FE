@@ -128,12 +128,29 @@ export function validateImageUpload(file: File | null) {
 // 닉네임 중복검사
 export async function handleCheckNickname(nickname: string) {
   try {
+    // 중복 검사
     const data = await checkNickname(nickname);
     const statusMessage = parseInt(data.message, 10); // 문자열을 숫자로 변환
 
     if (statusMessage === 201) {
       return "닉네임이 중복되었습니다.";
     } else if (statusMessage === 200) {
+      // 추가 중복 검사
+      const additionalErrorMessage = UpdateValidateNickname(nickname);
+      if (additionalErrorMessage) {
+        return additionalErrorMessage;
+      }
+
+      // 닉네임 길이 검사
+      if (nickname.length < 2 || nickname.length > 8) {
+        return "닉네임은 2자 이상 8자 이하로 입력해야 합니다.";
+      }
+
+      // 특수문자, 공백, 단독 자음/모음 검사
+      if (/[!@#$%^&*(),.?":{}|<> ]|[ㄱ-ㅎㅏ-ㅣ]/.test(nickname)) {
+        return "닉네임에는 특수문자, 공백, 단독 자음/모음을 사용할 수 없습니다.";
+      }
+
       return "닉네임을 사용할 수 있습니다.";
     } else {
       return "닉네임 확인 중 오류 발생.";
@@ -143,6 +160,7 @@ export async function handleCheckNickname(nickname: string) {
     return "닉네임 중복 확인 중 오류 발생.";
   }
 }
+
 // 이메일 중복검사
 export async function handleCheckEmail(email: string) {
   try {
