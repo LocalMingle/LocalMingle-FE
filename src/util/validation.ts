@@ -169,3 +169,19 @@ export function validateDeleteReason(reason: string) {
   }
   return "";
 }
+
+// 인증 코드 유효시간 확인
+export function validateAuthCodeTimer(isTimerExpired: boolean) {
+  if (isTimerExpired) {
+    return "인증 코드의 유효시간이 지났습니다.";
+  }
+  return "";
+}
+
+// 이메일 인증 확인
+export function validateEmailVerification(isEmailVerified: boolean) {
+  if (isEmailVerified) {
+    return "인증되었습니다.";
+  }
+  return "";
+}

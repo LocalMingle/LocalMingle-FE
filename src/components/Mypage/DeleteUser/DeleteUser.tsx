@@ -21,11 +21,11 @@ const DeleteUser: React.FC = () => {
   const animationRef = useRef<AnimationItem | null>(null);
 
   const handleDelete = async () => {
-    const passwordValidationError = validateLoginPassword(password);
+    const passwordValidationError = t(validateLoginPassword(password));
     setPasswordError(passwordValidationError);
 
     if (passwordValidationError) {
-      return; // 비밀번호 오류가 있으면 여기서 함수를 종료
+      return;
     }
 
     if (reason === "") {
@@ -37,14 +37,14 @@ const DeleteUser: React.FC = () => {
 
     try {
       const response = await deleteUser(password);
-      console.log("회원탈퇴 성공!", response);
+      console.log(t("회원탈퇴 성공!"), response);
       setShowAnimation(true); // 성공하면 애니메이션 표시
       setTimeout(() => {
         navigate("/login"); // 3초 후에 로그인 페이지로 이동
       }, 3000);
     } catch (error) {
-      console.log("회원탈퇴 실패! 왜인지 알아보자", error);
-      setPasswordError("비밀번호를 다시 확인해주세요."); // 여기에서 에러 메시지 설정
+      console.log(t("회원탈퇴 실패! 왜인지 알아보자"), error);
+      setPasswordError(t("비밀번호를 다시 확인해주세요."));
     }
   };
 
@@ -61,7 +61,7 @@ const DeleteUser: React.FC = () => {
 
     return () => {
       if (animationRef.current) {
-        animationRef.current.destroy(); // 컴포넌트 unmount 시 애니메이션 중지
+        animationRef.current.destroy();
       }
     };
   }, [showAnimation]);

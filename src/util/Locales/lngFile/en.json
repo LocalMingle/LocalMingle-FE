@@ -43,6 +43,7 @@
   "eventName": "eventName",
 
   "서울특별시": "Seoul Special City",
+  "ex. 서울시 마포구": "ex. Mapo-gu, Seoul",
   "종로구": "Jongno-gu",
   "중구": "Jung-gu",
   "용산구": "Yongsan-gu",
@@ -318,5 +319,27 @@
   "회원탈퇴": "Membership Withdrawal",
   "탈퇴하기": "Withdraw",
   "탈퇴하는 사유를 입력해주세요 🙂": "Please enter the reason for withdrawal 🙂",
-  "소중한 피드백은 더 좋은 서비스를 제공하기 위해 적극적으로 반영하도록 하겠습니다!": "Your valuable feedback will be actively reflected to provide better service!"
+  "소중한 피드백은 더 좋은 서비스를 제공하기 위해 적극적으로 반영하도록 하겠습니다!": "Your valuable feedback will be actively reflected to provide better service!",
+
+  "닉네임을 입력하세요.": "Enter your Nickname.",
+  "닉네임에는 특수문자, 공백, 단독 자음/모음을 사용할 수 없습니다.": "Nicknames cannot contain special characters, spaces, and sole consonants/vowels.",
+  "닉네임은 2자 이상 8자 이하로 입력해야 합니다.": "Nickname must be at least 2 characters and not more than 8 characters.",
+  "비밀번호는 8글자 이상 15글자 이하로 입력해야 합니다.": "Password must be entered in not less than 8 characters but not more than 15 characters.",
+  "비밀번호는 알파벳, 숫자 및 특수 문자를 포함해야 합니다.": "The password must contain alphabets, numbers, and special characters.",
+  "비밀번호를 다시 확인해주세요.": "Please check the password again.",
+  "이메일을 입력해주세요.": "Please enter your email.",
+  "유효한 이메일 형식이 아닙니다.": "Not a valid email format.",
+  "자기소개를 입력하세요.": "Enter your self-introduction.",
+  "이미지 파일을 선택해주세요.": "Please select an image file.",
+  "파일 크기는 5MB를 초과할 수 없습니다.": "File size cannot exceed 5MB.",
+  "지원되는 파일 형식은 JPEG, PNG, GIF 뿐입니다.": "The only file formats supported are JPEG, PNG, and GIF.",
+  "닉네임이 중복되었습니다.": "Duplicated Nickname.",
+  "닉네임을 사용할 수 있습니다.": "Nicknames are available.",
+  "닉네임 확인 중 오류 발생.": "Error while checking nickname.",
+  "닉네임 중복 확인 중 오류 발생.": "Error while checking duplicate nicknames.",
+  "이메일이 중복되었습니다.": "Duplicated email.",
+  "이메일을 사용할 수 있습니다.": "E-mail is available.",
+  "이메일 확인 중 오류 발생.": "Error checking email.",
+  "이메일 중복 확인 중 오류 발생.": "Error checking email duplication.",
+  "탈퇴 사유를 입력해주세요.": "Please enter a reason for withdrawal."
 }
