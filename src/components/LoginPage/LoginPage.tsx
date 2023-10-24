@@ -80,15 +80,6 @@ const LoginPage: React.FC = () => {
       }
     }
   };
-  // 쿠키로 받는다
-  // const handleKakaoLogin = () => {
-  //   const SERVER_URL =
-  //     process.env.REACT_APP_SERVER_URL || "http://localhost:8000";
-  //   const kakaoOauthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&redirect_uri=${encodeURIComponent(
-  //     `${SERVER_URL}/api/kakao/callback`
-  //   )}&client_id=${process.env.REACT_APP_KAKAO_ID}`;
-  //   window.location.href = kakaoOauthURL;
-  // };
 
   const kakaoLoginHandler = () => {
     const REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
@@ -98,17 +89,6 @@ const LoginPage: React.FC = () => {
     )}&client_id=${import.meta.env.VITE_REACT_APP_KAKAO_CLIENT_ID}`;
     window.location.href = kakaoOauthURL;
   };
-
-  // const handleGoogleLogin = () => {
-  //   const SERVER_URL =
-  //     process.env.REACT_APP_SERVER_URL || "http://localhost:8000";
-  //   const googleOauthURL = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${
-  //     process.env.REACT_APP_GOOGLE_CLIENT_ID
-  //   }&scope=openid%20profile%20email&redirect_uri=${encodeURIComponent(
-  //     `${SERVER_URL}/api/google/callback`
-  //   )}&access_type=offline`;
-  //   window.location.href = googleOauthURL;
-  // };
 
   const googleLoginHandler = () => {
     const REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;

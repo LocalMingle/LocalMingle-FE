@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as St from "./STMainPage";
 import Banner from "../common/Banner/Banner";
 import Search from "../common/Search/Search";
@@ -11,17 +11,20 @@ import { Spinner } from "../common/Spinner";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../../util/Locales/useLanguage";
+import i18n from "../../util/Locales/i18n";
 
 const MainPage: React.FC = () => {
   const { t } = useLanguage();
+  const lang = i18n.language;
   const accessToken = localStorage.getItem("accessToken");
   const [selectedVerify, setSelectedVerify] = useState<string>(""); // 위치 인증 여부
-  // const [selectedSido, setSelectedSido] = useState<string>("서울특별시"); // 시도
-  // const [selectedGugun, setSelectedGugun] = useState<string>(""); // 구군
+  const [selectedSido, setSelectedSido] = useState<string>(t("서울특별시")); // 시도
+  const [selectedGugun, setSelectedGugun] = useState<string>(t("종로구")); // 구군
+
   const [selectedCategory, setSelectedCategory] = useState<string>(""); // 카테고리
   // 사용하지 않는 변수임을 명시적으로 알리기
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const unusedVariables = { selectedVerify, selectedCategory };
+  const unusedVariables = { selectedVerify, selectedGugun, selectedCategory };
 
   // AxiosInstance & API 설정
   const customAxios: AxiosInstance = axios.create({
@@ -32,6 +35,14 @@ const MainPage: React.FC = () => {
   });
   const mainAPI = {
     locationApi: () => customAxios.get("data/toss"), // 위치 인증 여부
+    sidoApi: (lang: string) =>
+      customAxios.get("data/city", {
+        params: { lang },
+      }),
+    gugunApi: (sido: string, lang: string) =>
+      customAxios.get("data/gu_name", {
+        params: { doName: sido, lang },
+      }),
     categoryApi: () => customAxios.get("data/toss"), // 카테고리
     cardListApi: () => customAxios.get("events"), // 게시글 전체 조회
   };
@@ -45,7 +56,7 @@ const MainPage: React.FC = () => {
   }
 
   // 위치 인증 여부 - DB 연동
-  const { data: locationOptionsData } = useQuery<CategoryOptionsProps[], Error>(
+  const { data: locationOptionsData } = useQuery<CategoryOptionsProps, Error>(
     "locationOptions",
     async () => {
       const response = await mainAPI
@@ -61,64 +72,54 @@ const MainPage: React.FC = () => {
     }
   );
 
-  // // 시/도 옵션 interface (console.log 기준)
-  // interface SidoOptionsProps {
-  //   doName: string[];
-  // }
+  // 시/도 옵션 interface (console.log 기준)
+  interface SidoOptionsProps {
+    doName: string[];
+  }
 
-  // // 시/도 옵션 - DB 연동
-  // const { data: sidoOptionsData } = useQuery<SidoOptionsProps[]>(
-  //   "sidoOptions",
-  //   async () => {
-  //     const response = await mainAPI
-  //       .sidoApi()
-  //       .then((response) => {
-  //         return response.data;
-  //       })
-  //       .catch((error) => {
-  //         console.log("시/도 불러오기 실패", error);
-  //         throw error;
-  //       });
-  //     return response;
-  //   }
-  // );
+  // 시/도 옵션 - DB 연동
+  const { data: sidoOptionsData } = useQuery<SidoOptionsProps[]>(
+    ["sidoOptions", lang],
+    async () => {
+      const response = await mainAPI
+        .sidoApi(lang)
+        .then((response) => {
+          return response.data.items;
+        })
+        .catch((error) => {
+          console.log("시/도 불러오기 실패", error);
+          throw error;
+        });
+      return response;
+    }
+  );
+  interface GugunOptionsProps {
+    guName: string[];
+  }
+  // 구/군 옵션 - DB 연동
+  const { data: gugunOptionsData, refetch: refetchGugunOptions } = useQuery<
+    GugunOptionsProps[]
+  >(["gugunOptions", selectedSido, lang], async () => {
+    const response = await mainAPI
+      .gugunApi(selectedSido, lang)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("구/군 불러오기 실패", error);
+        throw error;
+      });
+    return response;
+  });
 
-  // // 구/군 옵션 interface (console.log 기준)
-  // interface GugunOptionsProps {
-  //   guName: string[];
-  // }
-
-  // // 구/군 옵션 - DB 연동
-  // const { data: gugunOptionsData, refetch: refetchGugunOptions } = useQuery<
-  //   GugunOptionsProps[]
-  // >(
-  //   // queryKey를 배열로 감싸서 설정
-  //   ["gugunOptions", selectedSido],
-  //   async () => {
-  //     const response = await mainAPI
-  //       .gugunApi(selectedSido)
-  //       .then((response) => {
-  //         console.log("구/군 데이터:", gugunOptionsData);
-  //         return response.data;
-  //       })
-  //       .catch((error) => {
-  //         console.log("구/군 불러오기 실패", error);
-  //         throw error;
-  //       });
-  //     return response;
-  //   },
-  //   {
-  //     enabled: !!selectedSido, // 선택된 시/도가 있을 때만 요청을 보내도록 설정
-  //   }
-  // );
-
-  // refetch를 통해 시/도 옵션이 바뀌면 구/군 옵션이 바로 바뀌도록 설정
-  // useEffect(() => {
-  //   refetchGugunOptions();
-  // }, [selectedSido]);
+  useEffect(() => {
+    if (selectedSido) {
+      refetchGugunOptions();
+    }
+  }, [selectedSido, lang, refetchGugunOptions]);
 
   // 카테고리 옵션 - DB 연동
-  const { data: categoryOptionsData } = useQuery<CategoryOptionsProps[]>(
+  const { data: categoryOptionsData } = useQuery<CategoryOptionsProps>(
     "categoryOptions",
     async () => {
       const response = await mainAPI
@@ -217,26 +218,26 @@ const MainPage: React.FC = () => {
             setSelectedVerify(selectedOption.target.value);
           }}
         ></Selector>
-        {/* 시/도
+        {/* 시/도 */}
         <Selector
-          options={sidoOptionsData?.map((item) => ({
-            value: t(item.doName),
-            label: t(item.doName),
+          options={sidoOptionsData?.map((option) => ({
+            value: t(option.doName),
+            label: t(option.doName),
           }))}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedSido(selectedOption.target.value);
           }}
         ></Selector>
         {/* 구/군 */}
-        {/* <Selector
-          options={gugunOptionsData?.map((item) => ({
-            value: t(item.guName),
-            label: t(item.guName),
+        <Selector
+          options={gugunOptionsData?.map((option) => ({
+            value: t(option.guName),
+            label: t(option.guName),
           }))}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedGugun(selectedOption.target.value);
           }}
-        ></Selector> */}
+        ></Selector>
         {/* 카테고리 : 맛집/커피, 운동/건강, 애완동물, 공부/교육 */}
         <Selector
           options={categoryOptionsData?.map((item) => ({

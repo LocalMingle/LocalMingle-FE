@@ -43,46 +43,25 @@ export const logoutUser = () => {
   localStorage.removeItem("refreshToken");
 };
 
-// 카카오 로그인
-// type KakaoResponse = {
-//   accessToken: string;
-//   refreshToken: string;
-//   userId: number;
-// };
+// 이메일 인증코드 보내기
+export const sendVerificationEmail = (
+  email: string,
+  subject: string,
+  html: string
+) => {
+  return axiosInstance.post("mail/send", {
+    to: email,
+    subject: subject,
+    html: html,
+  });
+};
 
-// export const kakaoLogin = async (
-//   code: string
-// ): Promise<AxiosResponse<KakaoResponse>> => {
-//   const response = await axiosInstance.get<KakaoResponse>(`users/login/kakao`, {
-//     headers: {
-//       "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-//     },
-//     params: {
-//       grant_type: "authorization_code",
-//       client_id: import.meta.env.VITE_REACT_APP_KAKAO_CLIENT_ID,
-//       redirect_uri: import.meta.env.VITE_REACT_APP_KAKAO_REDIRECT_URI,
-//       code,
-//     },
-//   });
-
-//   // const accessToken = response.headers["AccessToken"];
-//   // const refreshToken = response.headers["RefreshToken"];
-//   // const userId = response.headers["Userid"];
-//   const accessToken = response.data.accessToken;
-//   const refreshToken = response.data.refreshToken;
-//   const userId = response.data.userId;
-
-//   setAccessToken(accessToken);
-//   setRefreshToken(refreshToken);
-
-//   if (accessToken && refreshToken && userId) {
-//     localStorage.setItem("accesstoken", accessToken);
-//     localStorage.setItem("refreshtoken", refreshToken);
-//     localStorage.setItem("userid", userId.toString());
-//   }
-
-//   return response;
-// };
+// 이메일 인증코드 인증
+export const verifyEmailCode = (code: number) => {
+  return axiosInstance.post("mail/verify", {
+    code: code,
+  });
+};
 
 // 회원 탈퇴
 export const deleteUser = async (password: string) => {
