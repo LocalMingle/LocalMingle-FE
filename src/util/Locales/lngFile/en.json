@@ -7,6 +7,8 @@
   "탈퇴 사유를 입력해주세요!": "Please enter a reason for withdrawal!",
   "비밀번호를 입력해주세요.": "Please enter a password.",
   "수정이 완료되었습니다.": "Correction complete.",
+  "회원정보 수정": "Modify Profile",
+  "비밀번호 수정": "Change Password",
   "로그인": "Login",
   "이메일": "Email",
   "인증코드 보내기": "Send authentication code",
@@ -17,6 +19,7 @@
   "인증이 되었습니다.": "Authenticated.",
   "인증 코드의 유효시간이 지났습니다.": "Authentication code has expired.",
   "인증코드를 다시 확인해주세요.": "Please check the authentication code again.",
+  "인증코드가 전송되었습니다.": "Authentication code sent.",
   "분": "Minutes",
   "초": "Seconds",
   "비밀번호": "Password",
@@ -47,7 +50,10 @@
   "채팅하기": "Chatting",
   "명": "participants",
   "참가하기": "To participate",
+  "참가완료": "Participation complete",
+  "참가자 리스트": "Participation List",
   "취소": "Cancel",
+  "닫기": "Closing",
 
   "category": "category",
   "eventName": "eventName",
@@ -351,5 +357,6 @@
   "이메일을 사용할 수 있습니다.": "E-mail is available.",
   "이메일 확인 중 오류 발생.": "Error checking email.",
   "이메일 중복 확인 중 오류 발생.": "Error checking email duplication.",
-  "탈퇴 사유를 입력해주세요.": "Please enter a reason for withdrawal."
+  "탈퇴 사유를 입력해주세요.": "Please enter a reason for withdrawal.",
+  "소셜 로그인 하신분은 비밀번호 수정 후 이용 부탁드립니다.": "If you're logged in to the social network, please change your password and use it."
 }

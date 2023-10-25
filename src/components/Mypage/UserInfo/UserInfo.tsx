@@ -185,99 +185,107 @@ const UserInfo: React.FC = () => {
   return (
     <St.MyPageContainer>
       <St.MyPageWrap>
-        <St.ImageContainer>
-          <St.ProfileImage src={profileImage} alt="프로필 이미지" />
-          <input
-            type="file"
-            id="imageInput"
-            onChange={handleImageChange}
-            style={{ display: "none" }}
-          />
-          <St.ProfileTextButton
-            onClick={() => document.getElementById("imageInput")?.click()}
-          >
-            {t("이미지 업로드")}
-          </St.ProfileTextButton>
-        </St.ImageContainer>
+        <St.GroupedInputContainer>
+          <St.ImageContainer>
+            <St.ProfileImage src={profileImage} alt="프로필 이미지" />
+            <input
+              type="file"
+              id="imageInput"
+              onChange={handleImageChange}
+              style={{ display: "none" }}
+            />
+            <St.ProfileTextButton
+              onClick={() => document.getElementById("imageInput")?.click()}
+            >
+              {t("이미지 업로드")}
+            </St.ProfileTextButton>
+          </St.ImageContainer>
 
-        <St.InputContainer>
-          <St.Label htmlFor="nickname">{t("닉네임")}</St.Label>
-          <div>
+          <St.InputContainer>
+            <St.Label htmlFor="nickname">{t("닉네임")}</St.Label>
+            <div>
+              <input
+                type="text"
+                id="nickname"
+                value={nickname}
+                onChange={handleNicknameChange}
+              />
+              <St.DupCheckButtonWrap>
+                <St.DupCheckButton onClick={handleCheckNicknameClick}>
+                  {t("중복 체크")}
+                </St.DupCheckButton>
+              </St.DupCheckButtonWrap>
+            </div>
+            <St.ErrorMessageJoin isValid={isNicknameValid}>
+              {nicknameError}
+            </St.ErrorMessageJoin>
+          </St.InputContainer>
+
+          <St.InputContainer>
+            <St.Label htmlFor="introduce">{t("한줄 자기소개")}</St.Label>
             <input
               type="text"
-              id="nickname"
-              value={nickname}
-              onChange={handleNicknameChange}
+              id="introduce"
+              value={intro}
+              onChange={(e) => setIntro(e.target.value)}
             />
-            <St.DupCheckButtonWrap>
-              <St.DupCheckButton onClick={handleCheckNicknameClick}>
-                {t("중복 체크")}
-              </St.DupCheckButton>
-            </St.DupCheckButtonWrap>
-          </div>
-          <St.ErrorMessageJoin isValid={isNicknameValid}>
-            {nicknameError}
-          </St.ErrorMessageJoin>
-        </St.InputContainer>
+          </St.InputContainer>
 
-        <St.InputContainer>
-          <St.Label htmlFor="introduce">{t("한줄 자기소개")}</St.Label>
-          <input
-            type="text"
-            id="introduce"
-            value={intro}
-            onChange={(e) => setIntro(e.target.value)}
-          />
-        </St.InputContainer>
-
-        <St.InputContainer>
-          <St.Label htmlFor="location">{t("위치 정보")}</St.Label>
-          <input
-            type="text"
-            id="location"
-            readOnly
-            value={t("서울특별시 강남구")}
-          />
-        </St.InputContainer>
-
-        <St.InputContainer>
-          <St.Label htmlFor="password">{t("비밀번호")}</St.Label>
-          <St.EyleToggleWrap>
+          <St.InputContainer>
+            <St.Label htmlFor="location">{t("위치 정보")}</St.Label>
             <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              value={password}
-              onChange={handlePasswordChange}
+              type="text"
+              readOnly
+              style={{ backgroundColor: "#f0f0f0" }}
+              value={t("서울특별시 강남구")}
             />
-            <St.EyeToggleButton onClick={togglePasswordVisibility}>
-              {showPassword ? (
-                <FontAwesomeIcon icon={faEye} />
-              ) : (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              )}
-            </St.EyeToggleButton>
-          </St.EyleToggleWrap>
-          <St.ErrorMessagePassword>{passwordError}</St.ErrorMessagePassword>
-        </St.InputContainer>
+          </St.InputContainer>
+          <St.SubmitButtonWrap>
+            <St.SubmitButton type="button" onClick={handleUpdate}>
+              {t("회원정보 수정")}
+            </St.SubmitButton>
+          </St.SubmitButtonWrap>
+        </St.GroupedInputContainer>
+        <St.GroupedInputContainer>
+          <St.InputContainer>
+            <St.Label htmlFor="password">{t("비밀번호")}</St.Label>
+            <St.EyleToggleWrap>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              <St.EyeToggleButton onClick={togglePasswordVisibility}>
+                {showPassword ? (
+                  <FontAwesomeIcon icon={faEye} />
+                ) : (
+                  <FontAwesomeIcon icon={faEyeSlash} />
+                )}
+              </St.EyeToggleButton>
+            </St.EyleToggleWrap>
+            <St.ErrorMessagePassword>{passwordError}</St.ErrorMessagePassword>
+          </St.InputContainer>
 
-        <St.InputContainer>
-          <St.Label htmlFor="passwordConfirm">{t("비밀번호 확인")}</St.Label>
-          <input
-            type="password"
-            id="passwordConfirm"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-          />
-          <St.ErrorMessagePassword>
-            {confirmPasswordError}
-          </St.ErrorMessagePassword>
-        </St.InputContainer>
+          <St.InputContainer>
+            <St.Label htmlFor="passwordConfirm">{t("비밀번호 확인")}</St.Label>
+            <input
+              type="password"
+              id="passwordConfirm"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+            />
+            <St.ErrorMessagePassword>
+              {confirmPasswordError}
+            </St.ErrorMessagePassword>
+          </St.InputContainer>
 
-        <St.SubmitButtonWrap>
-          <St.SubmitButton type="button" onClick={handleUpdate}>
-            {t("수정")}
-          </St.SubmitButton>
-        </St.SubmitButtonWrap>
+          <St.SubmitButtonWrap>
+            <St.SubmitButton type="button" onClick={handleUpdate}>
+              {t("비밀번호 수정")}
+            </St.SubmitButton>
+          </St.SubmitButtonWrap>
+        </St.GroupedInputContainer>
       </St.MyPageWrap>
     </St.MyPageContainer>
   );

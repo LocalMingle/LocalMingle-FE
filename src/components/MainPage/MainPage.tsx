@@ -26,6 +26,11 @@ const MainPage: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const unusedVariables = { selectedVerify, selectedGugun, selectedCategory };
 
+  useEffect(() => {
+    setSelectedSido(t("서울특별시"));
+    setSelectedGugun(t("종로구"));
+  }, [t]);
+
   // AxiosInstance & API 설정
   const customAxios: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_REACT_APP_URL,

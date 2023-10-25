@@ -36,7 +36,7 @@ export const ProfileImage = styled.img`
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #292D32;
+  border: 1px solid #292d32;
 `;
 
 export const ProfileTextButton = styled.button`
@@ -122,9 +122,9 @@ export const ErrorMessageJoin = styled.div<{ isValid: boolean | null }>`
 
 export const SubmitButtonWrap = styled.div`
   border-radius: 23px;
-  border: 1px solid #e7e7e7;
   background: #fff;
   padding: 3px;
+  text-align: center;
 `;
 
 export const SubmitButton = styled.button`
@@ -147,4 +147,11 @@ export const ErrorMessagePassword = styled.div`
   color: #da7969;
   text-align: left;
   margin-top: 5px;
+`;
+
+export const GroupedInputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  width: 100%;
 `;

@@ -21,6 +21,7 @@ import {
 import JSConfetti from "js-confetti";
 import { useLanguage } from "../../util/Locales/useLanguage";
 import { sendVerificationEmail, verifyEmailCode } from "../../api/api";
+import toast from "react-hot-toast";
 
 const SignUpForm: React.FC = () => {
   const { currentLang, t, changeLanguage } = useLanguage();
@@ -152,10 +153,13 @@ const SignUpForm: React.FC = () => {
   }, [emailSent, t]);
 
   const handleSendEmail = async () => {
+    toast.success(t("인증코드가 전송되었습니다."), {
+      className: "toast-success toast-container",
+      duration: 3000,
+    });
     try {
       await sendVerificationEmail(email, "", "");
       setEmailSent(true);
-
       setIsTimerExpired(false);
     } catch (error) {
       console.error("이메일 보내기 실패:", error);
