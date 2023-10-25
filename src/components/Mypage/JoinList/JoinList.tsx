@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../recoil/atoms/UserState";
+import toast from "react-hot-toast";
 
 type Event = {
   id?: number;
@@ -52,6 +53,9 @@ const JoinList: React.FC = () => {
       await cancelParticipation(eventId);
       await fetchEvents();
       await setIsLoading(!isLoading);
+      toast.success(t("참석이 취소되었습니다."), {
+        className: "toast-success toast-container",
+      });
     } catch (error) {
       console.error("참석 취소 중 오류 발생:", error);
     }

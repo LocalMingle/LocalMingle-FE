@@ -135,7 +135,7 @@ export const getOnePost = async (eventId: number): Promise<PostDetail> => {
   return data.data;
 };
 
-// 이미지 수정
+// 이미지 업로드
 export const uploadProfileImage = async (file: File) => {
   const formData = new FormData();
   formData.append("file", file);

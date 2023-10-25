@@ -1,52 +1,58 @@
-import React, { useState } from 'react'
-import * as St from './STWritePost'
-import { useNavigate } from 'react-router-dom';
-import { useMutation, useQuery } from 'react-query';
-import axios, {AxiosInstance} from 'axios';
-import { Selector } from '../../common/Selector'
-import { Button } from '../../common/Button';
-import { useLanguage } from '../../../util/Locales/useLanguage';
+import React, { useState } from "react";
+import * as St from "./STWritePost";
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery } from "react-query";
+import axios, { AxiosInstance } from "axios";
+import { Selector } from "../../common/Selector";
+import { Button } from "../../common/Button";
+import { useLanguage } from "../../../util/Locales/useLanguage";
+import toast from "react-hot-toast";
 
 const WritePost: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem("accessToken");
 
   // 게시글 작성 state
-  const [eventName, setEventName] = useState<string>('');
+  const [eventName, setEventName] = useState<string>("");
   const [eventDate, setEventDate] = useState<string>();
   const [signupStartDate, setSignupStartDate] = useState<string>();
   const [signupEndDate, setSignupEndDate] = useState<string>();
-  const [eventLocation, setEventLocation] = useState<string>('');
+  const [eventLocation, setEventLocation] = useState<string>("");
   const [maxSize, setMaxSize] = useState<number>(0);
-  const [content, setContent] = useState<string>('');
-  const [category, setCategory] = useState<string>('☕맛집/커피');
+  const [content, setContent] = useState<string>("");
+  const [category, setCategory] = useState<string>("☕맛집/커피");
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
-  const [isVerified, setIsVerified] = useState<string>('🙋‍♀️아무나');
+  const [isVerified, setIsVerified] = useState<string>("🙋‍♀️아무나");
   const [eventImg, setEventImg] = useState<null>(null);
 
   // 사용하지 않는 변수임을 명시적으로 알리기
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const unusedVariables = { setCategory, setIsDeleted, setIsVerified, setEventImg };
+  const unusedVariables = {
+    setCategory,
+    setIsDeleted,
+    setIsVerified,
+    setEventImg,
+  };
 
   // AxiosInstance & API 설정
-  const customAxios:AxiosInstance = axios.create({
+  const customAxios: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_REACT_APP_URL,
     headers: {
       Authorization: `Bearer ${accessToken}`,
-    }
+    },
   });
   const writePostAPI = {
     locationApi: () => customAxios.get("data/toss"), // 위치 인증 여부
     // sidoApi: () => customAxios.get("data/city"),    // 시도
     // gugunApi: (sido: string) =>
     //   customAxios.get("data/gu_name", {
-        // 구군
+    // 구군
     //     params: { doName: sido },
     //   }),
     categoryApi: () => customAxios.get("data/toss"), // 카테고리
-    WritePostApi : () => customAxios.post('events'), // 게시글 작성
-  }
+    WritePostApi: () => customAxios.post("events"), // 게시글 작성
+  };
 
   // 위치 인증 여부 interface (console.log 기준)
   interface CategoryOptionsProps {
@@ -61,10 +67,10 @@ const WritePost: React.FC = () => {
     "locationOptions",
     async () => {
       const response = await writePostAPI
-            .locationApi()
-            .then((response) => {
-              return response.data.verify;
-            })
+        .locationApi()
+        .then((response) => {
+          return response.data.verify;
+        })
         .catch((error) => {
           console.log("위치 인증 여부 불러오기 실패", error);
           throw error;
@@ -147,43 +153,47 @@ const WritePost: React.FC = () => {
 
   // 게시글 작성 interface (console.log 기준)
   interface WritePostData {
-    "eventName": string,
-    "maxSize": number,
-    "eventDate": string,
-    "signupStartDate": string,
-    "signupEndDate": string,
-    "eventLocation": string,
-    "content": string,
-    "category": string,
-    "isDeleted": boolean,
-    "isVerified": string,
-    "eventImg": string | null
+    eventName: string;
+    maxSize: number;
+    eventDate: string;
+    signupStartDate: string;
+    signupEndDate: string;
+    eventLocation: string;
+    content: string;
+    category: string;
+    isDeleted: boolean;
+    isVerified: string;
+    eventImg: string | null;
   }
 
   // 게시글 작성 - DB 연동
-  const writePostMutation = useMutation(
-    async (postData: WritePostData) => {
-      try {
-        const response = await customAxios.post('events', postData);
-        return response.data;
-      } catch (error) {
-        console.error('게시글 작성 실패', error);
-        throw error;
-      }
+  const writePostMutation = useMutation(async (postData: WritePostData) => {
+    try {
+      const response = await customAxios.post("events", postData);
+      return response.data;
+    } catch (error) {
+      console.error("게시글 작성 실패", error);
+      throw error;
     }
-  );
+  });
 
   // 게시글 취소
   const postCancel = () => {
-    navigate('/');
-  }
+    navigate("/");
+  };
 
   // 게시글 등록
   const postAdd = async () => {
     try {
       // 필수 입력값 체크
-      if (!eventName || !eventDate || !signupStartDate || !signupEndDate || !content) {
-        alert('내용을 모두 입력해주세요!');
+      if (
+        !eventName ||
+        !eventDate ||
+        !signupStartDate ||
+        !signupEndDate ||
+        !content
+      ) {
+        alert("내용을 모두 입력해주세요!");
         return;
       }
 
@@ -238,52 +248,78 @@ const WritePost: React.FC = () => {
         eventImg,
       };
       await writePostMutation.mutateAsync(postData);
-      navigate('/');
+      toast.success(t("게시글이 등록되었습니다."), {
+        className: "toast-success toast-container",
+      });
+      navigate("/");
     } catch (error) {
-      console.log('게시글 작성 실패', error);
+      console.log("게시글 작성 실패", error);
     }
-  }
+  };
 
   return (
     <St.PostSection>
       <St.SelectorWrap>
-
-          {/* 카테고리 */}
-          <Selector
-            options={categoryOptionsData?.map((item) => ({
-              value: t(item),
-              label: t(item),
-            }))}
-            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-              setCategory(selectedOption.target.value);
-            }}
-          ></Selector>
-
-          {/* 위치인증 */}
+        {/* 카테고리 */}
         <Selector
-            options={locationOptionsData?.map((item) => ({
-              value: t(item),
-              label: t(item),
-            }))}
-            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-              setIsVerified(selectedOption.target.value);
-            }}
-          ></Selector>
+          options={categoryOptionsData?.map((item) => ({
+            value: t(item),
+            label: t(item),
+          }))}
+          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+            setCategory(selectedOption.target.value);
+          }}
+        ></Selector>
 
+        {/* 위치인증 */}
+        <Selector
+          options={locationOptionsData?.map((item) => ({
+            value: t(item),
+            label: t(item),
+          }))}
+          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+            setIsVerified(selectedOption.target.value);
+          }}
+        ></Selector>
       </St.SelectorWrap>
       <St.TitleWrap>
-        <input type="text" placeholder='제목을 입력하세요' value={eventName} onChange={(e)=>{setEventName(e.target.value)}}/>
+        <input
+          type="text"
+          placeholder="제목을 입력하세요"
+          value={eventName}
+          onChange={(e) => {
+            setEventName(e.target.value);
+          }}
+        />
       </St.TitleWrap>
       <St.InputWrap>
         <div>
           <p>모임일시</p>
-          <input type="date" value={eventDate} onChange={(e)=>{setEventDate(e.target.value)}}/>
+          <input
+            type="date"
+            value={eventDate}
+            onChange={(e) => {
+              setEventDate(e.target.value);
+            }}
+          />
         </div>
         <div>
           <p>참가신청 기간</p>
-          <input type="date" value={signupStartDate} onChange={(e)=>{setSignupStartDate(e.target.value)}}/>
+          <input
+            type="date"
+            value={signupStartDate}
+            onChange={(e) => {
+              setSignupStartDate(e.target.value);
+            }}
+          />
           &nbsp;~&nbsp;
-          <input type="date" value={signupEndDate} onChange={(e)=>{setSignupEndDate(e.target.value)}}/>
+          <input
+            type="date"
+            value={signupEndDate}
+            onChange={(e) => {
+              setSignupEndDate(e.target.value);
+            }}
+          />
         </div>
         <div>
           <p>모임주소</p>
@@ -297,23 +333,45 @@ const WritePost: React.FC = () => {
               console.log(selectedOption.target.value)
             }}
           ></Selector> */}
-          <input type="text" placeholder='ex. 서울시 마포구' value={eventLocation} onChange={(e)=>{setEventLocation(e.target.value)}}/>
+          <input
+            type="text"
+            placeholder="ex. 서울시 마포구"
+            value={eventLocation}
+            onChange={(e) => {
+              setEventLocation(e.target.value);
+            }}
+          />
         </div>
         <div>
           <p>모임인원</p>
-          <input type="number" placeholder='ex. 10' value={maxSize} onChange={(e)=>{setMaxSize(parseInt(e.target.value))}}/>
+          <input
+            type="number"
+            placeholder="ex. 10"
+            value={maxSize}
+            onChange={(e) => {
+              setMaxSize(parseInt(e.target.value));
+            }}
+          />
           <span>명</span>
         </div>
       </St.InputWrap>
       <St.ContentsWrap>
-        <textarea placeholder='내용을 입력하세요' value={content} onChange={(e)=>{setContent(e.target.value)}}/>
+        <textarea
+          placeholder="내용을 입력하세요"
+          value={content}
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
+        />
       </St.ContentsWrap>
       <St.ButtonWrap>
-        <Button bgcolor="#fff" onClick={postCancel}>취소</Button>
+        <Button bgcolor="#fff" onClick={postCancel}>
+          취소
+        </Button>
         <Button onClick={postAdd}>등록</Button>
       </St.ButtonWrap>
     </St.PostSection>
-  )
-}
+  );
+};
 
-export default WritePost
+export default WritePost;
