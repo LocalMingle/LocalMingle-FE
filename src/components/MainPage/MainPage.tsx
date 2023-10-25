@@ -17,14 +17,10 @@ const MainPage: React.FC = () => {
   const { t } = useLanguage();
   const lang = i18n.language;
   const accessToken = localStorage.getItem("accessToken");
-  const [selectedVerify, setSelectedVerify] = useState<string>(""); // 위치 인증 여부
+  const [ , setSelectedVerify] = useState<string>(""); // 위치 인증 여부
   const [selectedSido, setSelectedSido] = useState<string>(t("서울특별시")); // 시도
-  const [selectedGugun, setSelectedGugun] = useState<string>(t("종로구")); // 구군
-
-  const [selectedCategory, setSelectedCategory] = useState<string>(""); // 카테고리
-  // 사용하지 않는 변수임을 명시적으로 알리기
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const unusedVariables = { selectedVerify, selectedGugun, selectedCategory };
+  const [ , setSelectedGugun] = useState<string>(t("종로구")); // 구군
+  const [ , setSelectedCategory] = useState<string>(""); // 카테고리;
 
   useEffect(() => {
     setSelectedSido(t("서울특별시"));
