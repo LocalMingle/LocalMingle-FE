@@ -147,6 +147,13 @@ export const PostInfo = styled.div`
 export const GuestUserContainer = styled.div`
   display: flex;
   align-items: center;
+
+  & span {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    cursor: pointer;
+  }
 `;
 
 export const GuestProfileImg = styled.img`

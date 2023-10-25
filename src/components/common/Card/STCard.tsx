@@ -70,6 +70,14 @@ export const CardBottom = styled.div`
   border-top: 2px solid #E7E7E7;
 `
 
+export const ProfileImg = styled.img`
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #292D32;
+`
+
 export const NickName = styled.p`
   padding-left: 8px;
   font-weight: 700;
