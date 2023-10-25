@@ -116,17 +116,19 @@ const ModifyPost: React.FC = () => {
 
   // 게시글 수정 interface (console.log 기준)
   interface UpdatePostData {
-    "eventName": string,
-    "maxSize": number,
-    "eventDate": string,
-    "signupStartDate": string,
-    "signupEndDate": string,
-    "eventLocation": string,
-    "content": string,
-    "category": string,
-    "isDeleted": boolean,
-    "isVerified": string,
-    "eventImg": string | null
+    event: {
+      "eventName": string,
+      "maxSize": number,
+      "eventDate": string,
+      "signupStartDate": string,
+      "signupEndDate": string,
+      "eventLocation": string,
+      "content": string,
+      "category": string,
+      "isDeleted": boolean,
+      "isVerified": string,
+      "eventImg": string | null
+    }
   }
 
   // 기존에 있던 게시물 정보 가져오기
@@ -135,6 +137,7 @@ const ModifyPost: React.FC = () => {
     async () => {
       const response = await customAxios.get(`events/${eventId}`)
         .then((response) => {
+          console.log('게시글 가져오기', response.data)
           return response.data;
         })
         .catch((error) => {
@@ -147,16 +150,16 @@ const ModifyPost: React.FC = () => {
 
   useEffect(() => {
     if (postData) {
-      setEventName(postData.eventName);
-      setEventDate(postData.eventDate);
-      setSignupStartDate(postData.signupStartDate);
-      setSignupEndDate(postData.signupEndDate);
-      setEventLocation(postData.eventLocation);
-      setMaxSize(postData.maxSize);
-      setContent(postData.content);
-      setCategory(postData.category);
-      setIsDeleted(postData.isDeleted);
-      setIsVerified(postData.isVerified);
+      setEventName(postData.event.eventName);
+      setEventDate(postData.event.eventDate);
+      setSignupStartDate(postData.event.signupStartDate);
+      setSignupEndDate(postData.event.signupEndDate);
+      setEventLocation(postData.event.eventLocation);
+      setMaxSize(postData.event.maxSize);
+      setContent(postData.event.content);
+      setCategory(postData.event.category);
+      setIsDeleted(postData.event.isDeleted);
+      setIsVerified(postData.event.isVerified);
       setEventImg(null);
     }
   }, [postData]);
@@ -250,7 +253,6 @@ const ModifyPost: React.FC = () => {
   return (
   <St.PostSection>
       <St.SelectorWrap>
-
           {/* 카테고리 */}
           <Selector
             options={categoryOptionsData?.map((item) => ({
