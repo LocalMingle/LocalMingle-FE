@@ -22,9 +22,9 @@ const ModifyPost: React.FC = () => {
   const [eventLocation, setEventLocation] = useState<string>('');
   const [maxSize, setMaxSize] = useState<number>(0);
   const [content, setContent] = useState<string>('');
-  const [category, setCategory] = useState<string>('☕맛집/커피');
+  const [category, setCategory] = useState<string>('');
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
-  const [isVerified, setIsVerified] = useState<string>('🙋‍♀️아무나');
+  const [isVerified, setIsVerified] = useState<string>('');
   const [eventImg, setEventImg] = useState<null>(null);
 
   // 사용하지 않는 변수임을 명시적으로 알리기
@@ -165,7 +165,7 @@ const ModifyPost: React.FC = () => {
   }, [postData]);
 
 
-  // 기존의 게시글 정보 interface (console.log 기준)
+  // 수정할 게시글 정보 interface (console.log 기준)
   interface UpdatePostData {
     "eventName": string,
     "maxSize": number,
@@ -180,7 +180,7 @@ const ModifyPost: React.FC = () => {
     "eventImg": string | null
   }
 
-  // 게시글 수정 - DB 연동
+  // 수정할 게시글 - DB 연동
   const updatePostMutation = useMutation(
     async (postData: UpdatePostData) => {
       try {
@@ -265,6 +265,11 @@ const ModifyPost: React.FC = () => {
     }
   }
 
+  const setDateFormat = (date: string): string => {
+    // 날짜 형식 변경 2023-10-25
+    return new String(date).split("T")[0];
+  };
+
   return (
   <St.PostSection>
       <St.SelectorWrap>
@@ -274,6 +279,7 @@ const ModifyPost: React.FC = () => {
               value: t(item),
               label: t(item),
             }))}
+            value={category}
             onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
               setCategory(selectedOption.target.value);
             }}
@@ -285,6 +291,7 @@ const ModifyPost: React.FC = () => {
               value: t(item),
               label: t(item),
             }))}
+            value={isVerified}
             onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
               setIsVerified(selectedOption.target.value);
             }}
@@ -297,13 +304,13 @@ const ModifyPost: React.FC = () => {
       <St.InputWrap>
         <div>
           <p>모임일시</p>
-          <input type="date" value={eventDate} onChange={(e)=>{setEventDate(e.target.value)}}/>
+          <input type="date" value={setDateFormat(eventDate)} onChange={(e)=>{setEventDate(e.target.value)}}/>
         </div>
         <div>
           <p>참가신청 기간</p>
-          <input type="date" value={signupStartDate} onChange={(e)=>{setSignupStartDate(e.target.value)}}/>
+          <input type="date" value={setDateFormat(signupStartDate)} onChange={(e)=>{setSignupStartDate(e.target.value)}}/>
           &nbsp;~&nbsp;
-          <input type="date" value={signupEndDate} onChange={(e)=>{setSignupEndDate(e.target.value)}}/>
+          <input type="date" value={setDateFormat(signupEndDate)} onChange={(e)=>{setSignupEndDate(e.target.value)}}/>
         </div>
         <div>
           <p>모임주소</p>
