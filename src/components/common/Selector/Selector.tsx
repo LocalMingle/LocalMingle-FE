@@ -3,12 +3,15 @@ import React from "react";
 import * as St from "./STSelector";
 
 interface SelectorProps {
+  value: string | string[] | undefined;
   options: { value: string | string[]; label: string | string[] }[] | undefined;
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const Selector: React.FC<SelectorProps> = ({ options, onChange }) => {
+const Selector: React.FC<SelectorProps> = ({ value, options, onChange }) => {
   const normalizedOptions = options || [];
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const dummyValue = value; // 사용하지 않는 변수로 표시
 
   return (
     <St.SelectorBar>
