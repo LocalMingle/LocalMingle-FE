@@ -19,6 +19,7 @@ import toast from "react-hot-toast";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../recoil/atoms/UserState";
+import { Button } from "../../common/Button";
 
 const UserInfo: React.FC = () => {
   const user = useRecoilValue(userState);
@@ -88,8 +89,7 @@ const UserInfo: React.FC = () => {
     fetchUserInfo();
   }, []);
 
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleUpdate = async () => {
     const nameChanged = nickname !== initialNickname;
 
     if (!password) {
@@ -241,9 +241,9 @@ const UserInfo: React.FC = () => {
             />
           </St.InputContainer>
           <St.SubmitButtonWrap>
-            <St.SubmitButton type="button" onClick={handleUpdate}>
+            <Button onClick={handleUpdate}>
               {t("회원정보 수정")}
-            </St.SubmitButton>
+            </Button>
           </St.SubmitButtonWrap>
         </St.GroupedInputContainer>
         <St.GroupedInputContainer>
@@ -281,9 +281,9 @@ const UserInfo: React.FC = () => {
           </St.InputContainer>
 
           <St.SubmitButtonWrap>
-            <St.SubmitButton type="button" onClick={handleUpdate}>
+            <Button onClick={handleUpdate}>
               {t("비밀번호 수정")}
-            </St.SubmitButton>
+            </Button>
           </St.SubmitButtonWrap>
         </St.GroupedInputContainer>
       </St.MyPageWrap>
