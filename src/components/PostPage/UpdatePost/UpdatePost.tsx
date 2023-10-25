@@ -3,52 +3,58 @@ import * as St from "./STUpdatePost";
 import { useNavigate } from "react-router-dom";
 import { Selector } from "../../common/Selector";
 import { Button } from "../../common/Button";
-import axios, {AxiosInstance} from 'axios';
+import axios, { AxiosInstance } from "axios";
 import { useLanguage } from "../../../util/Locales/useLanguage";
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const ModifyPost: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem("accessToken");
   const { eventId } = useParams<{ eventId?: string }>();
 
   // 게시글 작성 state
-  const [eventName, setEventName] = useState<string>('');
+  const [eventName, setEventName] = useState<string>("");
   const [eventDate, setEventDate] = useState<string>();
   const [signupStartDate, setSignupStartDate] = useState<string>();
   const [signupEndDate, setSignupEndDate] = useState<string>();
-  const [eventLocation, setEventLocation] = useState<string>('');
+  const [eventLocation, setEventLocation] = useState<string>("");
   const [maxSize, setMaxSize] = useState<number>(0);
-  const [content, setContent] = useState<string>('');
-  const [category, setCategory] = useState<string>('☕맛집/커피');
+  const [content, setContent] = useState<string>("");
+  const [category, setCategory] = useState<string>("☕맛집/커피");
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
-  const [isVerified, setIsVerified] = useState<string>('🙋‍♀️아무나');
+  const [isVerified, setIsVerified] = useState<string>("🙋‍♀️아무나");
   const [eventImg, setEventImg] = useState<null>(null);
 
   // 사용하지 않는 변수임을 명시적으로 알리기
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const unusedVariables = { setCategory, setIsDeleted, setIsVerified, setEventImg };
+  const unusedVariables = {
+    setCategory,
+    setIsDeleted,
+    setIsVerified,
+    setEventImg,
+  };
 
   // AxiosInstance & API 설정
-  const customAxios:AxiosInstance = axios.create({
+  const customAxios: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_REACT_APP_URL,
     headers: {
       Authorization: `Bearer ${accessToken}`,
-    }
+    },
   });
   const updatePostAPI = {
     locationApi: () => customAxios.get("data/toss"), // 위치 인증 여부
     // sidoApi: () => customAxios.get("data/city"),    // 시도
     // gugunApi: (sido: string) =>
     //   customAxios.get("data/gu_name", {
-        // 구군
+    // 구군
     //     params: { doName: sido },
     //   }),
     categoryApi: () => customAxios.get("data/toss"), // 카테고리
-    updatePostApi : () => customAxios.patch(`events/${eventId}`), // 게시글 수정
-  }
+    updatePostApi: () => customAxios.patch(`events/${eventId}`), // 게시글 수정
+  };
 
   // 위치 인증 여부 interface (console.log 기준)
   interface CategoryOptionsProps {
@@ -63,10 +69,10 @@ const ModifyPost: React.FC = () => {
     "locationOptions",
     async () => {
       const response = await updatePostAPI
-            .locationApi()
-            .then((response) => {
-              return response.data.verify;
-            })
+        .locationApi()
+        .then((response) => {
+          return response.data.verify;
+        })
         .catch((error) => {
           console.log("위치 인증 여부 불러오기 실패", error);
           throw error;
@@ -116,24 +122,25 @@ const ModifyPost: React.FC = () => {
 
   // 게시글 수정 interface (console.log 기준)
   interface UpdatePostData {
-    "eventName": string,
-    "maxSize": number,
-    "eventDate": string,
-    "signupStartDate": string,
-    "signupEndDate": string,
-    "eventLocation": string,
-    "content": string,
-    "category": string,
-    "isDeleted": boolean,
-    "isVerified": string,
-    "eventImg": string | null
+    eventName: string;
+    maxSize: number;
+    eventDate: string;
+    signupStartDate: string;
+    signupEndDate: string;
+    eventLocation: string;
+    content: string;
+    category: string;
+    isDeleted: boolean;
+    isVerified: string;
+    eventImg: string | null;
   }
 
   // 기존에 있던 게시물 정보 가져오기
   const { data: postData } = useQuery<UpdatePostData, Error>(
     "postData",
     async () => {
-      const response = await customAxios.get(`events/${eventId}`)
+      const response = await customAxios
+        .get(`events/${eventId}`)
         .then((response) => {
           return response.data;
         })
@@ -161,20 +168,17 @@ const ModifyPost: React.FC = () => {
     }
   }, [postData]);
 
-
   // 게시글 수정 - DB 연동
-  const updatePostMutation = useMutation(
-    async (postData: UpdatePostData) => {
-      try {
-        const response = await customAxios.patch(`events/${eventId}`, postData);
-        console.log('게시글 값?', response.data);
-        return response.data;
-      } catch (error) {
-        console.log('게시글 수정 실패!', error);
-        throw error;
-      }
+  const updatePostMutation = useMutation(async (postData: UpdatePostData) => {
+    try {
+      const response = await customAxios.patch(`events/${eventId}`, postData);
+      console.log("게시글 값?", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("게시글 수정 실패!", error);
+      throw error;
     }
-  );
+  });
 
   // 게시글 수정 취소
   const postCancel = async () => {
@@ -185,8 +189,14 @@ const ModifyPost: React.FC = () => {
   const postModify = async () => {
     try {
       // 필수 입력값 체크
-      if (!eventName || !eventDate || !signupStartDate || !signupEndDate || !content) {
-        alert('내용을 모두 입력해주세요!');
+      if (
+        !eventName ||
+        !eventDate ||
+        !signupStartDate ||
+        !signupEndDate ||
+        !content
+      ) {
+        alert("내용을 모두 입력해주세요!");
         return;
       }
 
@@ -241,55 +251,81 @@ const ModifyPost: React.FC = () => {
         eventImg,
       };
       await updatePostMutation.mutateAsync(updateData);
+      toast.success(t("수정이 완료되었습니다."), {
+        className: "toast-success toast-container",
+      });
       navigate("/mypage/makelist");
-  } catch (error) {
+    } catch (error) {
       console.log("게시글 수정 실패!", error);
     }
-  }
+  };
 
   return (
-  <St.PostSection>
+    <St.PostSection>
       <St.SelectorWrap>
-
-          {/* 카테고리 */}
-          <Selector
-            options={categoryOptionsData?.map((item) => ({
-              value: t(item),
-              label: t(item),
-            }))}
-            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-              setCategory(selectedOption.target.value);
-            }}
-          ></Selector>
-
-          {/* 위치인증 */}
+        {/* 카테고리 */}
         <Selector
-            options={locationOptionsData?.map((item) => ({
-              value: t(item),
-              label: t(item),
-            }))}
-            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-              setIsVerified(selectedOption.target.value);
-            }}
-          ></Selector>
+          options={categoryOptionsData?.map((item) => ({
+            value: t(item),
+            label: t(item),
+          }))}
+          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+            setCategory(selectedOption.target.value);
+          }}
+        ></Selector>
 
+        {/* 위치인증 */}
+        <Selector
+          options={locationOptionsData?.map((item) => ({
+            value: t(item),
+            label: t(item),
+          }))}
+          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+            setIsVerified(selectedOption.target.value);
+          }}
+        ></Selector>
       </St.SelectorWrap>
       <St.TitleWrap>
-        <input type="text" placeholder='제목을 입력하세요' value={eventName} onChange={(e)=>{setEventName(e.target.value)}}/>
+        <input
+          type="text"
+          placeholder={t("제목을 입력하세요")}
+          value={eventName}
+          onChange={(e) => {
+            setEventName(e.target.value);
+          }}
+        />
       </St.TitleWrap>
       <St.InputWrap>
         <div>
-          <p>모임일시</p>
-          <input type="date" value={eventDate} onChange={(e)=>{setEventDate(e.target.value)}}/>
+          <p>{t("모임일시")}</p>
+          <input
+            type="date"
+            value={eventDate}
+            onChange={(e) => {
+              setEventDate(e.target.value);
+            }}
+          />
         </div>
         <div>
-          <p>참가신청 기간</p>
-          <input type="date" value={signupStartDate} onChange={(e)=>{setSignupStartDate(e.target.value)}}/>
+          <p>{t("참가신청 기간")}</p>
+          <input
+            type="date"
+            value={signupStartDate}
+            onChange={(e) => {
+              setSignupStartDate(e.target.value);
+            }}
+          />
           &nbsp;~&nbsp;
-          <input type="date" value={signupEndDate} onChange={(e)=>{setSignupEndDate(e.target.value)}}/>
+          <input
+            type="date"
+            value={signupEndDate}
+            onChange={(e) => {
+              setSignupEndDate(e.target.value);
+            }}
+          />
         </div>
         <div>
-          <p>모임주소</p>
+          <p>{t("모임주소")}</p>
           {/* <Selector
             options={sidoOptionsData?.map((item) => ({
               value: t(item.doName),
@@ -300,20 +336,42 @@ const ModifyPost: React.FC = () => {
               console.log(selectedOption.target.value)
             }}
           ></Selector> */}
-          <input type="text" placeholder='ex. 서울시 마포구' value={eventLocation} onChange={(e)=>{setEventLocation(e.target.value)}}/>
+          <input
+            type="text"
+            placeholder={t("ex. 서울시 마포구")}
+            value={eventLocation}
+            onChange={(e) => {
+              setEventLocation(e.target.value);
+            }}
+          />
         </div>
         <div>
-          <p>모임인원</p>
-          <input type="number" placeholder='ex. 10' value={maxSize} onChange={(e)=>{setMaxSize(parseInt(e.target.value))}}/>
-          <span>명</span>
+          <p>{t("모임인원")}</p>
+          <input
+            type="number"
+            placeholder="ex. 10"
+            value={maxSize}
+            onChange={(e) => {
+              setMaxSize(parseInt(e.target.value));
+            }}
+          />
+          <span>{t("명")}</span>
         </div>
       </St.InputWrap>
       <St.ContentsWrap>
-        <textarea placeholder='내용을 입력하세요' value={content} onChange={(e)=>{setContent(e.target.value)}}/>
+        <textarea
+          placeholder={t("내용을 입력하세요")}
+          value={content}
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
+        />
       </St.ContentsWrap>
       <St.ButtonWrap>
-        <Button bgcolor="#fff" onClick={postCancel}>취소</Button>
-        <Button onClick={postModify}>수정</Button>
+        <Button bgcolor="#fff" onClick={postCancel}>
+          {t("취소")}
+        </Button>
+        <Button onClick={postModify}>{t("수정")}</Button>
       </St.ButtonWrap>
     </St.PostSection>
   );

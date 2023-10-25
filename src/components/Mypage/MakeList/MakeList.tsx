@@ -5,6 +5,7 @@ import { getEvents, deleteEvent } from "../../../api/api";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../recoil/atoms/UserState";
+import toast from "react-hot-toast";
 
 interface Event {
   eventId: number;
@@ -51,6 +52,9 @@ const MakeList: React.FC = () => {
     try {
       await deleteEvent(eventId);
       fetchEvents();
+      toast.success(t("삭제가 완료되었습니다."), {
+        className: "toast-success toast-container",
+      });
     } catch (error) {
       console.error("글 삭제 실패:", error);
     }

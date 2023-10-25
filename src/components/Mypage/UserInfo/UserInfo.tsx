@@ -34,6 +34,7 @@ const UserInfo: React.FC = () => {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isNicknameValid, setIsNicknameValid] = useState<boolean | null>(null);
+  const [imageError, setImageError] = useState<string | null>(null);
   const { t } = useLanguage();
 
   const togglePasswordVisibility = () => {
@@ -141,7 +142,7 @@ const UserInfo: React.FC = () => {
     const file = e.target.files?.[0];
     if (file) {
       const validationError = validateImageUpload(file);
-
+      setImageError(validationError);
       if (validationError) {
         console.error(validationError);
         toast.error(t(validationError), {
@@ -199,6 +200,9 @@ const UserInfo: React.FC = () => {
             >
               {t("이미지 업로드")}
             </St.ProfileTextButton>
+            {imageError && (
+              <St.ErrorMessageImage>{imageError}</St.ErrorMessageImage>
+            )}
           </St.ImageContainer>
 
           <St.InputContainer>

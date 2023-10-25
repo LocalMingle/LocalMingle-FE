@@ -155,3 +155,10 @@ export const GroupedInputContainer = styled.div`
   margin-bottom: 15px;
   width: 100%;
 `;
+
+export const ErrorMessageImage = styled.div`
+  font-size: 12px;
+  color: #da7969;
+  text-align: left;
+  margin-top: 5px;
+`;
