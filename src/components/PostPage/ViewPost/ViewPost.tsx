@@ -125,13 +125,11 @@ const ViewPost: React.FC = () => {
         <St.TitleWrap>
           <St.Category>{t(category)}</St.Category>
           {isJoined === true ? (
-            // 참가완료
             <St.Join>
               <h1>{t(eventName)}</h1>
               <span>{t("참가완료")}</span>
             </St.Join>
           ) : (
-            // 미참가
             <St.NotJoin>
               <h1>{t(eventName)}</h1>
             </St.NotJoin>

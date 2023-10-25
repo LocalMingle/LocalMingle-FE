@@ -15,7 +15,7 @@ const resources = {
 };
 
 // 사용자의 브라우저 언어 설정을 확인하고, 설정이 없으면 기본값으로 사용할 언어를 결정
-const userLanguage = window.navigator.language || "ko";
+const userLanguage = window.navigator.language;
 
 i18n.use(initReactI18next).init({
   resources,

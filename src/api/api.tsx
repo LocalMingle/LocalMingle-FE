@@ -459,44 +459,44 @@ export const toggleParticipation = async (eventId: number) => {
   }
 };
 
-// 시/도 데이터 불러오기
-export const getCityData = async (lang: string) => {
-  try {
-    const response = await axiosInstance.get("/data/city", {
-      params: { lang },
-    });
+// // 시/도 데이터 불러오기
+// export const getCityData = async (lang: string) => {
+//   try {
+//     const response = await axiosInstance.get("/data/city", {
+//       params: { lang },
+//     });
 
-    if (response.status === 200) {
-      console.log("데이터 가져옴!", response.data);
-      return response.data;
-    } else {
-      console.error("데이터 가져오기 실패ㅠ", response);
-      return null;
-    }
-  } catch (error) {
-    console.error(`시/도 데이터 가져오기 실패: ${error}`);
-    throw error;
-  }
-};
+//     if (response.status === 200) {
+//       console.log("데이터 가져옴!", response.data);
+//       return response.data;
+//     } else {
+//       console.error("데이터 가져오기 실패ㅠ", response);
+//       return null;
+//     }
+//   } catch (error) {
+//     console.error(`시/도 데이터 가져오기 실패: ${error}`);
+//     throw error;
+//   }
+// };
 
-// 구/군 데이터 불러오기
-export const getGuNames = async (doName: string) => {
-  try {
-    const response = await axiosInstance.get("/data/gu_name", {
-      params: {
-        doName,
-      },
-    });
+// // 구/군 데이터 불러오기
+// export const getGuNames = async (doName: string) => {
+//   try {
+//     const response = await axiosInstance.get("/data/gu_name", {
+//       params: {
+//         doName,
+//       },
+//     });
 
-    console.log("서버에서 반환된 데이터:", response.data);
+//     console.log("서버에서 반환된 데이터:", response.data);
 
-    if (Array.isArray(response.data)) {
-      return response.data;
-    } else {
-      throw new Error("올바르지 않은 데이터 형식입니다.");
-    }
-  } catch (error) {
-    console.error("구/군 데이터 불러오기 중 오류 발생:", error);
-    throw error;
-  }
-};
+//     if (Array.isArray(response.data)) {
+//       return response.data;
+//     } else {
+//       throw new Error("올바르지 않은 데이터 형식입니다.");
+//     }
+//   } catch (error) {
+//     console.error("구/군 데이터 불러오기 중 오류 발생:", error);
+//     throw error;
+//   }
+// };
