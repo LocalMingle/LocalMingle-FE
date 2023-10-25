@@ -114,8 +114,8 @@ const ModifyPost: React.FC = () => {
     }
   );
 
-  // 게시글 수정 interface (console.log 기준)
-  interface UpdatePostData {
+  // 기존의 게시글 정보 interface (console.log 기준)
+  interface GetPostData {
     event: {
       "eventName": string,
       "maxSize": number,
@@ -132,12 +132,12 @@ const ModifyPost: React.FC = () => {
   }
 
   // 기존에 있던 게시물 정보 가져오기
-  const { data: postData } = useQuery<UpdatePostData, Error>(
+  const { data: postData } = useQuery<GetPostData, Error>(
     "postData",
     async () => {
       const response = await customAxios.get(`events/${eventId}`)
         .then((response) => {
-          console.log('게시글 가져오기', response.data)
+          // console.log('게시글 가져오기', response.data)
           return response.data;
         })
         .catch((error) => {
@@ -165,12 +165,27 @@ const ModifyPost: React.FC = () => {
   }, [postData]);
 
 
+  // 기존의 게시글 정보 interface (console.log 기준)
+  interface UpdatePostData {
+    "eventName": string,
+    "maxSize": number,
+    "eventDate": string,
+    "signupStartDate": string,
+    "signupEndDate": string,
+    "eventLocation": string,
+    "content": string,
+    "category": string,
+    "isDeleted": boolean,
+    "isVerified": string,
+    "eventImg": string | null
+  }
+
   // 게시글 수정 - DB 연동
   const updatePostMutation = useMutation(
     async (postData: UpdatePostData) => {
       try {
         const response = await customAxios.patch(`events/${eventId}`, postData);
-        console.log('게시글 값?', response.data);
+        // console.log('게시글 값?', response.data);
         return response.data;
       } catch (error) {
         console.log('게시글 수정 실패!', error);
