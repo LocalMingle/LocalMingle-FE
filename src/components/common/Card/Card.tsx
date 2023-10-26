@@ -56,14 +56,11 @@ const Card: React.FC<CardProps> = ({ event, guestList, hostUser }) => {
         </St.Date>
         <St.Title>{event.eventName}</St.Title>
         <St.CardMiddle>
-          <Tag bgcolor="orange">{t(event.eventLocation)}</Tag>
+          <Tag bgcolor="orange">{event.eventLocation}</Tag>
           <Tag bgcolor="pink">{t(event.isVerified)}</Tag>
         </St.CardMiddle>
         <St.CardBottom>
-          <St.ProfileImg
-            src={(hostUser[0].profileImg)}
-            alt="profile"
-          />
+          <St.ProfileImg src={hostUser[0].profileImg} alt="profile" />
           <St.NickName>{hostUser[0].nickname}</St.NickName>
         </St.CardBottom>
       </St.CardWrap>

@@ -9,6 +9,7 @@ import {
 import { isTokenExpired } from "../util/token";
 import { uploadInstance } from "../api/axiosInstance";
 
+// 엑세스 토큰 만료시 리프레쉬토큰 이용해서 새로운 엑세스 토큰 발급
 export const checkAndRefreshTokenIfNeeded = async () => {
   const accessToken = localStorage.getItem("accessToken");
   if (accessToken) {
@@ -18,7 +19,7 @@ export const checkAndRefreshTokenIfNeeded = async () => {
       if (newToken) {
         setAccessToken(newToken);
       } else {
-        // 여기서 로그아웃 로직이나 리프레쉬 토큰도 만료되었을 때의 처리요망
+        window.location.href = "/login";
       }
     }
   }
@@ -379,7 +380,7 @@ interface EventDetailResponse {
     createdAt: Date;
     updatedAt: Date;
   }>;
-  guestUser: Array<Array<GuestUser>>;
+  guestUser: GuestUser[][];
 }
 
 type GuestUser = {
@@ -388,6 +389,7 @@ type GuestUser = {
   nickname: string;
   intro: string;
   profileImg: string;
+  userLocation: null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -459,44 +461,17 @@ export const toggleParticipation = async (eventId: number) => {
   }
 };
 
-// // 시/도 데이터 불러오기
-// export const getCityData = async (lang: string) => {
-//   try {
-//     const response = await axiosInstance.get("/data/city", {
-//       params: { lang },
-//     });
+// 프로필 페이지 비밀번호 업데이트
 
-//     if (response.status === 200) {
-//       console.log("데이터 가져옴!", response.data);
-//       return response.data;
-//     } else {
-//       console.error("데이터 가져오기 실패ㅠ", response);
-//       return null;
-//     }
-//   } catch (error) {
-//     console.error(`시/도 데이터 가져오기 실패: ${error}`);
-//     throw error;
-//   }
-// };
-
-// // 구/군 데이터 불러오기
-// export const getGuNames = async (doName: string) => {
-//   try {
-//     const response = await axiosInstance.get("/data/gu_name", {
-//       params: {
-//         doName,
-//       },
-//     });
-
-//     console.log("서버에서 반환된 데이터:", response.data);
-
-//     if (Array.isArray(response.data)) {
-//       return response.data;
-//     } else {
-//       throw new Error("올바르지 않은 데이터 형식입니다.");
-//     }
-//   } catch (error) {
-//     console.error("구/군 데이터 불러오기 중 오류 발생:", error);
-//     throw error;
-//   }
-// };
+// 패스워드 업데이트 API
+export const updatePassword = async (newPassword: string) => {
+  try {
+    const response = await axiosInstance.patch("/users/updatePassword", {
+      password: newPassword,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("패스워드 업데이트 실패 😢", error);
+    throw error;
+  }
+};

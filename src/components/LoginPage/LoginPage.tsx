@@ -100,13 +100,6 @@ const LoginPage: React.FC = () => {
     window.location.href = googleOauthURL;
   };
 
-  // const generateRandomString = () => {
-  //   return (
-  //     Math.random().toString(36).substring(2, 15) +
-  //     Math.random().toString(36).substring(2, 15)
-  //   );
-  // };
-
   const naverLoginHandler = () => {
     const REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
     const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID;

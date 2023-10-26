@@ -223,8 +223,8 @@ const MainPage: React.FC = () => {
         {/* 시/도 */}
         <Selector
           options={sidoOptionsData?.map((option) => ({
-            value: t(option.doName),
-            label: t(option.doName),
+            value: option.doName,
+            label: option.doName,
           }))}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedSido(selectedOption.target.value);
@@ -233,8 +233,8 @@ const MainPage: React.FC = () => {
         {/* 구/군 */}
         <Selector
           options={gugunOptionsData?.map((option) => ({
-            value: t(option.guName),
-            label: t(option.guName),
+            value: option.guName,
+            label: option.guName,
           }))}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedGugun(selectedOption.target.value);

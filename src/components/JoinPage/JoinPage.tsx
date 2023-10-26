@@ -167,14 +167,11 @@ const SignUpForm: React.FC = () => {
   };
 
   const handleAuth = async () => {
-    // 로딩 시작
     setIsLoading(true);
 
     try {
-      // 이메일 인증 API 호출
       const response = await verifyEmailCode(Number(authCode));
 
-      // 로딩 끝
       setIsLoading(false);
 
       if (response.status === 201) {
@@ -186,25 +183,20 @@ const SignUpForm: React.FC = () => {
           setAuthError(t("인증코드를 다시 확인해주세요."));
           setIsSuccess(false);
         }
-      } else {
-        // 그 외 상황. 에러 처리 등
       }
 
-      // 타이머 유효성 검사
       const timerMessage = validateAuthCodeTimer(isTimerExpired);
       if (timerMessage) {
         setAuthError(timerMessage);
         setIsSuccess(false);
       }
 
-      // 이메일 인증 유효성 검사
       const emailMessage = validateEmailVerification(isEmailVerified);
       if (emailMessage) {
         setAuthError(emailMessage);
         setIsSuccess(false);
       }
     } catch (error) {
-      // 로딩 끝
       setIsLoading(false);
 
       console.error("인증 실패:", error);
