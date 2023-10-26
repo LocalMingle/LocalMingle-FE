@@ -21,7 +21,7 @@ export const TabContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: baseline;
-  padding: 75px 16px 0;
+  padding: 50px 16px 0;
   position: relative;
   z-index: 1;
 `

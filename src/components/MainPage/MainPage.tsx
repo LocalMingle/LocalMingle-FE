@@ -12,20 +12,48 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../../util/Locales/useLanguage";
 import i18n from "../../util/Locales/i18n";
+import { useGeoLocation } from "../../api/geolocation";
 
 const MainPage: React.FC = () => {
   const { t } = useLanguage();
   const lang = i18n.language;
   const accessToken = localStorage.getItem("accessToken");
-  const [ , setSelectedVerify] = useState<string>(""); // 위치 인증 여부
+  const [selectedVerify , setSelectedVerify] = useState<string>(""); // 위치 인증 여부
   const [selectedSido, setSelectedSido] = useState<string>(t("서울특별시")); // 시도
-  const [ , setSelectedGugun] = useState<string>(t("종로구")); // 구군
-  const [ , setSelectedCategory] = useState<string>(""); // 카테고리;
+  const [selectedGugun , setSelectedGugun] = useState<string>(t("종로구")); // 구군
+  const [selectedCategory , setSelectedCategory] = useState<string>(""); // 카테고리;
 
   useEffect(() => {
     setSelectedSido(t("서울특별시"));
     setSelectedGugun(t("종로구"));
   }, [t]);
+
+  // 위치 정보
+  const geolocationOptions = {
+    enableHighAccuracy: true,
+    timeout: 1000 * 10,
+    maximumAge: 1000 * 3600 * 24,
+  };
+
+  // console.log("나의 위치 정보", useGeoLocation(geolocationOptions));
+  //location
+  // latitude : 37.3348035
+  // longitude : 127.2541769
+
+  // const getLocation = async () => {
+  //   try {
+  //     const position = await useGeoLocation(geolocationOptions);
+  //     console.log("나의 위치 정보", position);
+  //   } catch (error) {
+  //     console.error("위치 정보 가져오기 실패", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getLocation();
+  // }, []);
+  // 
+
 
   // AxiosInstance & API 설정
   const customAxios: AxiosInstance = axios.create({
@@ -46,6 +74,9 @@ const MainPage: React.FC = () => {
       }),
     categoryApi: () => customAxios.get("data/toss"), // 카테고리
     cardListApi: () => customAxios.get("events"), // 게시글 전체 조회
+    filterVerifyApi: () => customAxios.get("/data/filter/verify", { // 위치 인증 필터링
+      params: { verify: selectedVerify },
+    }), 
   };
 
   // 위치 인증 여부 interface (console.log 기준)
@@ -57,7 +88,7 @@ const MainPage: React.FC = () => {
   }
 
   // 위치 인증 여부 - DB 연동
-  const { data: locationOptionsData } = useQuery<CategoryOptionsProps, Error>(
+  const { data: locationOptionsData } = useQuery<CategoryOptionsProps[], Error>(
     "locationOptions",
     async () => {
       const response = await mainAPI
@@ -184,6 +215,32 @@ const MainPage: React.FC = () => {
     }
   );
 
+  // 게시글 위치 필터링 - DB 연동 
+  // refetch: refetchfilteredOptions
+  // const { data: locationOptionsData  } = useQuery<CardProps[]>(
+  //   "get",
+  //   async () => {
+  //     const response = await mainAPI
+  //       .filterVerifyApi()
+  //       .then((response) => {
+  //         console.log('게시글 위치 필터링 리스트:', response.data);
+  //         return response.data;
+  //       })
+  //       .catch((error) => {
+  //         console.log("게시글 전체조회 에러!", error);
+  //         throw error;
+  //       });
+  //     return response;
+  //   }
+  // );
+
+  // useEffect(() =>{
+  //   if(selectedVerify){
+  //     console.log(selectedVerify);
+  //     refetchfilteredOptions();
+  //   }
+  // },[selectedVerify, lang, refetchfilteredOptions])
+
   // 로딩 중인 경우
   if (postsLoading) return <Spinner />;
 
@@ -216,6 +273,7 @@ const MainPage: React.FC = () => {
             value: t(item),
             label: t(item),
           }))}
+          value={selectedVerify}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedVerify(selectedOption.target.value);
           }}
@@ -226,6 +284,7 @@ const MainPage: React.FC = () => {
             value: option.doName,
             label: option.doName,
           }))}
+          value={selectedSido}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedSido(selectedOption.target.value);
           }}
@@ -236,6 +295,7 @@ const MainPage: React.FC = () => {
             value: option.guName,
             label: option.guName,
           }))}
+          value={selectedGugun}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedGugun(selectedOption.target.value);
           }}
@@ -246,6 +306,7 @@ const MainPage: React.FC = () => {
             value: t(item),
             label: t(item),
           }))}
+          value={selectedCategory}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedCategory(selectedOption.target.value);
           }}

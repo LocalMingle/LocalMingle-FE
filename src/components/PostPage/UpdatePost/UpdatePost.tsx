@@ -22,10 +22,10 @@ const ModifyPost: React.FC = () => {
   const [signupEndDate, setSignupEndDate] = useState<string>();
   const [eventLocation, setEventLocation] = useState<string>("");
   const [maxSize, setMaxSize] = useState<number>(0);
-  const [content, setContent] = useState<string>("");
-  const [category, setCategory] = useState<string>("☕맛집/커피");
+  const [content, setContent] = useState<string>('');
+  const [category, setCategory] = useState<string>('');
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
-  const [isVerified, setIsVerified] = useState<string>("🙋‍♀️아무나");
+  const [isVerified, setIsVerified] = useState<string>('');
   const [eventImg, setEventImg] = useState<null>(null);
 
   // 사용하지 않는 변수임을 명시적으로 알리기
@@ -122,26 +122,27 @@ const ModifyPost: React.FC = () => {
 
   // 게시글 수정 interface (console.log 기준)
   interface UpdatePostData {
-    eventName: string;
-    maxSize: number;
-    eventDate: string;
-    signupStartDate: string;
-    signupEndDate: string;
-    eventLocation: string;
-    content: string;
-    category: string;
-    isDeleted: boolean;
-    isVerified: string;
-    eventImg: string | null;
+    "eventName": string,
+    "maxSize": number,
+    "eventDate": string,
+    "signupStartDate": string,
+    "signupEndDate": string,
+    "eventLocation": string,
+    "content": string,
+    "category": string,
+    "isDeleted": boolean,
+    "isVerified": string,
+    "eventImg": string | null
   }
 
   // 기존에 있던 게시물 정보 가져오기
-  const { data: postData } = useQuery<UpdatePostData, Error>(
+  const { data: postData } = useQuery<GetPostData, Error>(
     "postData",
     async () => {
       const response = await customAxios
         .get(`events/${eventId}`)
         .then((response) => {
+          // console.log('게시글 가져오기', response.data)
           return response.data;
         })
         .catch((error) => {
@@ -154,31 +155,33 @@ const ModifyPost: React.FC = () => {
 
   useEffect(() => {
     if (postData) {
-      setEventName(postData.eventName);
-      setEventDate(postData.eventDate);
-      setSignupStartDate(postData.signupStartDate);
-      setSignupEndDate(postData.signupEndDate);
-      setEventLocation(postData.eventLocation);
-      setMaxSize(postData.maxSize);
-      setContent(postData.content);
-      setCategory(postData.category);
-      setIsDeleted(postData.isDeleted);
-      setIsVerified(postData.isVerified);
+      setEventName(postData.event.eventName);
+      setEventDate(postData.event.eventDate);
+      setSignupStartDate(postData.event.signupStartDate);
+      setSignupEndDate(postData.event.signupEndDate);
+      setEventLocation(postData.event.eventLocation);
+      setMaxSize(postData.event.maxSize);
+      setContent(postData.event.content);
+      setCategory(postData.event.category);
+      setIsDeleted(postData.event.isDeleted);
+      setIsVerified(postData.event.isVerified);
       setEventImg(null);
     }
   }, [postData]);
 
   // 게시글 수정 - DB 연동
-  const updatePostMutation = useMutation(async (postData: UpdatePostData) => {
-    try {
-      const response = await customAxios.patch(`events/${eventId}`, postData);
-      console.log("게시글 값?", response.data);
-      return response.data;
-    } catch (error) {
-      console.log("게시글 수정 실패!", error);
-      throw error;
+  const updatePostMutation = useMutation(
+    async (postData: UpdatePostData) => {
+      try {
+        const response = await customAxios.patch(`events/${eventId}`, postData);
+        console.log('게시글 값?', response.data);
+        return response.data;
+      } catch (error) {
+        console.log('게시글 수정 실패!', error);
+        throw error;
+      }
     }
-  });
+  );
 
   // 게시글 수정 취소
   const postCancel = async () => {
@@ -258,32 +261,35 @@ const ModifyPost: React.FC = () => {
     } catch (error) {
       console.log("게시글 수정 실패!", error);
     }
-  };
+  }
 
   return (
     <St.PostSection>
       <St.SelectorWrap>
-        {/* 카테고리 */}
-        <Selector
-          options={categoryOptionsData?.map((item) => ({
-            value: t(item),
-            label: t(item),
-          }))}
-          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-            setCategory(selectedOption.target.value);
-          }}
-        ></Selector>
+          {/* 카테고리 */}
+          <Selector
+            options={categoryOptionsData?.map((item) => ({
+              value: t(item),
+              label: t(item),
+            }))}
+            value={category}
+            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+              setCategory(selectedOption.target.value);
+            }}
+          ></Selector>
 
         {/* 위치인증 */}
         <Selector
-          options={locationOptionsData?.map((item) => ({
-            value: t(item),
-            label: t(item),
-          }))}
-          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-            setIsVerified(selectedOption.target.value);
-          }}
-        ></Selector>
+            options={locationOptionsData?.map((item) => ({
+              value: t(item),
+              label: t(item),
+            }))}
+            value={isVerified}
+            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+              setIsVerified(selectedOption.target.value);
+            }}
+          ></Selector>
+
       </St.SelectorWrap>
       <St.TitleWrap>
         <input
@@ -297,32 +303,14 @@ const ModifyPost: React.FC = () => {
       </St.TitleWrap>
       <St.InputWrap>
         <div>
-          <p>{t("모임일시")}</p>
-          <input
-            type="date"
-            value={eventDate}
-            onChange={(e) => {
-              setEventDate(e.target.value);
-            }}
-          />
+          <p>모임일시</p>
+          <input type="date" value={setDateFormat(eventDate)} onChange={(e)=>{setEventDate(e.target.value)}}/>
         </div>
         <div>
-          <p>{t("참가신청 기간")}</p>
-          <input
-            type="date"
-            value={signupStartDate}
-            onChange={(e) => {
-              setSignupStartDate(e.target.value);
-            }}
-          />
+          <p>참가신청 기간</p>
+          <input type="date" value={setDateFormat(signupStartDate)} onChange={(e)=>{setSignupStartDate(e.target.value)}}/>
           &nbsp;~&nbsp;
-          <input
-            type="date"
-            value={signupEndDate}
-            onChange={(e) => {
-              setSignupEndDate(e.target.value);
-            }}
-          />
+          <input type="date" value={setDateFormat(signupEndDate)} onChange={(e)=>{setSignupEndDate(e.target.value)}}/>
         </div>
         <div>
           <p>{t("모임주소")}</p>

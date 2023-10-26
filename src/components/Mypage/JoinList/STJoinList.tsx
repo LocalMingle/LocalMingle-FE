@@ -92,8 +92,8 @@ export const UserPostButtonWrap = styled.div`
     cursor: pointer;
 
     &:first-child {
-      background: #E7E7E7;
-      color: #646464;
+      background: #4C6B8B;
+      color: #fff;
     }
   }
 `

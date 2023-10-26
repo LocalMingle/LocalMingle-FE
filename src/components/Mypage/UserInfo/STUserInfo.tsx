@@ -121,25 +121,8 @@ export const ErrorMessageJoin = styled.div<{ isValid: boolean | null }>`
 `;
 
 export const SubmitButtonWrap = styled.div`
-  border-radius: 23px;
-  background: #fff;
-  padding: 3px;
-  text-align: center;
-`;
-
-export const SubmitButton = styled.button`
-  box-sizing: border-box;
-  border-radius: 20px;
-  border: 1px solid #adadad;
-  background: #edf895;
-  color: #646464;
-  text-align: center;
-  height: 45px;
-  padding: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  width: 120px;
+  display: flex;
+  justify-content: center;
 `;
 
 export const ErrorMessagePassword = styled.div`
