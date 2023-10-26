@@ -12,31 +12,29 @@ import {
 import {
   uploadProfileImage,
   getUserProfileImage,
-  updateUserInfo,
+  updateUserProfile,
   updatePassword,
 } from "../../../api/api";
 import { axiosInstance } from "../../../api/axiosInstance";
 import toast from "react-hot-toast";
 import { useLanguage } from "../../../util/Locales/useLanguage";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../../recoil/atoms/UserState";
 import { Button } from "../../common/Button";
 
 const UserInfo: React.FC = () => {
-  const user = useRecoilValue(userState);
-  const userId = user.userId;
   const [showPassword, setShowPassword] = useState(false);
   const [profileImage, setProfileImage] = useState<string>();
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [intro, setIntro] = useState("");
-  const [initialNickname, setInitialNickname] = useState("");
+  const [, setInitialNickname] = useState("");
   const [nicknameError, setNicknameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isNicknameValid, setIsNicknameValid] = useState<boolean | null>(null);
   const [imageError, setImageError] = useState<string | null>(null);
+  const [nameChanged, setNameChanged] = useState(false);
+
   const { t } = useLanguage();
 
   const togglePasswordVisibility = () => {
@@ -92,32 +90,17 @@ const UserInfo: React.FC = () => {
   }, []);
 
   const handleUpdate = async () => {
-    const nameChanged = nickname !== initialNickname;
-
-    if (password && password !== confirmPassword) {
-      setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
     try {
-      console.log("회원 정보를 업데이트하는 중...");
-      if (userId) {
-        console.log("회원 정보를 업데이트하는 중...");
-        const response = await updateUserInfo(
-          userId.toString(),
-          nickname,
-          intro,
-          password,
-          confirmPassword,
-          nameChanged
-        );
+      const response = await updateUserProfile({
+        nickname,
+        intro,
+        email: "",
+        nameChanged: nameChanged,
+        userLocation: "",
+      });
 
-        console.log("업데이트 응답:", response);
-        console.log(response.message);
-        setPassword("");
-        setConfirmPassword("");
-      } else {
-        console.error("사용자 ID를 불러오지 못했습니다.");
+      if (response.message === "회원 정보가 수정되었습니다") {
+        setNickname(nickname);
       }
       toast.success(t("수정이 완료되었습니다."), {
         className: "toast-success toast-container",
@@ -129,6 +112,9 @@ const UserInfo: React.FC = () => {
       } else {
         console.error(error);
       }
+      toast.error(t("수정에 실패했습니다."), {
+        className: "toast-error toast-container",
+      });
     }
   };
 
@@ -182,15 +168,35 @@ const UserInfo: React.FC = () => {
         setPassword("");
         setConfirmPassword("");
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("비밀번호 변경 중 오류: ", error);
+      if (error && typeof error === "object" && "response" in error) {
+        type AxiosErrorType = {
+          response?: { status?: number; data?: unknown };
+        };
+        const axiosError = error as AxiosErrorType;
+        if (axiosError.response?.status === 400) {
+          toast.error(
+            t("기존 비밀번호와 같습니다", {
+              className: "toast-error toast-container",
+            })
+          );
+        }
+      }
     }
   };
 
   const handleCheckNicknameClick = async () => {
     const errorMessage = t(await handleCheckNickname(nickname));
     setNicknameError(errorMessage);
-    setIsNicknameValid(errorMessage === t("닉네임을 사용할 수 있습니다."));
+
+    if (errorMessage === t("닉네임을 사용할 수 있습니다.")) {
+      setIsNicknameValid(true);
+      setNameChanged(true);
+    } else {
+      setIsNicknameValid(false);
+      setNameChanged(false);
+    }
   };
 
   const handleNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -268,7 +274,7 @@ const UserInfo: React.FC = () => {
               type="text"
               readOnly
               style={{ backgroundColor: "#f0f0f0" }}
-              value={t("서울특별시 강남구")}
+              value=""
             />
           </St.InputContainer>
           <St.SubmitButtonWrap>
