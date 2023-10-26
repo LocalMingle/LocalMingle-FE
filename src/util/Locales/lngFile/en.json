@@ -25,6 +25,8 @@
   "비밀번호": "Password",
   "비밀번호 확인": "Confirm Password",
   "비밀번호 재입력": "Re-enter password",
+  "비밀번호가 성공적으로 변경되었습니다!": "Password has been successfully changed!",
+  "비밀번호 유효성 검사에 실패했습니다.": "Password validation failed",
   "회원가입": "sign up",
   "로컬밍글의 회원이 아니신가요?": "Not a member of LocalMingle?",
   "닉네임": "Nickname",

@@ -13,6 +13,7 @@ import {
   uploadProfileImage,
   getUserProfileImage,
   updateUserInfo,
+  updatePassword,
 } from "../../../api/api";
 import { axiosInstance } from "../../../api/axiosInstance";
 import toast from "react-hot-toast";
@@ -93,13 +94,6 @@ const UserInfo: React.FC = () => {
     e.preventDefault();
     const nameChanged = nickname !== initialNickname;
 
-    if (!password) {
-      toast.error(t("비밀번호를 입력해주세요."), {
-        className: "toast-error toast-container",
-      });
-      return;
-    }
-
     if (password && password !== confirmPassword) {
       setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
       return;
@@ -157,6 +151,39 @@ const UserInfo: React.FC = () => {
       } catch (error) {
         console.error(t("이미지 업로드 중 오류 발생:"), error);
       }
+    }
+  };
+
+  const handlePasswordUpdate = async () => {
+    if (!password) {
+      toast.error(t("비밀번호를 입력해주세요."), {
+        className: "toast-error toast-container",
+      });
+      return;
+    }
+
+    if (!UpdateValidatePassword(password)) {
+      toast.error(t("비밀번호 유효성 검사에 실패했습니다."), {
+        className: "toast-error toast-container",
+      });
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      return;
+    }
+
+    try {
+      const response = await updatePassword(password);
+      if (response.message === "비밀번호가 변경되었습니다") {
+        toast.success(t("비밀번호가 성공적으로 변경되었습니다!"), {
+          className: "toast-success toast-container",
+        });
+        setPassword("");
+        setConfirmPassword("");
+      }
+    } catch (error) {
+      console.error("비밀번호 변경 중 오류: ", error);
     }
   };
 
@@ -285,7 +312,7 @@ const UserInfo: React.FC = () => {
           </St.InputContainer>
 
           <St.SubmitButtonWrap>
-            <St.SubmitButton type="button" onClick={handleUpdate}>
+            <St.SubmitButton type="button" onClick={handlePasswordUpdate}>
               {t("비밀번호 수정")}
             </St.SubmitButton>
           </St.SubmitButtonWrap>

@@ -167,7 +167,10 @@ const ViewPost: React.FC = () => {
         </St.EventLocation>
         <St.MaxSize>
           <p>{t("모집인원")}</p>
-          <span>{maxSize}</span>&nbsp;{t("명")}
+          <span>
+            {eventDetail.guestList} / {maxSize}
+          </span>
+          &nbsp;{t("명")}
         </St.MaxSize>
         <St.GuestUserContainer>
           <p>{t("참가리스트")}</p>

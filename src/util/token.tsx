@@ -59,7 +59,7 @@ export const getNewAccessToken = async (): Promise<string | null> => {
       }
     );
 
-    console.log("Response:", response); // 서버 응답 출력
+    console.log("Response:", response);
 
     if (response.status === 401) {
       console.log("Refresh Token has expired."); // 리프레시 토큰 만료 로그
@@ -74,7 +74,7 @@ export const getNewAccessToken = async (): Promise<string | null> => {
 
     return newAccessToken;
   } catch (error) {
-    console.error("Error:", error); // 에러 출력
+    console.error("Error:", error);
     return null;
   }
 };
