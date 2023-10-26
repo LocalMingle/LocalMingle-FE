@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
 import { axiosInstance } from "../api/axiosInstance";
-import axios from "axios";
 import {
   setAccessToken,
   setRefreshToken,
@@ -168,44 +167,44 @@ export const getUserProfileImage = async () => {
 };
 
 // 회원정보 수정
-export const updateUserInfo = async (
-  id: string,
-  nickname: string,
-  intro: string,
-  password: string,
-  confirmPassword: string,
-  nameChanged: boolean
-) => {
-  try {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      throw new Error("액세스 토큰이 없습니다.");
-    }
-    console.log("함수 내부 intro:", intro);
-    const response = await axiosInstance.patch(
-      `/users/${id}`,
-      {
-        nickname,
-        intro,
-        password,
-        confirmPassword,
-        nameChanged,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    if (error instanceof axios.AxiosError) {
-      throw error.response ? error.response.data : error;
-    } else {
-      throw error;
-    }
-  }
-};
+// export const updateUserInfo = async (
+//   id: string,
+//   nickname: string,
+//   intro: string,
+//   password: string,
+//   confirmPassword: string,
+//   nameChanged: boolean
+// ) => {
+//   try {
+//     const accessToken = localStorage.getItem("accessToken");
+//     if (!accessToken) {
+//       throw new Error("액세스 토큰이 없습니다.");
+//     }
+//     console.log("함수 내부 intro:", intro);
+//     const response = await axiosInstance.patch(
+//       `/users/${id}`,
+//       {
+//         nickname,
+//         intro,
+//         password,
+//         confirmPassword,
+//         nameChanged,
+//       },
+//       {
+//         headers: {
+//           Authorization: `Bearer ${accessToken}`,
+//         },
+//       }
+//     );
+//     return response.data;
+//   } catch (error) {
+//     if (error instanceof axios.AxiosError) {
+//       throw error.response ? error.response.data : error;
+//     } else {
+//       throw error;
+//     }
+//   }
+// };
 
 // 닉네임 중복 확인
 export const checkNickname = async (nickname: string) => {
@@ -461,7 +460,33 @@ export const toggleParticipation = async (eventId: number) => {
   }
 };
 
-// 프로필 페이지 비밀번호 업데이트
+// 회원 정보 수정
+interface UpdateUserInfoParams {
+  nickname: string;
+  intro: string;
+  email: string;
+  nameChanged: boolean;
+  userLocation: string;
+}
+
+interface UpdateUserInfoResponse {
+  message: string;
+}
+
+export const updateUserProfile = async (
+  params: UpdateUserInfoParams
+): Promise<UpdateUserInfoResponse> => {
+  try {
+    const response = await axiosInstance.patch<UpdateUserInfoResponse>(
+      "/users/update",
+      params
+    );
+    return response.data;
+  } catch (error) {
+    console.error("회원 정보 업데이트 실패 😢", error);
+    throw error;
+  }
+};
 
 // 패스워드 업데이트 API
 export const updatePassword = async (newPassword: string) => {
