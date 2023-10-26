@@ -7,35 +7,34 @@ import axios, { AxiosInstance } from "axios";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import i18n from "../../../util/Locales/i18n";
 import toast from "react-hot-toast";
 
 const ModifyPost: React.FC = () => {
   const { t } = useLanguage();
+  const lang = i18n.language;
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
   const { eventId } = useParams<{ eventId?: string }>();
 
   // 게시글 작성 state
   const [eventName, setEventName] = useState<string>("");
+  const [maxSize, setMaxSize] = useState<number>(0);
   const [eventDate, setEventDate] = useState<string>();
   const [signupStartDate, setSignupStartDate] = useState<string>();
   const [signupEndDate, setSignupEndDate] = useState<string>();
-  const [eventLocation, setEventLocation] = useState<string>("");
-  const [maxSize, setMaxSize] = useState<number>(0);
-  const [content, setContent] = useState<string>('');
-  const [category, setCategory] = useState<string>('');
+  const [location_City, setLocation_City] = useState<string>("시 / 도");
+  const [location_District, setLocation_District] = useState<string>("구 / 군");
+  const [content, setContent] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
-  const [isVerified, setIsVerified] = useState<string>('');
+  const [isVerified, setIsVerified] = useState<string>("");
   const [eventImg, setEventImg] = useState<null>(null);
 
-  // 사용하지 않는 변수임을 명시적으로 알리기
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const unusedVariables = {
-    setCategory,
-    setIsDeleted,
-    setIsVerified,
-    setEventImg,
-  };
+  useEffect(() => {
+    setLocation_City(t("시 / 도"));
+    setLocation_District(t("구 / 군"));
+  }, [t]);
 
   // AxiosInstance & API 설정
   const customAxios: AxiosInstance = axios.create({
@@ -46,12 +45,14 @@ const ModifyPost: React.FC = () => {
   });
   const updatePostAPI = {
     locationApi: () => customAxios.get("data/toss"), // 위치 인증 여부
-    // sidoApi: () => customAxios.get("data/city"),    // 시도
-    // gugunApi: (sido: string) =>
-    //   customAxios.get("data/gu_name", {
-    // 구군
-    //     params: { doName: sido },
-    //   }),
+    sidoApi: (lang: string) =>
+    customAxios.get("data/city", {
+      params: { lang },
+    }),
+    gugunApi: (sido: string, lang: string) =>
+    customAxios.get("data/gu_name", {
+      params: { doName: sido, lang },
+    }),
     categoryApi: () => customAxios.get("data/toss"), // 카테고리
     updatePostApi: () => customAxios.patch(`events/${eventId}`), // 게시글 수정
   };
@@ -82,26 +83,59 @@ const ModifyPost: React.FC = () => {
   );
 
   // 시/도 옵션 interface (console.log 기준)
-  // interface SidoOptionsProps {
-  //   doName: string[];
-  // }
+  interface SidoOptionsProps {
+    doName: string[];
+  }
 
   // 시/도 옵션 - DB 연동
-  // const { data: sidoOptionsData } = useQuery<SidoOptionsProps[]>(
-  //   "sidoOptions",
-  //   async () => {
-  //     const response = await updatePostAPI
-  //       .sidoApi()
-  //       .then((response) => {
-  //         return response.data;
-  //       })
-  //       .catch((error) => {
-  //         console.log("시/도 불러오기 실패", error);
-  //         throw error;
-  //       });
-  //     return response;
-  //   }
-  // );
+  const { data: sidoOptionsData } = useQuery<SidoOptionsProps[]>(
+    ["sidoOptions", lang],
+    async () => {
+      const response = await updatePostAPI
+        .sidoApi(lang)
+        .then((response) => {
+          return response.data.items;
+        })
+        .catch((error) => {
+          console.log("시/도 불러오기 실패", error);
+          throw error;
+        });
+      return response;
+    }
+  );
+
+    // 구/군 옵션 interface (console.log 기준)
+    interface GugunOptionsProps {
+      guName: string[];
+    }
+
+    // 구/군 옵션 - DB 연동
+    const { data: gugunOptionsData, refetch: refetchGugunOptions } = useQuery<
+      GugunOptionsProps[]
+    >(
+    // queryKey를 배열로 감싸서 설정
+    ["gugunOptions", location_City],
+    async () => {
+      const response = await updatePostAPI
+        .gugunApi(location_City, lang)
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          console.log("구/군 불러오기 실패", error);
+          throw error;
+        });
+      return response;
+    },
+    {
+      enabled: !!location_City, // 선택된 시/도가 있을 때만 요청을 보내도록 설정
+    }
+  );
+
+  // refetch를 통해 시/도 옵션이 바뀌면 구/군 옵션이 바로 바뀌도록 설정
+  useEffect(() => {
+    refetchGugunOptions();
+  }, [location_City]);
 
   // 카테고리 옵션 - DB 연동
   const { data: categoryOptionsData } = useQuery<CategoryOptionsProps[], Error>(
@@ -120,19 +154,25 @@ const ModifyPost: React.FC = () => {
     }
   );
 
-  // 게시글 수정 interface (console.log 기준)
-  interface UpdatePostData {
-    "eventName": string,
-    "maxSize": number,
-    "eventDate": string,
-    "signupStartDate": string,
-    "signupEndDate": string,
-    "eventLocation": string,
-    "content": string,
-    "category": string,
-    "isDeleted": boolean,
-    "isVerified": string,
-    "eventImg": string | null
+  // 게시글 정보 가져오기 interface (console.log 기준)
+  interface GetPostData {
+    event: {
+      category: string;
+      content: string;
+      createdAt: string;
+      eventDate: string;
+      eventId: number;
+      eventImg: string | null;
+      eventName: string;
+      isDeleted: boolean;
+      isVerified: string;
+      location_City: string;
+      location_District: string;
+      maxSize: number;
+      signupEndDate: string;
+      signupStartDate: string;
+      updatedAt: string;
+    }
   }
 
   // 기존에 있던 게시물 정보 가져오기
@@ -142,7 +182,7 @@ const ModifyPost: React.FC = () => {
       const response = await customAxios
         .get(`events/${eventId}`)
         .then((response) => {
-          // console.log('게시글 가져오기', response.data)
+          // console.log('게시글 가져오기', response.data);
           return response.data;
         })
         .catch((error) => {
@@ -159,7 +199,8 @@ const ModifyPost: React.FC = () => {
       setEventDate(postData.event.eventDate);
       setSignupStartDate(postData.event.signupStartDate);
       setSignupEndDate(postData.event.signupEndDate);
-      setEventLocation(postData.event.eventLocation);
+      setLocation_City(postData.event.location_City);
+      setLocation_District(postData.event.location_District);
       setMaxSize(postData.event.maxSize);
       setContent(postData.event.content);
       setCategory(postData.event.category);
@@ -169,12 +210,28 @@ const ModifyPost: React.FC = () => {
     }
   }, [postData]);
 
+    // 게시글 수정 interface (console.log 기준)
+    interface UpdatePostData {
+      eventName: string;
+      maxSize: number;
+      eventDate: string;
+      signupStartDate: string;
+      signupEndDate: string;
+      location_City: string;
+      location_District: string;
+      content: string;
+      category: string;
+      isDeleted: boolean;
+      isVerified: string;
+      eventImg: string | null;
+    }
+
   // 게시글 수정 - DB 연동
   const updatePostMutation = useMutation(
     async (postData: UpdatePostData) => {
       try {
         const response = await customAxios.patch(`events/${eventId}`, postData);
-        console.log('게시글 값?', response.data);
+        // console.log('게시글 값?', response.data);
         return response.data;
       } catch (error) {
         console.log('게시글 수정 실패!', error);
@@ -197,9 +254,11 @@ const ModifyPost: React.FC = () => {
         !eventDate ||
         !signupStartDate ||
         !signupEndDate ||
+        !location_City ||
+        !location_District ||
         !content
       ) {
-        alert("내용을 모두 입력해주세요!");
+        alert("날짜 및 내용을 모두 입력해주세요!");
         return;
       }
 
@@ -246,7 +305,8 @@ const ModifyPost: React.FC = () => {
         eventDate: new Date(eventDate),
         signupStartDate: new Date(signupStartDate),
         signupEndDate: new Date(signupEndDate),
-        eventLocation,
+        location_City,
+        location_District,
         content,
         category,
         isDeleted,
@@ -262,6 +322,11 @@ const ModifyPost: React.FC = () => {
       console.log("게시글 수정 실패!", error);
     }
   }
+
+  const setDateFormat = (date: string): string => {
+    // 날짜 형식 변경 2023-10-25
+    return new String(date).split("T")[0];
+  };
 
   return (
     <St.PostSection>
@@ -314,24 +379,26 @@ const ModifyPost: React.FC = () => {
         </div>
         <div>
           <p>{t("모임주소")}</p>
-          {/* <Selector
-            options={sidoOptionsData?.map((item) => ({
-              value: t(item.doName),
-              label: t(item.doName),
+            <Selector
+              options={sidoOptionsData?.map((item) => ({
+                value: t(item.doName),
+                label: t(item.doName),
+              }))}
+              value={location_City}
+              onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+                setLocation_City(selectedOption.target.value);
+              }}
+            ></Selector>
+            <Selector
+            options={gugunOptionsData?.map((option) => ({
+              value: option.guName,
+              label: option.guName,
             }))}
+            value={location_District}
             onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-              setEventLocation(selectedOption.target.value);
-              console.log(selectedOption.target.value)
+              setLocation_District(selectedOption.target.value);
             }}
-          ></Selector> */}
-          <input
-            type="text"
-            placeholder={t("ex. 서울시 마포구")}
-            value={eventLocation}
-            onChange={(e) => {
-              setEventLocation(e.target.value);
-            }}
-          />
+          ></Selector>
         </div>
         <div>
           <p>{t("모임인원")}</p>

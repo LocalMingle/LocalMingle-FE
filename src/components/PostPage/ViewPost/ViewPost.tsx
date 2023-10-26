@@ -66,8 +66,8 @@ const ViewPost: React.FC = () => {
         if (data) {
           const authorStatus = loggedInUserId === data.hostUser[0].UserId;
           setIsAuthor(authorStatus);
-          console.log("로그인한 사용자의 ID:", loggedInUserId);
-          console.log("작성자인가요?:", authorStatus);
+          // console.log("로그인한 사용자의 ID:", loggedInUserId);
+          // console.log("작성자인가요?:", authorStatus);
           if (isJoined === null) {
             const isUserJoined = data.guestUser.some((guestGroup) =>
               guestGroup.some((guest) => guest.UserId === loggedInUserId)
@@ -91,7 +91,8 @@ const ViewPost: React.FC = () => {
     eventDate,
     signupStartDate,
     signupEndDate,
-    eventLocation,
+    location_City,
+    location_District,
     maxSize,
     content,
   } = eventDetail.event;
@@ -163,7 +164,9 @@ const ViewPost: React.FC = () => {
         </St.SignupDate>
         <St.EventLocation>
           <p>{t("모임주소")}</p>
-          <span>{eventLocation}</span>
+          <span>{location_City}</span>
+          &nbsp;
+          <span>{location_District}</span>
         </St.EventLocation>
         <St.MaxSize>
           <p>{t("모집인원")}</p>

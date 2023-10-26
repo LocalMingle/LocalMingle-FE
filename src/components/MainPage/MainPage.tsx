@@ -19,13 +19,13 @@ const MainPage: React.FC = () => {
   const lang = i18n.language;
   const accessToken = localStorage.getItem("accessToken");
   const [selectedVerify , setSelectedVerify] = useState<string>(""); // 위치 인증 여부
-  const [selectedSido, setSelectedSido] = useState<string>(t("서울특별시")); // 시도
-  const [selectedGugun , setSelectedGugun] = useState<string>(t("종로구")); // 구군
+  const [selectedSido, setSelectedSido] = useState<string>("시 / 도"); // 시도
+  const [selectedGugun , setSelectedGugun] = useState<string>("구 / 군"); // 구군
   const [selectedCategory , setSelectedCategory] = useState<string>(""); // 카테고리;
 
   useEffect(() => {
-    setSelectedSido(t("서울특별시"));
-    setSelectedGugun(t("종로구"));
+    setSelectedSido(t("시 / 도"));
+    setSelectedGugun(t("구 / 군"));
   }, [t]);
 
   // 위치 정보
@@ -54,7 +54,6 @@ const MainPage: React.FC = () => {
   // }, []);
   // 
 
-
   // AxiosInstance & API 설정
   const customAxios: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_REACT_APP_URL,
@@ -74,9 +73,9 @@ const MainPage: React.FC = () => {
       }),
     categoryApi: () => customAxios.get("data/toss"), // 카테고리
     cardListApi: () => customAxios.get("events"), // 게시글 전체 조회
-    filterVerifyApi: () => customAxios.get("/data/filter/verify", { // 위치 인증 필터링
-      params: { verify: selectedVerify },
-    }), 
+    filterVerifyApi: (verifyType : string) => customAxios.get("/search/byVerify", { // 위치 인증 필터링
+      params: { query: verifyType },
+    }),
   };
 
   // 위치 인증 여부 interface (console.log 기준)
@@ -151,7 +150,7 @@ const MainPage: React.FC = () => {
   }, [selectedSido, lang, refetchGugunOptions]);
 
   // 카테고리 옵션 - DB 연동
-  const { data: categoryOptionsData } = useQuery<CategoryOptionsProps>(
+  const { data: categoryOptionsData } = useQuery<CategoryOptionsProps[]>(
     "categoryOptions",
     async () => {
       const response = await mainAPI
@@ -200,32 +199,13 @@ const MainPage: React.FC = () => {
   }
 
   // 게시글 전체 조회 - DB 연동
-  const { isLoading: postsLoading, data: postData } = useQuery<CardProps[]>(
-    "get",
-    async () => {
-      const response = await mainAPI
-        .cardListApi()
-        .then((response) => {
-          console.log('게시글 전체조회 데이터:', response.data);
-          return response.data;
-        })
-        .catch((error) => {
-          console.log("게시글 전체조회 에러!", error);
-          throw error;
-        });
-      return response;
-    }
-  );
-
-  // 게시글 위치 필터링 - DB 연동 
-  // refetch: refetchfilteredOptions
-  // const { data: locationOptionsData  } = useQuery<CardProps[]>(
+  // const { isLoading: postsLoading, data: postData } = useQuery<CardProps[]>(
   //   "get",
   //   async () => {
   //     const response = await mainAPI
-  //       .filterVerifyApi()
+  //       .cardListApi()
   //       .then((response) => {
-  //         console.log('게시글 위치 필터링 리스트:', response.data);
+  //         console.log('게시글 전체조회 데이터:', response.data);
   //         return response.data;
   //       })
   //       .catch((error) => {
@@ -236,18 +216,35 @@ const MainPage: React.FC = () => {
   //   }
   // );
 
-  // useEffect(() =>{
-  //   if(selectedVerify){
-  //     console.log(selectedVerify);
-  //     refetchfilteredOptions();
-  //   }
-  // },[selectedVerify, lang, refetchfilteredOptions])
+  // 게시글 전체 조회 + 필터링 - DB 연동
+  const { isLoading: postsLoadingCp, data: postDataCp , refetch: refetchPost} = useQuery<CardProps[]>(
+    ["filterPostList", selectedVerify, lang],
+    async () => {
+      const response = 
+      await (selectedVerify == '' ? mainAPI.cardListApi() : mainAPI.filterVerifyApi(selectedVerify))
+                              .then((response) => {
+                                console.log('게시글 데이터:', response.data);
+                                return response.data;
+                              }).catch((error) => {
+                                console.log("게시글 불러오기 에러!", error);
+                                throw error;
+                              });
+      if(selectedVerify != ''){
+        const newResponse = response.map((v:CardProps)=>{
+          return {event : v}
+        })
+        console.log(newResponse);
+        return newResponse;
+      }
+      return response;
+    }
+  );
 
   // 로딩 중인 경우
-  if (postsLoading) return <Spinner />;
+  if (postsLoadingCp) return <Spinner />;
 
   // 데이터가 없는 경우
-  if (!postData || postData.length === 0) {
+  if (!postDataCp || postDataCp.length === 0) {
     return (
       <>
         <Banner></Banner>
@@ -278,6 +275,7 @@ const MainPage: React.FC = () => {
           value={selectedVerify}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSelectedVerify(selectedOption.target.value);
+            refetchPost(); //아무나 or 동네만 변경시 useQuery 파라메터 호출하여 게시글 목록 초기화
           }}
         ></Selector>
         {/* 시/도 */}
@@ -315,8 +313,8 @@ const MainPage: React.FC = () => {
         ></Selector>
       </St.SelectorWrap>
       {/* 카드 */}
-      {postData.map((postDataItem, index) => (
-        <CustomLink to={`/postview/${postDataItem.event.eventId}`}>
+      {postDataCp.map((postDataItem, index) => (
+        <CustomLink to={`/postview/${selectedVerify == '' ? postDataItem.event.eventId : postDataItem.eventId}`}>
           <Card key={index} {...postDataItem}></Card>
         </CustomLink>
       ))}
