@@ -20,7 +20,11 @@ import {
 } from "../../util/validation";
 import JSConfetti from "js-confetti";
 import { useLanguage } from "../../util/Locales/useLanguage";
-import { sendVerificationEmail, verifyEmailCode } from "../../api/api";
+import {
+  sendVerificationEmail,
+  verifyEmailCode,
+  checkNickname,
+} from "../../api/api";
 import toast from "react-hot-toast";
 
 const SignUpForm: React.FC = () => {
@@ -51,8 +55,29 @@ const SignUpForm: React.FC = () => {
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState<null | boolean>(null);
+  const [shouldRunTimer, setShouldRunTimer] = useState(false);
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
   const handleSignUp = async () => {
+    if (!isNicknameChecked && !isEmailVerified) {
+      toast.error(t("닉네임 중복 체크와 이메일 인증을 해주세요."), {
+        className: "toast-error toast-container",
+      });
+      return;
+    }
+    if (!isNicknameChecked) {
+      toast.error(t("닉네임 중복체크를 해주세요."), {
+        className: "toast-error toast-container",
+      });
+      return;
+    }
+
+    if (!isEmailVerified) {
+      toast.error(t("이메일 인증을 해주세요."), {
+        className: "toast-error toast-container",
+      });
+      return;
+    }
     const newNicknameError = t(validateNickname(nickname));
     const newEmailError = t(validateEmail(email));
     const newPasswordError = t(validatePassword(password));
@@ -126,15 +151,22 @@ const SignUpForm: React.FC = () => {
   };
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: NodeJS.Timeout | null = null;
 
-    if (emailSent) {
-      setCountdown(300);
+    const startTimer = () => {
+      if (countdown === null) {
+        setCountdown(300);
+      }
+
+      if (timer !== null) {
+        clearInterval(timer);
+      }
+
       timer = setInterval(() => {
         setCountdown((prevCountdown) => {
           if (prevCountdown !== null) {
             if (prevCountdown === 0) {
-              clearInterval(timer);
+              clearInterval(timer!);
               setIsTimerExpired(true);
               setAuthError(t("인증 코드의 유효시간이 지났습니다."));
             }
@@ -143,14 +175,20 @@ const SignUpForm: React.FC = () => {
           return null;
         });
       }, 1000);
+    };
+
+    if (shouldRunTimer && !isEmailVerified) {
+      startTimer();
+    } else if (timer !== null) {
+      clearInterval(timer);
     }
 
     return () => {
-      if (timer) {
+      if (timer !== null) {
         clearInterval(timer);
       }
     };
-  }, [emailSent, t]);
+  }, [shouldRunTimer, isEmailVerified, t, countdown]);
 
   const handleSendEmail = async () => {
     toast.success(t("인증코드가 전송되었습니다."), {
@@ -161,6 +199,8 @@ const SignUpForm: React.FC = () => {
       await sendVerificationEmail(email, "", "");
       setEmailSent(true);
       setIsTimerExpired(false);
+      setShouldRunTimer(false);
+      setShouldRunTimer(true);
     } catch (error) {
       console.error("이메일 보내기 실패:", error);
     }
@@ -179,6 +219,7 @@ const SignUpForm: React.FC = () => {
           setIsEmailVerified(true);
           setAuthError(t("인증이 되었습니다."));
           setIsSuccess(true);
+          setCountdown(null);
         } else if (response.data.message === "인증 실패") {
           setAuthError(t("인증코드를 다시 확인해주세요."));
           setIsSuccess(false);
@@ -249,12 +290,23 @@ const SignUpForm: React.FC = () => {
 
   const handleNicknameDupCheck = async () => {
     const errorMessage = t(await handleCheckNickname(nickname));
-    setNicknameError(errorMessage);
 
-    if (errorMessage === t("닉네임을 사용할 수 있습니다.")) {
-      setIsNicknameValid(true);
-    } else {
+    try {
+      const response = await checkNickname(nickname);
+      if (response.isDuplicate) {
+        setNicknameError(t("닉네임이 중복되었습니다."));
+        setIsNicknameValid(false);
+        setIsNicknameChecked(false);
+      } else {
+        setNicknameError(errorMessage);
+        setIsNicknameValid(errorMessage === t("닉네임을 사용할 수 있습니다."));
+        setIsNicknameChecked(true);
+      }
+    } catch (error) {
+      console.error("닉네임 중복 확인 중 오류 발생:", error);
+      setNicknameError(t("닉네임 중복 확인을 실패했어요."));
       setIsNicknameValid(false);
+      setIsNicknameChecked(false);
     }
   };
 
@@ -268,13 +320,17 @@ const SignUpForm: React.FC = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleLanguageChange = () => {
+    changeLanguage();
+  };
+
   const goToMain = () => {
     navigate("/");
   };
   return (
     <ST.Wrapper>
       <div onClick={goToMain}>{t("회원가입")}</div>
-      <button onClick={changeLanguage}>
+      <button onClick={handleLanguageChange}>
         {currentLang === "ko" ? "🇰🇷" : currentLang === "en" ? "🇺🇸" : "🇯🇵"}
       </button>
       {/* <img src="" alt="logo" onClick={goToMain}>로고</img> */}
