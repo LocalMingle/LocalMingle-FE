@@ -37,4 +37,16 @@ export const Tag = styled.p<TagProps>`
   css`
     background: #F19FC4;
   `}
+
+  ${(props)=>
+    props.bgcolor === "blue" &&
+  css`
+    background: #9ECBFA;
+  `}
+
+  ${(props)=>
+    props.bgcolor === "beige" &&
+  css`
+    background: #F0E0D5;
+  `}
 `
