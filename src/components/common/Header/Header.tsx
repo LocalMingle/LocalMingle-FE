@@ -50,7 +50,7 @@ const Header: React.FC = () => {
       {isLogin === false ? (
         /* 로그인 전 */
         <St.HeaderWrap>
-          <img src="/../src/asset/localMingleImages/textlogo.png" alt="로컬밍글로고" />
+          <img onClick={goToMain} src="/../src/asset/localMingleImages/textlogo.png" alt="로컬밍글로고" />
           <St.HeaderBtns>
             <button onClick={login}>{t("로그인")}</button>
             <button onClick={changeLanguage}>
@@ -61,7 +61,7 @@ const Header: React.FC = () => {
       ) : (
         /* 로그인 후 */
         <St.HeaderWrap>
-          <img src="/../src/asset/localMingleImages/textlogo.png" alt="로컬밍글로고" />
+          <img onClick={goToMain} src="/../src/asset/localMingleImages/textlogo.png" alt="로컬밍글로고" />
           <St.HeaderBtns>
             <button onClick={goToMyPage}>{t("마이페이지")}</button>
             <button onClick={logout}>{t("로그아웃")}</button>
