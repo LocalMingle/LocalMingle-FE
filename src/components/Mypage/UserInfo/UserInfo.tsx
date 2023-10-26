@@ -162,7 +162,7 @@ const UserInfo: React.FC = () => {
       return;
     }
 
-    if (!UpdateValidatePassword(password)) {
+    if (UpdateValidatePassword(password)) {
       toast.error(t("비밀번호 유효성 검사에 실패했습니다."), {
         className: "toast-error toast-container",
       });
@@ -272,9 +272,7 @@ const UserInfo: React.FC = () => {
             />
           </St.InputContainer>
           <St.SubmitButtonWrap>
-            <Button onClick={handleUpdate}>
-              {t("회원정보 수정")}
-            </Button>
+            <Button onClick={handleUpdate}>{t("회원정보 수정")}</Button>
           </St.SubmitButtonWrap>
         </St.GroupedInputContainer>
         <St.GroupedInputContainer>
@@ -312,9 +310,7 @@ const UserInfo: React.FC = () => {
           </St.InputContainer>
 
           <St.SubmitButtonWrap>
-            <Button onClick={handleUpdate}>
-              {t("비밀번호 수정")}
-            </Button>
+            <Button onClick={handlePasswordUpdate}>{t("비밀번호 수정")}</Button>
           </St.SubmitButtonWrap>
         </St.GroupedInputContainer>
       </St.MyPageWrap>
