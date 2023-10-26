@@ -22,11 +22,11 @@ export const MyPageWrap = styled.div`
   align-items: center;
   min-height: 630px;
   max-height: 630px;
-  overflow-y: auto;
 
   & > div {
     width: 100%;
     height: 100%;
+    overflow-y: auto;
   }
 `;
 

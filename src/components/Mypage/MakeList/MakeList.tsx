@@ -73,21 +73,23 @@ const MakeList: React.FC = () => {
       {events.length > 0 ? (
         <St.MyPageContainer>
           <St.MyPageWrap>
-            {events.map((event) => (
-              <St.UserPostForm key={event.eventId}>
-                <h2 onClick={() => handlePostClick(event.eventId)}>
-                  {event.eventName}
-                </h2>
-                <St.UserPostButtonWrap>
-                  <button onClick={() => handleUpdateClick(event.eventId)}>
-                    {t("수정")}
-                  </button>
-                  <button onClick={() => handleDeleteEvent(event.eventId)}>
-                    {t("삭제")}
-                  </button>
-                </St.UserPostButtonWrap>
-              </St.UserPostForm>
-            ))}
+            <div>
+              {events.map((event) => (
+                <St.UserPostForm key={event.eventId}>
+                  <h2 onClick={() => handlePostClick(event.eventId)}>
+                    {event.eventName}
+                  </h2>
+                  <St.UserPostButtonWrap>
+                    <button onClick={() => handleUpdateClick(event.eventId)}>
+                      {t("수정")}
+                    </button>
+                    <button onClick={() => handleDeleteEvent(event.eventId)}>
+                      {t("삭제")}
+                    </button>
+                  </St.UserPostButtonWrap>
+                </St.UserPostForm>
+              ))}
+            </div>
           </St.MyPageWrap>
         </St.MyPageContainer>
       ) : (
