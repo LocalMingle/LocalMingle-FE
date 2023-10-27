@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import * as ST from "./STJoinPage";
+import toast from "react-hot-toast";
+import JSConfetti from "js-confetti";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/common/Button";
@@ -7,9 +10,6 @@ import { axiosInstance } from "../../api/axiosInstance";
 import { useLanguage } from "../../util/Locales/useLanguage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import * as ST from "./STJoinPage";
-import toast from "react-hot-toast";
-import JSConfetti from "js-confetti";
 import {
   validateNickname,
   validatePassword,
