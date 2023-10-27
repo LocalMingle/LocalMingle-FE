@@ -166,46 +166,6 @@ export const getUserProfileImage = async () => {
   }
 };
 
-// 회원정보 수정
-// export const updateUserInfo = async (
-//   id: string,
-//   nickname: string,
-//   intro: string,
-//   password: string,
-//   confirmPassword: string,
-//   nameChanged: boolean
-// ) => {
-//   try {
-//     const accessToken = localStorage.getItem("accessToken");
-//     if (!accessToken) {
-//       throw new Error("액세스 토큰이 없습니다.");
-//     }
-//     console.log("함수 내부 intro:", intro);
-//     const response = await axiosInstance.patch(
-//       `/users/${id}`,
-//       {
-//         nickname,
-//         intro,
-//         password,
-//         confirmPassword,
-//         nameChanged,
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${accessToken}`,
-//         },
-//       }
-//     );
-//     return response.data;
-//   } catch (error) {
-//     if (error instanceof axios.AxiosError) {
-//       throw error.response ? error.response.data : error;
-//     } else {
-//       throw error;
-//     }
-//   }
-// };
-
 // 닉네임 중복 확인
 export const checkNickname = async (nickname: string) => {
   try {
