@@ -10,8 +10,6 @@ interface SelectorProps {
 
 const Selector: React.FC<SelectorProps> = ({ value, options, onChange }) => {
   const normalizedOptions = options || [];
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const dummyValue = value; // 사용하지 않는 변수로 표시
 
   return (
     <St.SelectorBar>
