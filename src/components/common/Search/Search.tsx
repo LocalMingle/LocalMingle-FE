@@ -33,7 +33,7 @@ const Search: React.FC = () => {
     if (e.key === 'Enter') {
       const response = await searchAPI.searchApi()
       .then((response) => {
-        console.log('게시글 검색', response.data);
+        // console.log('게시글 검색', response.data);
         return response.data;
       })
       .catch((error) => {

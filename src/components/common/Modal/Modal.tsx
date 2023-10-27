@@ -24,7 +24,7 @@ const Modal: React.FC<ModalProps> = () => {
   const [isModalOpen, setIsModalOpen] = useRecoilState(modalState);
   const { t } = useLanguage();
   const [guestUsers, setGuestUsers] = useState<GuestUser[]>([]);
-  const [, setFetchedEventId] = useState<number | null>(null); // 여기 추가
+  const [, setFetchedEventId] = useState<number | null>(null);
 
   const { eventId: routeEventId } = useParams<{ eventId?: string }>();
   const parsedEventId = parseInt(routeEventId ?? "0", 10);

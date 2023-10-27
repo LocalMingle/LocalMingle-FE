@@ -16,14 +16,22 @@ export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* 메인 페이지 */}
         <Route path="/" element={<Main />}></Route>
+
+        {/* 회원가입 페이지 */}
         <Route path="/join" element={<Join />} />
+        {/* 로그인 페이지 */}
         <Route path="/login" element={<Login />} />
+
+        {/* 게시글 작성 페이지 */}
         <Route path="/post" element={<Post />} />
-        {/* 작성자 본인 글 보기 */}
+        {/* 게시글 상세보기 페이지 */}
         <Route path="/postview/:eventId" element={<PostView />} />
-        {/* 게시글 수정 */}
+        {/* 게시글 수정 페이지 */}
         <Route path="/post/update/:eventId" element={<PostUpdate />} />
+
+        {/* 마이페이지 - 내 프로필, 생성목록, 참가목록, 회원탈퇴 */}
         <Route path="/mypage" element={<MyPage />}>
           <Route index element={<UserInfo />} />
           <Route path="userinfo" element={<UserInfo />} />
