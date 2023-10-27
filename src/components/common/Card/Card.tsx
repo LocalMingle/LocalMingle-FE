@@ -11,7 +11,8 @@ interface CardProps {
     createdAt: string;
     eventDate: string;
     eventId: number;
-    eventLocation: string;
+    location_City: string;
+    location_District: string;
     eventName: string;
     isDeleted: boolean;
     isVerified: string;
@@ -56,8 +57,10 @@ const Card: React.FC<CardProps> = ({ event, guestList, hostUser }) => {
         </St.Date>
         <St.Title>{event.eventName}</St.Title>
         <St.CardMiddle>
-          <Tag bgcolor="orange">{event.eventLocation}</Tag>
-          <Tag bgcolor="pink">{t(event.isVerified)}</Tag>
+          {/* 시/도 - 구/군 / 카테고리 */}
+          <Tag bgcolor="orange">{event.location_City}</Tag>
+          <Tag bgcolor="pink">{event.location_District}</Tag>
+          <Tag bgcolor="blue">{t(event.isVerified)}</Tag>
         </St.CardMiddle>
         <St.CardBottom>
           <St.ProfileImg src={hostUser[0].profileImg} alt="profile" />

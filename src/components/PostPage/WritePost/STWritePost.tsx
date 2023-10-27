@@ -27,7 +27,7 @@ export const InputWrap = styled.div`
   & div {
     display: flex;
     align-items: center;
-    padding-bottom: 10px;
+    margin-bottom: 10px;
 
     & p {
       color: #646464;
