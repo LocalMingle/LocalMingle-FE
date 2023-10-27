@@ -61,6 +61,7 @@
   "삭제가 완료되었습니다.": "Delete complete.",
   "참석이 취소되었습니다.": "Attendance canceled.",
   "게시글이 등록되었습니다.": "Post registered.",
+  "등록": "Post",
 
   "category": "category",
   "eventName": "eventName",
@@ -345,7 +346,7 @@
   "탈퇴하기": "Withdraw",
   "탈퇴하는 사유를 입력해주세요 🙂": "Please enter the reason for withdrawal 🙂",
   "소중한 피드백은 더 좋은 서비스를 제공하기 위해 적극적으로 반영하도록 하겠습니다!": "Your valuable feedback will be actively reflected to provide better service!",
-
+  "탈퇴가 완료되었습니다!": "Departure complete!",
   "닉네임을 입력하세요.": "Enter your Nickname.",
   "닉네임에는 특수문자, 공백, 단독 자음/모음을 사용할 수 없습니다.": "Nicknames cannot contain special characters, spaces, and sole consonants/vowels.",
   "닉네임은 2자 이상 8자 이하로 입력해야 합니다.": "Nickname must be at least 2 characters and not more than 8 characters.",
@@ -371,5 +372,6 @@
   "이메일 확인 중 오류 발생.": "Error checking email.",
   "이메일 중복 확인 중 오류 발생.": "Error checking email duplication.",
   "탈퇴 사유를 입력해주세요.": "Please enter a reason for withdrawal.",
-  "소셜 로그인 하신분은 비밀번호 수정 후 이용 부탁드립니다.": "If you're logged in to the social network, please change your password and use it."
+  "소셜 로그인 하신분은 비밀번호 수정 후 이용 부탁드립니다.": "If you're logged in to the social network, please change your password and use it.",
+  "산책": "Walking"
 }

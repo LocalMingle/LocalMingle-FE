@@ -44,13 +44,13 @@ const WritePost: React.FC = () => {
   const writePostAPI = {
     locationApi: () => customAxios.get("data/toss"), // 위치 인증 여부
     sidoApi: (lang: string) =>
-    customAxios.get("data/city", {
-      params: { lang },
-    }),
-  gugunApi: (sido: string, lang: string) =>
-    customAxios.get("data/gu_name", {
-      params: { doName: sido, lang },
-    }),
+      customAxios.get("data/city", {
+        params: { lang },
+      }),
+    gugunApi: (sido: string, lang: string) =>
+      customAxios.get("data/gu_name", {
+        params: { doName: sido, lang },
+      }),
     categoryApi: () => customAxios.get("data/toss"), // 카테고리
     WritePostApi: () => customAxios.post("events"), // 게시글 작성
   };
@@ -290,7 +290,7 @@ const WritePost: React.FC = () => {
       <St.TitleWrap>
         <input
           type="text"
-          placeholder="제목을 입력하세요"
+          placeholder={t("제목을 입력하세요")}
           value={eventName}
           onChange={(e) => {
             setEventName(e.target.value);
@@ -299,7 +299,7 @@ const WritePost: React.FC = () => {
       </St.TitleWrap>
       <St.InputWrap>
         <div>
-          <p>모임일시</p>
+          <p>{t("모임일시")}</p>
           <input
             type="date"
             value={eventDate}
@@ -309,7 +309,7 @@ const WritePost: React.FC = () => {
           />
         </div>
         <div>
-          <p>참가신청 기간</p>
+          <p>{t("참가신청 기간")}</p>
           <input
             type="date"
             value={signupStartDate}
@@ -327,30 +327,34 @@ const WritePost: React.FC = () => {
           />
         </div>
         <div>
-          <p>모임주소</p>
+          <p>{t("모임주소")}</p>
           <Selector
             options={sidoOptionsData?.map((item) => ({
               value: t(item.doName),
               label: t(item.doName),
             }))}
             value={location_City}
-            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+            onChange={(
+              selectedOption: React.ChangeEvent<HTMLSelectElement>
+            ) => {
               setLocation_City(selectedOption.target.value);
             }}
           ></Selector>
           <Selector
-          options={gugunOptionsData?.map((option) => ({
-            value: option.guName,
-            label: option.guName,
-          }))}
-          value={location_District}
-          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-            setLocation_District(selectedOption.target.value);
-          }}
-        ></Selector>
+            options={gugunOptionsData?.map((option) => ({
+              value: option.guName,
+              label: option.guName,
+            }))}
+            value={location_District}
+            onChange={(
+              selectedOption: React.ChangeEvent<HTMLSelectElement>
+            ) => {
+              setLocation_District(selectedOption.target.value);
+            }}
+          ></Selector>
         </div>
         <div>
-          <p>모임인원</p>
+          <p>{t("모임인원")}</p>
           <input
             type="number"
             placeholder="ex. 10"
@@ -359,12 +363,12 @@ const WritePost: React.FC = () => {
               setMaxSize(parseInt(e.target.value));
             }}
           />
-          <span>명</span>
+          <span>{t("명")}</span>
         </div>
       </St.InputWrap>
       <St.ContentsWrap>
         <textarea
-          placeholder="내용을 입력하세요"
+          placeholder={t("내용을 입력하세요")}
           value={content}
           onChange={(e) => {
             setContent(e.target.value);
@@ -373,9 +377,9 @@ const WritePost: React.FC = () => {
       </St.ContentsWrap>
       <St.ButtonWrap>
         <Button bgcolor="#fff" onClick={postCancel}>
-          취소
+          {t("취소")}
         </Button>
-        <Button onClick={postAdd}>등록</Button>
+        <Button onClick={postAdd}>{t("등록")}</Button>
       </St.ButtonWrap>
     </St.PostSection>
   );

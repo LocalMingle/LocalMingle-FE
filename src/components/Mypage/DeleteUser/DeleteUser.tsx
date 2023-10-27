@@ -1,70 +1,47 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import * as St from "./STDeleteUser";
-import { deleteUser } from "../../../api/api";
-import lottie from "lottie-web";
+import { deleteUser as deleteUserAPI } from "../../../api/api";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../common/Button";
 import { validateLoginPassword } from "../../../util/validation";
 import toast from "react-hot-toast";
-import { AnimationItem } from "lottie-web";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 
 const DeleteUser: React.FC = () => {
-  const [password, setPassword] = useState<string>("");
-  const [reason, setReason] = useState<string>("");
-  const lottieContainer = useRef(null);
-  const [showAnimation, setShowAnimation] = useState<boolean>(false);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const [password, setPassword] = useState<string>("");
+  const [reason, setReason] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
 
-  const animationRef = useRef<AnimationItem | null>(null);
+  const mutation = useMutation(deleteUserAPI, {
+    onSuccess: (data) => {
+      console.log(t("회원탈퇴 성공!"), data);
+      toast.success(t("탈퇴가 완료되었습니다!"), {
+        className: "toast-success toast-container",
+      });
+      navigate("/login");
+      queryClient.invalidateQueries("someQueryKey");
+    },
+    onError: (error) => {
+      console.log(t("회원탈퇴 실패! 왜인지 알아보자"), error);
+      setPasswordError(t("비밀번호를 다시 확인해주세요."));
+    },
+  });
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     const passwordValidationError = t(validateLoginPassword(password));
     setPasswordError(passwordValidationError);
-
-    if (passwordValidationError) {
-      return;
-    }
-
-    if (reason === "") {
-      toast.error(t("탈퇴 사유를 입력해주세요!"), {
+    if (passwordValidationError || reason === "") {
+      toast.error(t("입력값을 다시 확인해주세요!"), {
         className: "toast-error toast-container",
       });
       return;
     }
-
-    try {
-      const response = await deleteUser(password);
-      console.log(t("회원탈퇴 성공!"), response);
-      setShowAnimation(true); // 성공하면 애니메이션 표시
-      setTimeout(() => {
-        navigate("/login"); // 3초 후에 로그인 페이지로 이동
-      }, 3000);
-    } catch (error) {
-      console.log(t("회원탈퇴 실패! 왜인지 알아보자"), error);
-      setPasswordError(t("비밀번호를 다시 확인해주세요."));
-    }
+    mutation.mutate(password);
   };
-
-  useEffect(() => {
-    if (showAnimation && lottieContainer.current) {
-      animationRef.current = lottie.loadAnimation({
-        container: lottieContainer.current,
-        renderer: "svg",
-        loop: true,
-        autoplay: true,
-        path: "/animations/goodbye-animation.json",
-      });
-    }
-
-    return () => {
-      if (animationRef.current) {
-        animationRef.current.destroy();
-      }
-    };
-  }, [showAnimation]);
 
   return (
     <St.MyPageContainer>
@@ -98,7 +75,6 @@ const DeleteUser: React.FC = () => {
         <St.ButtonWrap>
           <Button onClick={handleDelete}>{t("탈퇴하기")}</Button>
         </St.ButtonWrap>
-        <St.AnimationContainer ref={lottieContainer}></St.AnimationContainer>
       </St.MyPageWrap>
     </St.MyPageContainer>
   );

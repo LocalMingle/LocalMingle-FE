@@ -61,38 +61,38 @@ export const InputWrap = styled.div`
     top: 100%;
     left: 0;
   }
-`
+`;
 
 export const TextareaWrap = styled.div`
-    position: relative;
+  position: relative;
 
-    & > textarea {
-      border-radius: 34px;
-      border: 1px solid #E7E7E7;
-      resize: none;
-      min-height: 330px;
-      width: 100%;
-      padding: 20px;
-    }
+  & > textarea {
+    border-radius: 34px;
+    border: 1px solid #e7e7e7;
+    resize: none;
+    min-height: 330px;
+    width: 100%;
+    padding: 20px;
+  }
 
-    & > ${ErrorMessage} {
-      position: absolute;
-      top: 100%;
-      left: 0;
-    }
-`
+  & > ${ErrorMessage} {
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+`;
 
 export const ButtonWrap = styled.div`
   margin: 30px 0;
-`
-
-export const AnimationContainer = styled.div`
-  width: 300px;
-  height: 300px;
-  margin: auto;
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: -1; // 231020 JSY 애니메이션으로 인해 textarea 특정 부분을 클릭해야 글 작성이 가능함
 `;
+
+// export const AnimationContainer = styled.div`
+//   width: 300px;
+//   height: 300px;
+//   margin: auto;
+//   position: absolute;
+//   top: 120%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   /* z-index: -1; // 231020 JSY 애니메이션으로 인해 textarea 특정 부분을 클릭해야 글 작성이 가능함 */
+// `;
