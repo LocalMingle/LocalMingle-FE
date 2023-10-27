@@ -5,8 +5,8 @@ import { WritePost } from '../components/PostPage/WritePost'
 const Post: React.FC = () => {
   return (
     <>
-    <Header></Header>
-    <WritePost></WritePost>
+      <Header></Header>
+      <WritePost></WritePost>
     </>
   )
 }
