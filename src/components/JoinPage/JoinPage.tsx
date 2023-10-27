@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import * as ST from "./STJoinPage";
-import { Button } from "../../components/common/Button";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../../components/common/Button";
 import { userState } from "../../recoil/atoms/UserState";
 import { axiosInstance } from "../../api/axiosInstance";
+import { useLanguage } from "../../util/Locales/useLanguage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import * as ST from "./STJoinPage";
+import toast from "react-hot-toast";
+import JSConfetti from "js-confetti";
 import {
   validateNickname,
   validatePassword,
@@ -18,17 +21,20 @@ import {
   validateEmailVerification,
   handleCheckEmail,
 } from "../../util/validation";
-import JSConfetti from "js-confetti";
-import { useLanguage } from "../../util/Locales/useLanguage";
 import {
   sendVerificationEmail,
   verifyEmailCode,
   checkNickname,
 } from "../../api/api";
-import toast from "react-hot-toast";
 
 const SignUpForm: React.FC = () => {
   const { currentLang, t, changeLanguage } = useLanguage();
+  const navigate = useNavigate();
+  const jsConfetti = new JSConfetti();
+  const [, setUser] = useRecoilState(userState);
+  const [isLoading, setIsLoading] = useState(false);
+  const [shouldRunTimer, setShouldRunTimer] = useState(false);
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState<string>("");
@@ -36,27 +42,22 @@ const SignUpForm: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [bio, setBio] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [, setUser] = useRecoilState(userState);
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-  const jsConfetti = new JSConfetti();
 
   const [nicknameError, setNicknameError] = useState("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [bioError, setBioError] = useState("");
+  const [authError, setAuthError] = useState<string | null>(null);
+
   const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
   const [authCode, setAuthCode] = useState("");
   const [emailSent, setEmailSent] = useState(false);
-  const [countdown, setCountdown] = useState<number | null>(null);
-  const [isTimerExpired, setIsTimerExpired] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
-  const [authError, setAuthError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState<null | boolean>(null);
-  const [shouldRunTimer, setShouldRunTimer] = useState(false);
-  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [isTimerExpired, setIsTimerExpired] = useState(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
 
   const handleSignUp = async () => {
     if (!isNicknameChecked && !isEmailVerified) {
@@ -288,6 +289,10 @@ const SignUpForm: React.FC = () => {
     setBioError(t(validateBio(newValue)));
   };
 
+  const handleLanguageChange = () => {
+    changeLanguage();
+  };
+
   const handleNicknameDupCheck = async () => {
     const errorMessage = t(await handleCheckNickname(nickname));
 
@@ -318,10 +323,6 @@ const SignUpForm: React.FC = () => {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
-  };
-
-  const handleLanguageChange = () => {
-    changeLanguage();
   };
 
   const goToMain = () => {

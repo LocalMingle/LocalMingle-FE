@@ -1,11 +1,12 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React from "react";
 import * as St from "./STJoinList";
-import { getJoinedEvents, cancelParticipation } from "../../../api/api";
-import { useNavigate } from "react-router-dom";
-import { useLanguage } from "../../../util/Locales/useLanguage";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../../recoil/atoms/UserState";
 import toast from "react-hot-toast";
+import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { useQuery, useMutation } from "react-query";
+import { userState } from "../../../recoil/atoms/UserState";
+import { useLanguage } from "../../../util/Locales/useLanguage";
+import { getJoinedEvents, cancelParticipation } from "../../../api/api";
 
 type Event = {
   id?: number;
@@ -20,39 +21,37 @@ type Event = {
 const JoinList: React.FC = () => {
   const user = useRecoilValue(userState);
   const userId = user.userId;
-  const [events, setEvents] = useState<Event[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { t } = useLanguage();
 
-  const fetchEvents = useCallback(async () => {
-    try {
-      if (!userId) throw new Error("User not logged in");
+  const fetchEvents = async () => {
+    if (!userId) throw new Error("사용자가 로그인하지 않았습니다.");
+    const joinedEvents: Event[] = await getJoinedEvents(Number(userId));
+    return joinedEvents.sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return dateB.getTime() - dateA.getTime();
+    });
+  };
 
-      const joinedEvents: Event[] = await getJoinedEvents(Number(userId));
-
-      const sortedEvents = joinedEvents.sort((a, b) => {
-        const dateA = new Date(a.createdAt);
-        const dateB = new Date(b.createdAt);
-
-        return dateB.getTime() - dateA.getTime();
-      });
-
-      setEvents(sortedEvents);
-    } catch (error) {
-      console.error("이벤트 불러오기 오류:", error);
+  const { data: events = [], refetch } = useQuery<Event[], Error>(
+    ["events", userId],
+    fetchEvents,
+    {
+      enabled: !!userId,
+      initialData: [],
     }
-  }, [userId]);
+  );
 
-  useEffect(() => {
-    fetchEvents();
-  }, [isLoading, fetchEvents]);
+  const mutation = useMutation(cancelParticipation, {
+    onSuccess: () => {
+      refetch();
+    },
+  });
 
   const handleCancel = async (eventId: number) => {
     try {
-      await cancelParticipation(eventId);
-      await fetchEvents();
-      await setIsLoading(!isLoading);
+      await mutation.mutateAsync(eventId);
       toast.success(t("참석이 취소되었습니다."), {
         className: "toast-success toast-container",
       });

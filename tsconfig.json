@@ -5,6 +5,7 @@
     "lib": ["ES2016", "DOM", "DOM.Iterable"],
     "module": "esnext",
     "skipLibCheck": true,
+    "noImplicitAny": false, // any타입 허용
 
     /* Bundler mode */
 

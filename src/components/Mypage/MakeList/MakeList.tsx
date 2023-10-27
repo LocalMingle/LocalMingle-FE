@@ -1,11 +1,12 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import * as St from "./STMakeList";
+import toast from "react-hot-toast";
+import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { useQuery, useMutation } from "react-query";
+import { userState } from "../../../recoil/atoms/UserState";
 import { getEvents, deleteEvent } from "../../../api/api";
 import { useLanguage } from "../../../util/Locales/useLanguage";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../../recoil/atoms/UserState";
-import toast from "react-hot-toast";
 
 interface Event {
   eventId: number;
@@ -21,43 +22,43 @@ interface Event {
 }
 
 const MakeList: React.FC = () => {
-  const user = useRecoilValue(userState); // Recoil에서 user 정보 가져오기
+  const user = useRecoilValue(userState);
   const userId = user.userId;
-  const [events, setEvents] = useState<Event[]>([]);
   const navigate = useNavigate();
   const { t } = useLanguage();
 
-  const fetchEvents = useCallback(async () => {
-    try {
-      if (!userId) throw new Error("User not logged in");
-      const data = await getEvents(Number(userId));
-      console.log(data);
-      const userEvents = data.HostEvents.map(
-        (item: { Event: Event }) => item.Event
-      );
+  const fetchEvents = async () => {
+    if (!userId) throw new Error("사용자가 로그인하지 않았습니다");
+    const data = await getEvents(Number(userId));
+    const userEvents = data.HostEvents.map(
+      (item: { Event: Event }) => item.Event
+    );
+    return userEvents.sort((a: Event, b: Event) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return dateB.getTime() - dateA.getTime();
+    });
+  };
 
-      const sortedEvents = userEvents.sort((a: Event, b: Event) => {
-        const dateA = new Date(a.createdAt);
-        const dateB = new Date(b.createdAt);
-        return dateB.getTime() - dateA.getTime();
-      });
-
-      setEvents(sortedEvents);
-    } catch (error) {
-      console.error("글목록 불러오기 실패:", error);
+  const { data: events, refetch } = useQuery<Event[], Error>(
+    ["events", userId],
+    fetchEvents,
+    {
+      enabled: !!userId,
     }
-  }, [userId]);
+  );
 
-  const handleDeleteEvent = async (eventId: number) => {
-    try {
-      await deleteEvent(eventId);
-      fetchEvents();
+  const mutation = useMutation(deleteEvent, {
+    onSuccess: () => {
+      refetch();
       toast.success(t("삭제가 완료되었습니다."), {
         className: "toast-success toast-container",
       });
-    } catch (error) {
-      console.error("글 삭제 실패:", error);
-    }
+    },
+  });
+
+  const handleDeleteEvent = async (eventId: number) => {
+    await mutation.mutateAsync(eventId);
   };
 
   const handlePostClick = (eventId: number) => {
@@ -68,13 +69,9 @@ const MakeList: React.FC = () => {
     navigate(`/post/update/${eventId}`);
   };
 
-  useEffect(() => {
-    fetchEvents();
-  }, [fetchEvents]);
-
   return (
     <>
-      {events.length > 0 ? (
+      {events && events.length > 0 ? (
         <St.MyPageContainer>
           <St.MyPageWrap>
             <div>
