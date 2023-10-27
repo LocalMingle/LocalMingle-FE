@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
 import * as St from "./STDeleteUser";
-import { deleteUser as deleteUserAPI } from "../../../api/api";
-import { useNavigate } from "react-router-dom";
-import { Button } from "../../common/Button";
-import { validateLoginPassword } from "../../../util/validation";
 import toast from "react-hot-toast";
+import { Button } from "../../common/Button";
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "react-query";
+import { deleteUser as deleteUserAPI } from "../../../api/api";
 import { useLanguage } from "../../../util/Locales/useLanguage";
+import { validateLoginPassword } from "../../../util/validation";
 
 const DeleteUser: React.FC = () => {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const { t } = useLanguage();
-  const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [reason, setReason] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
 
   const mutation = useMutation(deleteUserAPI, {

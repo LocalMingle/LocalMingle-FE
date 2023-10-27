@@ -330,8 +330,8 @@ const WritePost: React.FC = () => {
           <p>{t("모임주소")}</p>
           <Selector
             options={sidoOptionsData?.map((item) => ({
-              value: t(item.doName),
-              label: t(item.doName),
+              value: item.doName,
+              label: item.doName,
             }))}
             value={location_City}
             onChange={(

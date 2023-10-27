@@ -1,5 +1,9 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import * as St from "./STUserInfo";
+import toast from "react-hot-toast";
+import { Button } from "../../common/Button";
+import { axiosInstance } from "../../../api/axiosInstance";
+import { useLanguage } from "../../../util/Locales/useLanguage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -15,10 +19,6 @@ import {
   updateUserProfile,
   updatePassword,
 } from "../../../api/api";
-import { axiosInstance } from "../../../api/axiosInstance";
-import toast from "react-hot-toast";
-import { useLanguage } from "../../../util/Locales/useLanguage";
-import { Button } from "../../common/Button";
 
 const UserInfo: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,8 +26,9 @@ const UserInfo: React.FC = () => {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [intro, setIntro] = useState("");
   const [, setInitialNickname] = useState("");
+  const [intro, setIntro] = useState("");
+
   const [nicknameError, setNicknameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");

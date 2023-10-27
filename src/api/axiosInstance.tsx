@@ -38,7 +38,7 @@ const createAxiosInstance = (headers: AxiosRequestConfig["headers"]) => {
           originalRequest.headers = {
             ...originalRequest.headers,
             Authorization: `Bearer ${newAccessToken}`,
-          } as AxiosRequestConfig["headers"]; // 타입을 명시해줌
+          } as AxiosRequestConfig["headers"];
           return instance(originalRequest);
         }
       }
