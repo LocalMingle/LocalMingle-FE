@@ -58,8 +58,8 @@ const Card: React.FC<CardProps> = ({ event, guestList, hostUser }) => {
         <St.Title>{event.eventName}</St.Title>
         <St.CardMiddle>
           {/* 시/도 - 구/군 / 카테고리 */}
-          <Tag bgcolor="orange">{event.location_City}</Tag>
-          <Tag bgcolor="pink">{event.location_District}</Tag>
+          <Tag bgcolor="orange">{t(event.location_City)}</Tag>
+          <Tag bgcolor="pink">{t(event.location_District)}</Tag>
           <Tag bgcolor="blue">{t(event.isVerified)}</Tag>
         </St.CardMiddle>
         <St.CardBottom>
