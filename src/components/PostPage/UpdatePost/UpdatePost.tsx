@@ -46,13 +46,13 @@ const ModifyPost: React.FC = () => {
   const updatePostAPI = {
     locationApi: () => customAxios.get("data/toss"), // 위치 인증 여부
     sidoApi: (lang: string) =>
-    customAxios.get("data/city", {
-      params: { lang },
-    }),
+      customAxios.get("data/city", {
+        params: { lang },
+      }),
     gugunApi: (sido: string, lang: string) =>
-    customAxios.get("data/gu_name", {
-      params: { doName: sido, lang },
-    }),
+      customAxios.get("data/gu_name", {
+        params: { doName: sido, lang },
+      }),
     categoryApi: () => customAxios.get("data/toss"), // 카테고리
     updatePostApi: () => customAxios.patch(`events/${eventId}`), // 게시글 수정
   };
@@ -104,15 +104,15 @@ const ModifyPost: React.FC = () => {
     }
   );
 
-    // 구/군 옵션 interface (console.log 기준)
-    interface GugunOptionsProps {
-      guName: string[];
-    }
+  // 구/군 옵션 interface (console.log 기준)
+  interface GugunOptionsProps {
+    guName: string[];
+  }
 
-    // 구/군 옵션 - DB 연동
-    const { data: gugunOptionsData, refetch: refetchGugunOptions } = useQuery<
-      GugunOptionsProps[]
-    >(
+  // 구/군 옵션 - DB 연동
+  const { data: gugunOptionsData, refetch: refetchGugunOptions } = useQuery<
+    GugunOptionsProps[]
+  >(
     // queryKey를 배열로 감싸서 설정
     ["gugunOptions", location_City],
     async () => {
@@ -172,7 +172,7 @@ const ModifyPost: React.FC = () => {
       signupEndDate: string;
       signupStartDate: string;
       updatedAt: string;
-    }
+    };
   }
 
   // 기존에 있던 게시물 정보 가져오기
@@ -210,35 +210,33 @@ const ModifyPost: React.FC = () => {
     }
   }, [postData]);
 
-    // 게시글 수정 interface (console.log 기준)
-    interface UpdatePostData {
-      eventName: string;
-      maxSize: number;
-      eventDate: string;
-      signupStartDate: string;
-      signupEndDate: string;
-      location_City: string;
-      location_District: string;
-      content: string;
-      category: string;
-      isDeleted: boolean;
-      isVerified: string;
-      eventImg: string | null;
-    }
+  // 게시글 수정 interface (console.log 기준)
+  interface UpdatePostData {
+    eventName: string;
+    maxSize: number;
+    eventDate: string;
+    signupStartDate: string;
+    signupEndDate: string;
+    location_City: string;
+    location_District: string;
+    content: string;
+    category: string;
+    isDeleted: boolean;
+    isVerified: string;
+    eventImg: string | null;
+  }
 
   // 게시글 수정 - DB 연동
-  const updatePostMutation = useMutation(
-    async (postData: UpdatePostData) => {
-      try {
-        const response = await customAxios.patch(`events/${eventId}`, postData);
-        // console.log('게시글 값?', response.data);
-        return response.data;
-      } catch (error) {
-        console.log('게시글 수정 실패!', error);
-        throw error;
-      }
+  const updatePostMutation = useMutation(async (postData: UpdatePostData) => {
+    try {
+      const response = await customAxios.patch(`events/${eventId}`, postData);
+      // console.log('게시글 값?', response.data);
+      return response.data;
+    } catch (error) {
+      console.log("게시글 수정 실패!", error);
+      throw error;
     }
-  );
+  });
 
   // 게시글 수정 취소
   const postCancel = async () => {
@@ -321,7 +319,7 @@ const ModifyPost: React.FC = () => {
     } catch (error) {
       console.log("게시글 수정 실패!", error);
     }
-  }
+  };
 
   const setDateFormat = (date: string): string => {
     // 날짜 형식 변경 2023-10-25
@@ -331,30 +329,29 @@ const ModifyPost: React.FC = () => {
   return (
     <St.PostSection>
       <St.SelectorWrap>
-          {/* 카테고리 */}
-          <Selector
-            options={categoryOptionsData?.map((item) => ({
-              value: t(item),
-              label: t(item),
-            }))}
-            value={category}
-            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-              setCategory(selectedOption.target.value);
-            }}
-          ></Selector>
+        {/* 카테고리 */}
+        <Selector
+          options={categoryOptionsData?.map((item) => ({
+            value: t(item),
+            label: t(item),
+          }))}
+          value={category}
+          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+            setCategory(selectedOption.target.value);
+          }}
+        ></Selector>
 
         {/* 위치인증 */}
         <Selector
-            options={locationOptionsData?.map((item) => ({
-              value: t(item),
-              label: t(item),
-            }))}
-            value={isVerified}
-            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-              setIsVerified(selectedOption.target.value);
-            }}
-          ></Selector>
-
+          options={locationOptionsData?.map((item) => ({
+            value: t(item),
+            label: t(item),
+          }))}
+          value={isVerified}
+          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+            setIsVerified(selectedOption.target.value);
+          }}
+        ></Selector>
       </St.SelectorWrap>
       <St.TitleWrap>
         <input
@@ -368,34 +365,56 @@ const ModifyPost: React.FC = () => {
       </St.TitleWrap>
       <St.InputWrap>
         <div>
-          <p>모임일시</p>
-          <input type="date" value={setDateFormat(eventDate)} onChange={(e)=>{setEventDate(e.target.value)}}/>
+          <p>{t("모임일시")}</p>
+          <input
+            type="date"
+            value={setDateFormat(eventDate)}
+            onChange={(e) => {
+              setEventDate(e.target.value);
+            }}
+          />
         </div>
         <div>
-          <p>참가신청 기간</p>
-          <input type="date" value={setDateFormat(signupStartDate)} onChange={(e)=>{setSignupStartDate(e.target.value)}}/>
+          <p>{t("참가신청 기간")}</p>
+          <input
+            type="date"
+            value={setDateFormat(signupStartDate)}
+            onChange={(e) => {
+              setSignupStartDate(e.target.value);
+            }}
+          />
           &nbsp;~&nbsp;
-          <input type="date" value={setDateFormat(signupEndDate)} onChange={(e)=>{setSignupEndDate(e.target.value)}}/>
+          <input
+            type="date"
+            value={setDateFormat(signupEndDate)}
+            onChange={(e) => {
+              setSignupEndDate(e.target.value);
+            }}
+          />
         </div>
         <div>
           <p>{t("모임주소")}</p>
-            <Selector
-              options={sidoOptionsData?.map((item) => ({
-                value: t(item.doName),
-                label: t(item.doName),
-              }))}
-              value={location_City}
-              onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-                setLocation_City(selectedOption.target.value);
-              }}
-            ></Selector>
-            <Selector
+          <Selector
+            options={sidoOptionsData?.map((item) => ({
+              value: t(item.doName),
+              label: t(item.doName),
+            }))}
+            value={location_City}
+            onChange={(
+              selectedOption: React.ChangeEvent<HTMLSelectElement>
+            ) => {
+              setLocation_City(selectedOption.target.value);
+            }}
+          ></Selector>
+          <Selector
             options={gugunOptionsData?.map((option) => ({
               value: option.guName,
               label: option.guName,
             }))}
             value={location_District}
-            onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+            onChange={(
+              selectedOption: React.ChangeEvent<HTMLSelectElement>
+            ) => {
               setLocation_District(selectedOption.target.value);
             }}
           ></Selector>

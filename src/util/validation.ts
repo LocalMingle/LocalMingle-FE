@@ -66,7 +66,7 @@ export function validateEmail(email: string) {
 
 // 한 줄 자기소개
 export function validateBio(bio: string) {
-  if (!bio) {
+  if (!bio || !bio.trim()) {
     return "자기소개를 입력하세요.";
   }
   return "";

@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import * as St from "./STViewPost";
+import toast from "react-hot-toast";
+import Modal from "../../common/Modal/Modal";
 import Button from "../../common/Button/Button";
+import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
+import { useParams } from "react-router-dom";
+import { userState } from "../../../recoil/atoms/UserState";
+import { modalState } from "../../../recoil/atoms/ModalState";
+import { useLanguage } from "../../../util/Locales/useLanguage";
 import {
   getEventDetail,
   EventDetailResponse,
   toggleParticipation,
 } from "../../../api/api";
-import { useParams } from "react-router-dom";
-import Modal from "../../common/Modal/Modal";
-import { useRecoilState } from "recoil";
-import { modalState } from "../../../recoil/atoms/ModalState";
-import { useLanguage } from "../../../util/Locales/useLanguage";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../../recoil/atoms/UserState";
 
 type GuestUser = {
   userDetailId: number;
@@ -37,7 +38,18 @@ const ViewPost: React.FC = () => {
   const { t } = useLanguage();
   const handleToggleParticipation = async () => {
     if (!eventId) return;
+
     const eventIdNumber = parseInt(eventId, 10);
+
+    if (
+      eventDetail?.guestList &&
+      eventDetail?.guestList >= eventDetail?.event.maxSize
+    ) {
+      toast.error(t("모집이 마감되었습니다"), {
+        className: "toast-error toast-container",
+      });
+      return;
+    }
 
     try {
       const result = await toggleParticipation(eventIdNumber);
@@ -51,7 +63,6 @@ const ViewPost: React.FC = () => {
     } catch (error) {
       console.error("토글 참가 중 오류 발생:", error);
     }
-    setIsJoined(!isJoined);
   };
 
   useEffect(() => {
@@ -66,8 +77,6 @@ const ViewPost: React.FC = () => {
         if (data) {
           const authorStatus = loggedInUserId === data.hostUser[0].UserId;
           setIsAuthor(authorStatus);
-          // console.log("로그인한 사용자의 ID:", loggedInUserId);
-          // console.log("작성자인가요?:", authorStatus);
           if (isJoined === null) {
             const isUserJoined = data.guestUser.some((guestGroup) =>
               guestGroup.some((guest) => guest.UserId === loggedInUserId)
