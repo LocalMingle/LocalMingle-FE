@@ -16,6 +16,10 @@ export const SearchBar = styled.div`
     justify-content: space-between;
     align-items: center;
     height: 30px;
+
+    & p {
+      cursor: pointer;
+    }
   }
 `
 
