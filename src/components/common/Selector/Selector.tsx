@@ -8,7 +8,7 @@ interface SelectorProps {
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const Selector: React.FC<SelectorProps> = ({ value, options, onChange }) => {
+const Selector: React.FC<SelectorProps> = ({ options, onChange }) => {
   const normalizedOptions = options || [];
 
   return (
