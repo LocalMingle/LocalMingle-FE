@@ -319,6 +319,8 @@ interface EventDetailResponse {
     signupEndDate: Date;
     eventImg: string;
     eventLocation: string;
+    location_City: string;
+    location_District: string;
     content: string;
     category: string;
     isVerified: "yes" | "no";

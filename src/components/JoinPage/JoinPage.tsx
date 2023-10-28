@@ -11,53 +11,53 @@ import { useLanguage } from "../../util/Locales/useLanguage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import {
+  validateBio,
+  validateEmail,
   validateNickname,
   validatePassword,
-  validatePasswordConfirmation,
-  validateEmail,
-  validateBio,
+  handleCheckEmail,
   handleCheckNickname,
   validateAuthCodeTimer,
   validateEmailVerification,
-  handleCheckEmail,
+  validatePasswordConfirmation,
 } from "../../util/validation";
 import {
-  sendVerificationEmail,
-  verifyEmailCode,
   checkNickname,
+  verifyEmailCode,
+  sendVerificationEmail,
 } from "../../api/api";
 
 const SignUpForm: React.FC = () => {
-  const { currentLang, t, changeLanguage } = useLanguage();
   const navigate = useNavigate();
   const jsConfetti = new JSConfetti();
   const [, setUser] = useRecoilState(userState);
   const [isLoading, setIsLoading] = useState(false);
+  const { currentLang, t, changeLanguage } = useLanguage();
   const [shouldRunTimer, setShouldRunTimer] = useState(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
+  const [bio, setBio] = useState("");
+  const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [bio, setBio] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const [bioError, setBioError] = useState("");
   const [nicknameError, setNicknameError] = useState("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  const [bioError, setBioError] = useState("");
   const [authError, setAuthError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
-  const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
   const [authCode, setAuthCode] = useState("");
   const [emailSent, setEmailSent] = useState(false);
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
-  const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
-  const [isSuccess, setIsSuccess] = useState<null | boolean>(null);
   const [isTimerExpired, setIsTimerExpired] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [countdown, setCountdown] = useState<number | null>(null);
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<null | boolean>(null);
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
 
   const handleSignUp = async () => {
     if (!isNicknameChecked && !isEmailVerified) {
@@ -192,11 +192,21 @@ const SignUpForm: React.FC = () => {
   }, [shouldRunTimer, isEmailVerified, t, countdown]);
 
   const handleSendEmail = async () => {
-    toast.success(t("인증코드가 전송되었습니다."), {
-      className: "toast-success toast-container",
-      duration: 3000,
-    });
+    const errorMessage = t(await handleCheckEmail(email));
+    setEmailError(errorMessage);
+
+    if (errorMessage !== t("이메일을 사용할 수 있습니다.")) {
+      setIsEmailValid(false);
+      return;
+    }
+
+    setIsEmailValid(true);
+
     try {
+      toast.success(t("인증코드가 전송되었습니다."), {
+        className: "toast-success toast-container",
+        duration: 3000,
+      });
       await sendVerificationEmail(email, "", "");
       setEmailSent(true);
       setIsTimerExpired(false);
@@ -315,12 +325,6 @@ const SignUpForm: React.FC = () => {
     }
   };
 
-  const handleEmailDupCheck = async () => {
-    const errorMessage = t(await handleCheckEmail(email));
-    setEmailError(errorMessage);
-    setIsEmailValid(errorMessage === t("이메일을 사용할 수 있습니다."));
-  };
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -373,14 +377,6 @@ const SignUpForm: React.FC = () => {
             </>
           ) : (
             <>
-              <ST.DupCheckButtonWrap>
-                <ST.DupCheckButton
-                  onClick={handleEmailDupCheck}
-                  disabled={!isEmailValid}
-                >
-                  {t("중복 체크")}
-                </ST.DupCheckButton>
-              </ST.DupCheckButtonWrap>
               <ST.DupCheckButtonWrap>
                 <ST.DupCheckButton
                   onClick={handleSendEmail}
