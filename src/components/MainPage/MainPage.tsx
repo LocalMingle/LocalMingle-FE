@@ -5,7 +5,7 @@ import Search from "../common/Search/Search";
 import Selector from "../common/Selector/Selector";
 import Card from "../common/Card/Card";
 import FixedButton from "../common/FixedButton/FixedButton";
-import { useQuery } from "react-query";
+// import { useQuery } from "react-query";
 import axios, { AxiosInstance } from "axios";
 import { Spinner } from "../common/Spinner";
 import styled from "styled-components";
@@ -14,14 +14,6 @@ import { useLanguage } from "../../util/Locales/useLanguage";
 import i18n from "../../util/Locales/i18n";
 
 const MainPage: React.FC = () => {
-  /**
-   * @description 시/도 & 구/군 선택 옵션
-   * @interface [<LocationSelectList>]
-   */
-  interface LocationSelectList {
-    sido: string[];
-    gugun: string[];
-  }
 
   /**
    * @description 게시글 카드
@@ -92,7 +84,8 @@ const MainPage: React.FC = () => {
   const [verify, setVerify] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [categoryList, setCategoryList] = useState<string[]>([]);
-  const [location, setLocation] = useState<LocationSelectList>({});
+  const [sidoList, setSidoList] = useState<string[]>();
+  const [gugunList, setGugunList] = useState<string[]>();
   const [sido, setSido] = useState<string>(t("시 / 도"));
   const [gugun, setGugun] = useState<string>(t("구 / 군"));
   const [verifyList , setVerifyList] = useState<string[]>(); 
@@ -156,11 +149,7 @@ const MainPage: React.FC = () => {
      */
     const sidoApiInit = async() =>{
       const data:string[] = await mainAPI.sidoApi(lang).then(res=> {return res.data.items.map((v)=> {return t(v.doName)})}).catch(err=> {throw err});
-      const newSido:LocationSelectList = {
-        sido : data,
-        gugun : new Array<string>(t('구 / 군'))
-      }
-      setLocation(newSido);
+      setSidoList(data);
     };
     /**
      * @description 카테고리 샐랙터
@@ -183,18 +172,21 @@ const MainPage: React.FC = () => {
   /**
    * @method postListSearch
    * @return {string} data(카드 형태 리스트)
+   * 샐랙터 기본값이면 모든 카드가 보이게
+   * 필터링하려면 verify를 무조건 선택 해야 다음 필터링이 가능함 (현 api 구조상)
   */
   const postListSearch = async ()  => {
-    setLoading(true);
+    setLoading(true); // 로딩중
     const response:CardProps[] = await (verify == '' ? mainAPI.cardListApi() : mainAPI.filterVerifyApi(t(verify)))
       .then((response) => {
-        console.log('게시글 데이터:', response.data);
+        // console.log('게시글 데이터:', response.data);
         return response.data;
       }).catch((error) => {
         console.log("게시글 불러오기 에러!", error);
         throw error;
       });
 
+      // 샐랙터 옵션이 설정되면 필터링
       if(verify != ''){
         const newResponse:CardProps[] = response.filter((root:CardProps)=>{
           if(sido == t('시 / 도')) return true;
@@ -212,7 +204,6 @@ const MainPage: React.FC = () => {
             return true;
           else return false;
         })
-
         setPostList(newResponse);
       } else {
         setPostList(response)
@@ -220,51 +211,38 @@ const MainPage: React.FC = () => {
       setLoading(false);
   }
 
+  // 게시글 검색
+  /**
+   * @method searchHandler
+   * @return {string} data
+  */
+  // const searchHandler = async(e:React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>)=>{
+  //   setKeyword(e.target.value);
+  //   console.log('검색!', keyword);
+  //   //포스트 조회 로직
+  //   // postListSearch();
+  // }
+
+
   // 핸들러 목록
-  /**
-   * @method sidoHandler
-   * @return {string} data("시 / 도", "서울특별시", "경기도"...)
-  */
-  const sidoHandler = async (e:React.ChangeEvent<HTMLSelectElement>)=>{
-    setSido(t(e.target.value));
-    const gugun:string[] = await mainAPI.gugunApi(t(e.target.value),lang).then(res=> {return res.data.map(v=> {return t(v.guName)})}).catch(err=>{throw err});
-    const newLoc:LocationSelectList = {
-      sido: [...location.sido],
-      gugun:  [...new Set((new Array<string>(t('구 / 군')).concat(gugun)))]
-    }
-    setLocation(newLoc);
-    //포스트 조회 로직
-    postListSearch();
-  }
-  /**
-   * @method gugunHandler
-   * @return {string} data("구 / 군", 경기도 > "용인시", "수원시"...)
-   * 구/군 의 경우 '구/군' 자체가 없어서 프론트에서 추가함
-   * new Set으로 중복제거 후 다시 배열로 선언('구/군'때문에)
-  */
-  const gugunHandler = async (e:React.ChangeEvent<HTMLSelectElement>)=>{
-    setGugun(t(e.target.value));
-    //포스트 조회 로직
-    postListSearch();
-  }
-  /**
-   * @method verifyHandler
-   * @return {string} data("아무나", "동네만")
-  */
-  const verifyHandler = async(e:React.ChangeEvent<HTMLSelectElement>)=>{
-    setVerify(t(e.target.value));
-    //포스트 조회 로직
-    postListSearch();
-  }
-  /**
-   * @method categoryHandler
-   * @return {string} data("맛집/커피", "운동/건강", "애완동물", "공부/교육")
-  */
-  const categoryHandler = async(e:React.ChangeEvent<HTMLSelectElement>)=>{
-    setCategory(t(e.target.value));
-    //포스트 조회 로직
-    postListSearch();
-  }
+  useEffect(()=>{
+      /**
+       * @method sidoHandler
+       * @return {string} data("시 / 도", "서울특별시", "경기도"...)
+       * 시/도 샐랙터 선택시 구/군 샐랙터에 시/도에 맞는 구/군 목록을 불러옴
+       * 구/군 샐랙터에는 '구/군' 자체가 없어서 프론트에서 추가함
+      */
+      const sidoHandler = async ()=>{
+        const gugun:string[] = await mainAPI.gugunApi(t(sido),lang).then(res=> {return res.data.map(v=> {return t(v.guName)})}).catch(err=>{throw err});
+        setGugunList([...new Set((new Array<string>(t('구 / 군')).concat(gugun)))]);
+        //포스트 조회 로직
+      }
+      if(sido){ 
+        sidoHandler(); 
+      }
+
+      postListSearch();
+  },[verify,sido,gugun,category,lang]);
 
   // // 데이터가 없는 경우
   // if (!postDataCp || postDataCp.length === 0) {
@@ -283,11 +261,18 @@ const MainPage: React.FC = () => {
    * loading 상태는 Spinner 컴포넌트로 대체
    * @return {string} data(카드 형태 리스트)
    */
-  return loading == true ? <Spinner /> :
-  (
+  return (
     <>
       <Banner></Banner>
-      <Search></Search>
+      {/* <Search
+        value={keyword}
+        onChange={(searchOption: React.ChangeEvent<HTMLInputElement>) => {
+          searchHandler(searchOption);
+        }}
+        onkeyPress={(searchOption: React.KeyboardEvent<HTMLInputElement>) => {
+          searchHandler(searchOption);
+        }}
+      ></Search> */}
       <St.SelectorWrap>
         {/*  게시글 지역 범위 */}
         <Selector
@@ -297,29 +282,31 @@ const MainPage: React.FC = () => {
           }))}
           value={verify}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-            verifyHandler(selectedOption);
+            setVerify(selectedOption.target.value);
           }}
         ></Selector>
         {/* 시/도 */}
         <Selector
-          options={location.sido?.map((sidoName:string) => ({
-            value: sidoName,
-            label: sidoName,
-          }))}
+          options={sidoList?.map((sidoName:string) => {
+            return {
+              value: sidoName,
+              label: sidoName,
+            }
+          })}
           value={sido}
-          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-            sidoHandler(selectedOption);
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+            setSido(e.target.value);
           }}
         ></Selector>
         {/* 구/군 */}
         <Selector
-          options={location.gugun?.map((gugunName) => ({
+          options={gugunList?.map((gugunName) => ({
             value: gugunName,
             label: gugunName,
           }))}
           value={gugun}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-            gugunHandler(selectedOption);
+            setGugun(selectedOption.target.value);
           }}
         >
         </Selector>
@@ -331,7 +318,7 @@ const MainPage: React.FC = () => {
           }))}
           value={category}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
-            categoryHandler(selectedOption);
+            setCategory(selectedOption.target.value);
           }}
         ></Selector>
       </St.SelectorWrap>
@@ -342,8 +329,9 @@ const MainPage: React.FC = () => {
         </CustomLink>
       ))}
       <FixedButton></FixedButton>
+      {loading == true ? <Spinner/> : <div></div>}
     </>
-  );
+  )
 };
 
 export default MainPage;
