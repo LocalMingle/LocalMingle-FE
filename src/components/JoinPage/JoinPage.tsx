@@ -45,8 +45,8 @@ const SignUpForm: React.FC = () => {
 
   const [bioError, setBioError] = useState("");
   const [nicknameError, setNicknameError] = useState("");
-  const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState<string>("");
   const [authError, setAuthError] = useState<string | null>(null);
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
@@ -79,26 +79,26 @@ const SignUpForm: React.FC = () => {
       });
       return;
     }
-    const newNicknameError = t(validateNickname(nickname));
     const newEmailError = t(validateEmail(email));
+    const newNicknameError = t(validateNickname(nickname));
     const newPasswordError = t(validatePassword(password));
     const newConfirmPasswordError = t(
       validatePasswordConfirmation(password, confirmPassword)
     );
     const newBioError = t(validateBio(bio));
 
-    setNicknameError(newNicknameError);
+    setBioError(newBioError);
     setEmailError(newEmailError);
+    setNicknameError(newNicknameError);
     setPasswordError(newPasswordError);
     setConfirmPasswordError(newConfirmPasswordError);
-    setBioError(newBioError);
 
     if (
-      newNicknameError ||
+      newBioError ||
       newEmailError ||
+      newNicknameError ||
       newPasswordError ||
-      newConfirmPasswordError ||
-      newBioError
+      newConfirmPasswordError
     ) {
       return;
     }
@@ -107,11 +107,11 @@ const SignUpForm: React.FC = () => {
 
     try {
       const response = await axiosInstance.post(`users/signup`, {
-        nickname,
         email,
         password,
-        confirmPassword,
+        nickname,
         intro: bio,
+        confirmPassword,
       });
 
       if (response.status === 201) {
@@ -299,10 +299,6 @@ const SignUpForm: React.FC = () => {
     setBioError(t(validateBio(newValue)));
   };
 
-  const handleLanguageChange = () => {
-    changeLanguage();
-  };
-
   const handleNicknameDupCheck = async () => {
     const errorMessage = t(await handleCheckNickname(nickname));
 
@@ -323,6 +319,10 @@ const SignUpForm: React.FC = () => {
       setIsNicknameValid(false);
       setIsNicknameChecked(false);
     }
+  };
+
+  const handleLanguageChange = () => {
+    changeLanguage();
   };
 
   const togglePasswordVisibility = () => {

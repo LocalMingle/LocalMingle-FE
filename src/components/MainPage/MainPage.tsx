@@ -30,7 +30,7 @@ const MainPage: React.FC = () => {
       eventName: string;
       isDeleted: boolean;
       isVerified: string;
-      location_City: string; 
+      location_City: string;
       location_District: string;
       maxSize: number;
       signupEndDate: string;

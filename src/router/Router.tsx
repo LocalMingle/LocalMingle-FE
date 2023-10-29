@@ -11,6 +11,7 @@ import MakeList from "../components/Mypage/MakeList/MakeList";
 import JoinList from "../components/Mypage/JoinList/JoinList";
 import DeleteUser from "../components/Mypage/DeleteUser/DeleteUser";
 
+// BrowserRouter
 export default function Router() {
   return (
     <BrowserRouter>

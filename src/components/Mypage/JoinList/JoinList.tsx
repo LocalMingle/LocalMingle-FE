@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
 import { userState } from "../../../recoil/atoms/UserState";
 import { useLanguage } from "../../../util/Locales/useLanguage";
-import { getJoinedEvents, cancelParticipation } from "../../../api/api";
+import { getJoinedEvents, cancelEventJoin } from "../../../api/api";
 
 type Event = {
   id?: number;
@@ -43,7 +43,7 @@ const JoinList: React.FC = () => {
     }
   );
 
-  const mutation = useMutation(cancelParticipation, {
+  const mutation = useMutation(cancelEventJoin, {
     onSuccess: () => {
       refetch();
     },
@@ -51,10 +51,12 @@ const JoinList: React.FC = () => {
 
   const handleCancel = async (eventId: number) => {
     try {
-      await mutation.mutateAsync(eventId);
-      toast.success(t("참석이 취소되었습니다."), {
-        className: "toast-success toast-container",
-      });
+      const result = await mutation.mutateAsync(eventId);
+      if (result === "cancelled") {
+        toast.success(t("참석이 취소되었습니다."), {
+          className: "toast-success toast-container",
+        });
+      }
     } catch (error) {
       console.error("참석 취소 중 오류 발생:", error);
     }
