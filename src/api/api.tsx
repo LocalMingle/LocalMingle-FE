@@ -272,42 +272,6 @@ export const getJoinedEvents = async (userId: number) => {
   }
 };
 
-// 이벤트 참석 취소
-export const cancelParticipation = async (eventId: number) => {
-  try {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      throw new Error("액세스 토큰이 없습니다.");
-    }
-
-    const response = await axiosInstance.put(
-      `/events/${eventId}/join`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-
-    console.log("API 응답:", response.data);
-
-    if (
-      response.status === 200 &&
-      response.data.message === `${eventId}번 모임 참석 취소!`
-    ) {
-      console.log("참석 신청 성공!");
-      return response.data;
-    } else {
-      console.log("참석 취소 성공!", response);
-      return null;
-    }
-  } catch (error) {
-    console.error("참석 취소 중 오류 발생:", error);
-    throw error;
-  }
-};
-
 // 이벤트 상세 정보 조회
 interface EventDetailResponse {
   event: {
@@ -374,50 +338,9 @@ export const getEventDetail = async (
         },
       }
     );
-    console.log("response.data", response.data);
     return response.data;
   } catch (error) {
     console.error("이벤트 상세 정보 조회 중 오류 발생:", error);
-    throw error;
-  }
-};
-
-// 게시물 상세보기 페이지 참가하기버튼 토글
-export const toggleParticipation = async (eventId: number) => {
-  console.log("toggleParticipation 함수 호출됨!");
-
-  try {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      throw new Error("액세스 토큰이 없습니다.");
-    }
-
-    const response = await axiosInstance.put(
-      `/events/${eventId}/join`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-
-    console.log("API 응답:", response.data);
-
-    if (response.status === 200) {
-      if (response.data === `${eventId}번 모임 참석 취소!`) {
-        console.log("참석 취소 성공!");
-        return "cancelled";
-      } else if (response.data === `${eventId}번 모임 참석 신청!`) {
-        console.log("참석 신청 성공!");
-        return "joined";
-      }
-    }
-
-    console.error("토글 실패:", response);
-    return null;
-  } catch (error) {
-    console.error("토글 중 오류 발생:", error);
     throw error;
   }
 };
@@ -459,6 +382,79 @@ export const updatePassword = async (newPassword: string) => {
     return response.data;
   } catch (error) {
     console.error("패스워드 업데이트 실패 😢", error);
+    throw error;
+  }
+};
+
+// 이벤트 참가 신청
+export const joinEvent = async (eventId: number) => {
+  console.log("joinEvent 함수 호출됨!");
+
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      throw new Error("액세스 토큰이 없습니다.");
+    }
+
+    const response = await axiosInstance.post(
+      `/events/${eventId}/join`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    console.log("API 응답:", response.data);
+
+    if (response.status === 201) {
+      if (response.data.confirm) {
+        console.log(`${response.data.message} 참가 확정!`);
+        return "confirmed";
+      } else {
+        console.log(`${response.data.message} 참가 대기중!`);
+        return "pending";
+      }
+    }
+
+    console.error("참가 신청 실패:", response);
+    return null;
+  } catch (error) {
+    console.error("참가 신청 중 오류 발생:", error);
+    throw error;
+  }
+};
+
+// 이벤트 참석 취소
+export const cancelEventJoin = async (eventId: number) => {
+  console.log("cancelEventJoin 함수 호출됨!");
+
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      throw new Error("액세스 토큰이 없습니다.");
+    }
+
+    const response = await axiosInstance.delete(`/events/${eventId}/join`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    console.log("API 응답:", response.data);
+
+    if (response.status === 200) {
+      if (!response.data.confirm) {
+        console.log(`${response.data.message} 참가 취소 성공!`);
+        return "cancelled";
+      }
+    }
+
+    console.error("참가 취소 실패:", response);
+    return null;
+  } catch (error) {
+    console.error("참가 취소 중 오류 발생:", error);
     throw error;
   }
 };

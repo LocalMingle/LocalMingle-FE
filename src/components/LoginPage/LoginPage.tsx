@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import * as ST from "./STLoginPage";
 import jwtDecode from "jwt-decode";
 import naverLogo from "../../asset/buttonImages/naverlogin.png";
+import googleLogo from "../../asset/buttonImages/googlelogin.png";
+import kakaoLogo from "../../asset/buttonImages/kakaologin.png";
 import { useRecoilState } from "recoil";
 import { setTokens } from "../../util/token";
 import { useNavigate } from "react-router-dom";
@@ -20,25 +22,12 @@ interface DecodedToken {
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { currentLang, t, changeLanguage } = useLanguage();
+  const [, setUser] = useRecoilState(userState);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
-
-  const [, setUser] = useRecoilState(userState);
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setEmail(newValue);
-    setEmailError(t(validateEmail(newValue)));
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setPassword(newValue);
-    setPasswordError(t(validateLoginPassword(newValue)));
-  };
 
   const handleLogin = async () => {
     setEmailError(validateEmail(email));
@@ -77,6 +66,9 @@ const LoginPage: React.FC = () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.log(error.message);
+        toast.error("이메일이나 비밀번호를 다시 확인해주세요", {
+          className: "toast-error toast-container",
+        });
       }
     }
   };
@@ -110,7 +102,17 @@ const LoginPage: React.FC = () => {
 
     window.location.href = naverOauthURL;
   };
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setEmail(newValue);
+    setEmailError(t(validateEmail(newValue)));
+  };
 
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setPassword(newValue);
+    setPasswordError(t(validateLoginPassword(newValue)));
+  };
   const handleJoinClick = () => {
     navigate("/join");
   };
@@ -167,30 +169,32 @@ const LoginPage: React.FC = () => {
         <ST.ErrorMessageLogin>{passwordError}</ST.ErrorMessageLogin>
       </ST.LabelWrapper>
       <Button onClick={handleLogin}>{t("로그인")}</Button>
-      <div>
-        <ST.KakaoButton onClick={kakaoLoginHandler}>
-          <img
-            src="https://developers.kakao.com/tool/resource/static/img/button/login/simple/ko/kakao_login_small.png"
-            width="70"
-          />
-        </ST.KakaoButton>
-      </div>
-      <ST.GoogleLoginButton onClick={googleLoginHandler}>
-        <ST.Icon
-          src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-          alt="Google logo"
-        />
-        구글 로그인
-      </ST.GoogleLoginButton>
-      <ST.NaverLoginBtn
-        onClick={naverLoginHandler}
-        src={naverLogo}
-        alt="naverlogin"
-      ></ST.NaverLoginBtn>
       <ST.SignupText>
         {t("로컬밍글의 회원이 아니신가요?")}{" "}
         <span onClick={handleJoinClick}>{t("회원가입")}</span>
       </ST.SignupText>
+      <ST.Divider>
+        <ST.Line />
+        <ST.Text>{t("소셜로그인으로 간편 로그인")}</ST.Text>
+        <ST.Line />
+      </ST.Divider>
+      <ST.ButtonContainer>
+        <ST.KakaoLoginBtn
+          onClick={kakaoLoginHandler}
+          src={kakaoLogo}
+          alt="kakaologin"
+        ></ST.KakaoLoginBtn>
+        <ST.GoogleLoginBtn
+          onClick={googleLoginHandler}
+          src={googleLogo}
+          alt="googlelogin"
+        ></ST.GoogleLoginBtn>
+        <ST.NaverLoginBtn
+          onClick={naverLoginHandler}
+          src={naverLogo}
+          alt="naverlogin"
+        ></ST.NaverLoginBtn>
+      </ST.ButtonContainer>
     </ST.Container>
   );
 };

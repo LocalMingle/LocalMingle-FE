@@ -69,37 +69,42 @@ export const ErrorMessageLogin = styled.div`
   width: 100%;
 `;
 
-export const KakaoButton = styled.button`
+export const Divider = styled.div`
+  margin-top: 30px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
-  border: none;
-  background-color: #fefbf6;
-  margin-top: 5px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.35);
+`;
 
-  img {
-    border-radius: 12px;
-  }
+export const Line = styled.div`
+  width: 80px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.35);
+  margin: 0px;
+`;
+
+export const Text = styled.span`
+  margin: 0 10px;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  margin-top: 10px;
+`;
+
+// 카카오 로그인 버튼
+export const KakaoLoginBtn = styled.img`
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
 `;
 
 // 구글 로그인 버튼
-export const GoogleLoginButton = styled.button`
-  width: 200px;
-  height: 40px;
-  background-color: #9ca5b4;
-  border-radius: 2px;
-  border: none;
-  color: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: #357ae8;
-  }
-`;
-
-export const Icon = styled.img`
+export const GoogleLoginBtn = styled.img`
+  width: 50px;
+  height: 50px;
   margin-right: 10px;
 `;
 

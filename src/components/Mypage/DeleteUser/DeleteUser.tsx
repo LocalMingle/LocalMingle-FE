@@ -40,7 +40,7 @@ const DeleteUser: React.FC = () => {
       });
       return;
     }
-    mutation.mutate(password);
+    mutation.mutate(password); // password를 인자로넘기고 API 호출
   };
 
   return (
