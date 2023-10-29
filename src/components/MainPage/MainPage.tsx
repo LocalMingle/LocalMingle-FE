@@ -206,7 +206,7 @@ const MainPage: React.FC = () => {
         })
         setPostList(newResponse);
       } else {
-        setPostList(response)
+        setPostList(response);
       }
       setLoading(false);
   }
@@ -242,19 +242,8 @@ const MainPage: React.FC = () => {
       }
 
       postListSearch();
-  },[verify,sido,gugun,category,lang]);
+  },[verify, sido, gugun, category, lang]);
 
-  // // 데이터가 없는 경우
-  // if (!postDataCp || postDataCp.length === 0) {
-  //   return (
-  //     <>
-  //       <Banner></Banner>
-  //       <Search></Search>
-  //       <div>앗! 게시글이 없어요 😓</div>
-  //       <FixedButton></FixedButton>
-  //     </>
-  //   );
-  // }
 
   /**
    * @description 메인페이지 렌더링
@@ -294,8 +283,8 @@ const MainPage: React.FC = () => {
             }
           })}
           value={sido}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-            setSido(e.target.value);
+          onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
+            setSido(selectedOption.target.value);
           }}
         ></Selector>
         {/* 구/군 */}
@@ -329,7 +318,7 @@ const MainPage: React.FC = () => {
         </CustomLink>
       ))}
       <FixedButton></FixedButton>
-      {loading == true ? <Spinner/> : <div></div>}
+      {loading == true ? <Spinner/> : <></>}
     </>
   )
 };
