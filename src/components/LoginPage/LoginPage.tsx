@@ -127,9 +127,22 @@ const LoginPage: React.FC = () => {
         <img src="/../src/asset/localMingleImages/Mingle.png" alt="밍글이" />
         <img src="/../src/asset/localMingleImages/textlogo.png" alt="로컬밍글" />
       </St.Icon>
-      <button onClick={changeLanguage}>
-        {currentLang === "ko" ? "🇰🇷" : currentLang === "en" ? "🇺🇸" : "🇯🇵"}
-      </button>
+      <St.Language onClick={changeLanguage}>
+        <button onClick={changeLanguage}>
+          {(() => {
+            switch (currentLang) {
+              case "ko":
+                return <img src="/../src/asset/languageImages/kologo.png" alt="Korean" />
+              case "en":
+                return <img src="/../src/asset/languageImages/enlogo.png" alt="English" />;
+              case "jp":
+                return <img src="/../src/asset/languageImages/jplogo.png" alt="Japanese" />;
+              default:
+                return null;
+            }
+          })()}
+        </button>
+      </St.Language>
       <St.LabelWrapper>
         <label>{t("이메일")}</label>
         <St.InputWithIcon>

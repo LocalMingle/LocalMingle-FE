@@ -5,9 +5,9 @@ export const Icon = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  margin-bottom: 20px;
-  & img:first-child {width: 170px}
-  & img:last-child {width: 220px}
+  margin-bottom: 50px;
+  & img:first-child {width: 160px}
+  & img:last-child {width: 210px}
 `
 
 export const LabelWrapper = styled.div`
@@ -61,7 +61,7 @@ export const StyledInput = styled.input`
 `;
 
 export const SignupText = styled.div`
-  margin-top: 20px;
+  margin-top: 30px;
   font-size: 14px;
   user-select: none;
   color: #adadad;
@@ -80,7 +80,7 @@ export const ErrorMessageLogin = styled.div`
 `;
 
 export const Divider = styled.div`
-  margin-top: 70px;
+  margin-top: 65px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -122,3 +122,19 @@ export const NaverLoginBtn = styled.img`
   width: 55px;
   height: 55px;
 `;
+
+// 언어선택 버튼
+export const Language = styled.div`
+  position: absolute;
+  top: 30px;
+  right: 25px;
+
+  & button {
+    border: none;
+    background-color: transparent;
+  }
+  & img {
+    display: block;
+    width: 30px;
+  }
+`
