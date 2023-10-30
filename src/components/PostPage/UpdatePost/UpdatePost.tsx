@@ -20,9 +20,9 @@ const ModifyPost: React.FC = () => {
   // 게시글 작성 state
   const [eventName, setEventName] = useState<string>("");
   const [maxSize, setMaxSize] = useState<number>(0);
-  const [eventDate, setEventDate] = useState<string | Date>();
-  const [signupStartDate, setSignupStartDate] = useState<string | Date>();
-  const [signupEndDate, setSignupEndDate] = useState<string | Date>("");
+  const [eventDate, setEventDate] = useState<string>("");
+  const [signupStartDate, setSignupStartDate] = useState<string>("");
+  const [signupEndDate, setSignupEndDate] = useState<string>("");
   const [location_City, setLocation_City] = useState<string>("시 / 도");
   const [location_District, setLocation_District] = useState<string>("구 / 군");
   const [content, setContent] = useState<string>("");
@@ -66,13 +66,13 @@ const ModifyPost: React.FC = () => {
   }
 
   // 위치 인증 여부 - DB 연동
-  const { data: locationOptionsData } = useQuery<CategoryOptionsProps[], Error>(
+  const { data: locationOptionsData } = useQuery<CategoryOptionsProps, Error>(
     "locationOptions",
     async () => {
       const response = await updatePostAPI
         .locationApi()
         .then((response) => {
-          return response.data.verify;
+          return response;
         })
         .catch((error) => {
           console.log("위치 인증 여부 불러오기 실패", error);
@@ -81,10 +81,27 @@ const ModifyPost: React.FC = () => {
       return response;
     }
   );
+  
+  // 카테고리 옵션 - DB 연동
+  const { data: categoryOptionsData } = useQuery<CategoryOptionsProps, Error>(
+    "categoryOptions",
+    async () => {
+      const response = await updatePostAPI
+        .categoryApi()
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          console.log("카테고리 옵션 카테고리 불러오기 실패", error);
+          throw error;
+        });
+      return response;
+    }
+  );
 
   // 시/도 옵션 interface (console.log 기준)
   interface SidoOptionsProps {
-    doName: string[];
+    doName: string;
   }
 
   // 시/도 옵션 - DB 연동
@@ -106,7 +123,7 @@ const ModifyPost: React.FC = () => {
 
   // 구/군 옵션 interface (console.log 기준)
   interface GugunOptionsProps {
-    guName: string[];
+    guName: string;
   }
 
   // 구/군 옵션 - DB 연동
@@ -137,22 +154,6 @@ const ModifyPost: React.FC = () => {
     refetchGugunOptions();
   }, [location_City]);
 
-  // 카테고리 옵션 - DB 연동
-  const { data: categoryOptionsData } = useQuery<CategoryOptionsProps[], Error>(
-    "categoryOptions",
-    async () => {
-      const response = await updatePostAPI
-        .categoryApi()
-        .then((response) => {
-          return response.data.category;
-        })
-        .catch((error) => {
-          console.log("카테고리 옵션 카테고리 불러오기 실패", error);
-          throw error;
-        });
-      return response;
-    }
-  );
 
   // 게시글 정보 가져오기 interface (console.log 기준)
   interface GetPostData {
@@ -160,7 +161,7 @@ const ModifyPost: React.FC = () => {
       category: string;
       content: string;
       createdAt: string;
-      eventDate: string | Date;
+      eventDate: string;
       eventId: number;
       eventImg: string | null;
       eventName: string;
@@ -169,8 +170,8 @@ const ModifyPost: React.FC = () => {
       location_City: string;
       location_District: string;
       maxSize: number;
-      signupEndDate: string | Date;
-      signupStartDate: string | Date;
+      signupEndDate: string;
+      signupStartDate: string;
       updatedAt: string | Date;
     };
   }
@@ -331,10 +332,10 @@ const ModifyPost: React.FC = () => {
       <St.SelectorWrap>
         {/* 카테고리 */}
         <Selector
-          options={categoryOptionsData?.map((item) => ({
-            value: t(item),
-            label: t(item),
-          }))}
+          options={categoryOptionsData?.data.category?.map((item:string) => ({
+            value: t(item||''),
+            label: t(item||''),
+          }))||[]}
           value={category}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setCategory(selectedOption.target.value);
@@ -343,10 +344,10 @@ const ModifyPost: React.FC = () => {
 
         {/* 위치인증 */}
         <Selector
-          options={locationOptionsData?.map((item) => ({
-            value: t(item),
-            label: t(item),
-          }))}
+          options={locationOptionsData?.data.verify?.map((item:string) => ({
+            value: t(item||''),
+            label: t(item||''),
+          }))||[]}
           value={isVerified}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setIsVerified(selectedOption.target.value);
@@ -395,7 +396,7 @@ const ModifyPost: React.FC = () => {
         <div>
           <p>{t("모임주소")}</p>
           <Selector
-            options={sidoOptionsData?.map((item) => ({
+            options={(sidoOptionsData||[])?.map((item) => ({
               value: t(item.doName),
               label: t(item.doName),
             }))}
@@ -407,9 +408,9 @@ const ModifyPost: React.FC = () => {
             }}
           ></Selector>
           <Selector
-            options={gugunOptionsData?.map((option) => ({
-              value: option.guName,
-              label: option.guName,
+            options={(gugunOptionsData||[])?.map((option) => ({
+              value: t(option.guName),
+              label: t(option.guName),
             }))}
             value={location_District}
             onChange={(

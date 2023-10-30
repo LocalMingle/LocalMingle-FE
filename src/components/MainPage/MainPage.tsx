@@ -319,7 +319,7 @@ const MainPage: React.FC = () => {
           options={verifyList?.map((item) => ({
             value: t(item),
             label: t(item),
-          }))}
+          }))||[]}
           value={t(verify)}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setVerify(selectedOption.target.value);
@@ -332,7 +332,7 @@ const MainPage: React.FC = () => {
               value: t(sidoName),
               label: t(sidoName),
             }
-          })}
+          })||[]}
           value={t(sido)}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSido(selectedOption.target.value);
@@ -343,19 +343,18 @@ const MainPage: React.FC = () => {
           options={gugunList?.map((gugunName) => ({
             value: t(gugunName),
             label: t(gugunName),
-          }))}
+          }))||[]}
           value={t(gugun)}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setGugun(selectedOption.target.value);
           }}
-        >
-        </Selector>
+        ></Selector>
         {/* 카테고리 */}
         <Selector
           options={categoryList?.map((item) => ({
             value: t(item),
             label: t(item),
-          }))}
+          }))||[]}
           value={t(category)}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setCategory(selectedOption.target.value);

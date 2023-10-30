@@ -67,13 +67,13 @@ const WritePost: React.FC = () => {
   }
 
   // 위치 인증 여부 - DB 연동
-  const { data: locationOptionsData } = useQuery<CategoryOptionsProps[], Error>(
+  const { data: locationOptionsData } = useQuery<CategoryOptionsProps, Error>(
     "locationOptions",
     async () => {
       const response = await writePostAPI
         .locationApi()
         .then((response) => {
-          return response.data.verify;
+          return response;
         })
         .catch((error) => {
           console.log("위치 인증 여부 불러오기 실패", error);
@@ -83,9 +83,27 @@ const WritePost: React.FC = () => {
     }
   );
 
+  
+  // 카테고리 옵션 - DB 연동
+  const { data: categoryOptionsData } = useQuery<CategoryOptionsProps, Error>(
+    "categoryOptions",
+    async () => {
+      const response = await writePostAPI
+        .categoryApi()
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          console.log("카테고리 옵션 카테고리 불러오기 실패", error);
+          throw error;
+        });
+      return response;
+    }
+  );
+
   // 시/도 옵션 interface (console.log 기준)
   interface SidoOptionsProps {
-    doName: string[];
+    doName: string;
   }
 
   // 시/도 옵션 - DB 연동
@@ -107,13 +125,11 @@ const WritePost: React.FC = () => {
 
   // 구/군 옵션 interface (console.log 기준)
   interface GugunOptionsProps {
-    guName: string[];
+    guName: string;
   }
 
   // 구/군 옵션 - DB 연동
-  const { data: gugunOptionsData, refetch: refetchGugunOptions } = useQuery<
-    GugunOptionsProps[]
-  >(
+  const { data: gugunOptionsData, refetch: refetchGugunOptions } = useQuery<GugunOptionsProps[]>(
     // queryKey를 배열로 감싸서 설정
     ["gugunOptions", location_City],
     async () => {
@@ -138,30 +154,13 @@ const WritePost: React.FC = () => {
     refetchGugunOptions();
   }, [location_City]);
 
-  // 카테고리 옵션 - DB 연동
-  const { data: categoryOptionsData } = useQuery<CategoryOptionsProps[], Error>(
-    "categoryOptions",
-    async () => {
-      const response = await writePostAPI
-        .categoryApi()
-        .then((response) => {
-          return response.data.category;
-        })
-        .catch((error) => {
-          console.log("카테고리 옵션 카테고리 불러오기 실패", error);
-          throw error;
-        });
-      return response;
-    }
-  );
-
   // 게시글 작성 interface (console.log 기준)
   interface WritePostData {
     eventName: string;
     maxSize: number;
-    eventDate: string | Date;
-    signupStartDate: string | Date;
-    signupEndDate: string | Date;
+    eventDate: Date;
+    signupStartDate: Date;
+    signupEndDate: Date;
     location_City: string;
     location_District: string;
     content: string;
@@ -268,10 +267,10 @@ const WritePost: React.FC = () => {
       <St.SelectorWrap>
         {/* 카테고리 */}
         <Selector
-          options={categoryOptionsData?.map((item) => ({
+          options={categoryOptionsData?.data.category?.map((item:string) => ({
             value: t(item),
             label: t(item),
-          }))}
+          }))||[]}
           value={category}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setCategory(selectedOption.target.value);
@@ -280,10 +279,10 @@ const WritePost: React.FC = () => {
 
         {/* 위치인증 */}
         <Selector
-          options={locationOptionsData?.map((item) => ({
+          options={locationOptionsData?.data?.verify.map((item:string) => ({
             value: t(item),
             label: t(item),
-          }))}
+          }))||[]}
           value={isVerified}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setIsVerified(selectedOption.target.value);
@@ -332,7 +331,7 @@ const WritePost: React.FC = () => {
         <div>
           <p>{t("모임주소")}</p>
           <Selector
-            options={sidoOptionsData?.map((item) => ({
+            options={(sidoOptionsData||[])?.map((item) => ({
               value: item.doName,
               label: item.doName,
             }))}
@@ -344,7 +343,7 @@ const WritePost: React.FC = () => {
             }}
           ></Selector>
           <Selector
-            options={gugunOptionsData?.map((option) => ({
+            options={(gugunOptionsData||[])?.map((option) => ({
               value: option.guName,
               label: option.guName,
             }))}
