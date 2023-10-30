@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as St from "./STMainPage";
 import Banner from "../common/Banner/Banner";
 // import Search from "../common/Search/Search";
@@ -83,6 +83,7 @@ const MainPage: React.FC = () => {
    * 구/군:  gugun
    */
   const [keyword, setKeyword] = useState<string>("");
+  const searchRef = useRef<HTMLInputElement>(null);
   const [verify, setVerify] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [categoryList, setCategoryList] = useState<string[]>([]);
@@ -250,7 +251,6 @@ const MainPage: React.FC = () => {
 
     const response:CardProps[] = await (keyword == '' ? mainAPI.cardListApi() : mainAPI.searchApi(keyword))
     .then((response) => {
-      console.log('검색된 게시글 데이터:', response.data);
       return response.data;
     }).catch((error) => {
       console.log("게시글 불러오기 에러!", error);
@@ -258,15 +258,12 @@ const MainPage: React.FC = () => {
     });
 
     // 검색 버튼을 누르면 필터링
-    if(keyword != ''){
-      // const searchResponse:CardProps[] = response.filter(()=>{
-      //   setPostList(searchResponse);
-      //   console.log('여기는 타니?');
-      // })
-    } else {
-      setPostList(response);
-    }
+    setPostList(response);
+
     setLoading(false);
+    
+    setKeyword("");
+    if (searchRef.current) {searchRef.current.value = "";}
   }
 
 
@@ -303,6 +300,7 @@ const MainPage: React.FC = () => {
         <St.SearchBar>
         <div>
           <St.SearchInput
+            ref={searchRef}
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             placeholder={t("제목 및 글 내용을 검색해 보세요.")}
