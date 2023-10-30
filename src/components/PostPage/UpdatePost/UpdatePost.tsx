@@ -20,9 +20,9 @@ const ModifyPost: React.FC = () => {
   // 게시글 작성 state
   const [eventName, setEventName] = useState<string>("");
   const [maxSize, setMaxSize] = useState<number>(0);
-  const [eventDate, setEventDate] = useState<string>();
-  const [signupStartDate, setSignupStartDate] = useState<string>();
-  const [signupEndDate, setSignupEndDate] = useState<string>();
+  const [eventDate, setEventDate] = useState<string | Date>();
+  const [signupStartDate, setSignupStartDate] = useState<string | Date>();
+  const [signupEndDate, setSignupEndDate] = useState<string | Date>("");
   const [location_City, setLocation_City] = useState<string>("시 / 도");
   const [location_District, setLocation_District] = useState<string>("구 / 군");
   const [content, setContent] = useState<string>("");
@@ -160,7 +160,7 @@ const ModifyPost: React.FC = () => {
       category: string;
       content: string;
       createdAt: string;
-      eventDate: string;
+      eventDate: string | Date;
       eventId: number;
       eventImg: string | null;
       eventName: string;
@@ -169,9 +169,9 @@ const ModifyPost: React.FC = () => {
       location_City: string;
       location_District: string;
       maxSize: number;
-      signupEndDate: string;
-      signupStartDate: string;
-      updatedAt: string;
+      signupEndDate: string | Date;
+      signupStartDate: string | Date;
+      updatedAt: string | Date;
     };
   }
 
@@ -214,9 +214,9 @@ const ModifyPost: React.FC = () => {
   interface UpdatePostData {
     eventName: string;
     maxSize: number;
-    eventDate: string;
-    signupStartDate: string;
-    signupEndDate: string;
+    eventDate: string | Date;
+    signupStartDate: string | Date;
+    signupEndDate: string | Date;
     location_City: string;
     location_District: string;
     content: string;
