@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import * as St from "./STMainPage";
 import Banner from "../common/Banner/Banner";
-import Search from "../common/Search/Search";
+// import Search from "../common/Search/Search";
 import Selector from "../common/Selector/Selector";
 import Card from "../common/Card/Card";
 import FixedButton from "../common/FixedButton/FixedButton";
-// import { useQuery } from "react-query";
 import axios, { AxiosInstance } from "axios";
 import { Spinner } from "../common/Spinner";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../../util/Locales/useLanguage";
 import i18n from "../../util/Locales/i18n";
+// import toast from "react-hot-toast";
 
 const MainPage: React.FC = () => {
 
@@ -80,7 +80,7 @@ const MainPage: React.FC = () => {
    * 시/도: sido
    * 구/군:  gugun
    */
-  const [keyword, setKeyword] = useState<string>("");
+  // const [keyword, setKeyword] = useState<string>("");
   const [verify, setVerify] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [categoryList, setCategoryList] = useState<string[]>([]);
@@ -177,6 +177,17 @@ const MainPage: React.FC = () => {
   */
   const postListSearch = async ()  => {
     setLoading(true); // 로딩중
+
+    // 지역 범위 샐랙터가 선택되지 않은 상태로 다른 샐랙터들이 먼저 선택 되었을 때
+    // 231030 JSY setter가 초기화되지 않는 이슈로 임시로 setTimeout으로 해결. 추후 수정 필요
+    // if(verify == '' && (sido != t('시 / 도') || gugun != t('구 / 군') || category != '')) {
+    //   toast.error(t('지역 범위를 먼저 선택해 주세요'));
+    //   setTimeout(()=>{
+    //     window.location.reload();
+    //   }, 1000);
+    //   return false;
+    // }
+
     const response:CardProps[] = await (verify == '' ? mainAPI.cardListApi() : mainAPI.filterVerifyApi(t(verify)))
       .then((response) => {
         // console.log('게시글 데이터:', response.data);
@@ -226,20 +237,20 @@ const MainPage: React.FC = () => {
 
   // 핸들러 목록
   useEffect(()=>{
-      /**
-       * @method sidoHandler
-       * @return {string} data("시 / 도", "서울특별시", "경기도"...)
-       * 시/도 샐랙터 선택시 구/군 샐랙터에 시/도에 맞는 구/군 목록을 불러옴
-       * 구/군 샐랙터에는 '구/군' 자체가 없어서 프론트에서 추가함
-      */
-      const sidoHandler = async ()=>{
-        const gugun:string[] = await mainAPI.gugunApi(t(sido),lang).then(res=> {return res.data.map(v=> {return t(v.guName)})}).catch(err=>{throw err});
-        setGugunList([...new Set((new Array<string>(t('구 / 군')).concat(gugun)))]);
-        //포스트 조회 로직
-      }
-      if(sido){ 
-        sidoHandler(); 
-      }
+    /**
+     * @method sidoHandler
+     * @return {string} data("시 / 도", "서울특별시", "경기도"...)
+     * 시/도 샐랙터 선택시 구/군 샐랙터에 시/도에 맞는 구/군 목록을 불러옴
+     * 구/군 샐랙터에는 '구/군' 자체가 없어서 프론트에서 추가함
+    */
+    const sidoHandler = async ()=>{
+      const gugun:string[] = await mainAPI.gugunApi(t(sido),lang).then(res=> {return res.data.map(v=> {return t(v.guName)})}).catch(err=>{throw err});
+      setGugunList([...new Set((new Array<string>(t('구 / 군')).concat(gugun)))]);
+      //포스트 조회 로직
+    }
+    if(sido){ 
+      sidoHandler(); 
+    }
 
       postListSearch();
   },[verify, sido, gugun, category, lang]);
@@ -269,7 +280,7 @@ const MainPage: React.FC = () => {
             value: t(item),
             label: t(item),
           }))}
-          value={verify}
+          value={t(verify)}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setVerify(selectedOption.target.value);
           }}
@@ -278,11 +289,11 @@ const MainPage: React.FC = () => {
         <Selector
           options={sidoList?.map((sidoName:string) => {
             return {
-              value: sidoName,
-              label: sidoName,
+              value: t(sidoName),
+              label: t(sidoName),
             }
           })}
-          value={sido}
+          value={t(sido)}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSido(selectedOption.target.value);
           }}
@@ -290,10 +301,10 @@ const MainPage: React.FC = () => {
         {/* 구/군 */}
         <Selector
           options={gugunList?.map((gugunName) => ({
-            value: gugunName,
-            label: gugunName,
+            value: t(gugunName),
+            label: t(gugunName),
           }))}
-          value={gugun}
+          value={t(gugun)}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setGugun(selectedOption.target.value);
           }}
@@ -305,7 +316,7 @@ const MainPage: React.FC = () => {
             value: t(item),
             label: t(item),
           }))}
-          value={category}
+          value={t(category)}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setCategory(selectedOption.target.value);
           }}
