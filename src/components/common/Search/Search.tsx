@@ -5,7 +5,11 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 import toast from "react-hot-toast";
 
-const Search: React.FC = () => {
+interface SearchProps {
+  onSearch: (keyword: string) => void;
+}
+
+const Search: React.FC<SearchProps> = ( {onSearch} ) => {
   const { t } = useLanguage();
   const [keyword, setKeyword] = useState<string>("");
 
@@ -15,6 +19,9 @@ const Search: React.FC = () => {
       toast.error(t("검색어를 입력해주세요!"));
       return;
     }
+
+    onSearch(keyword);
+    console.log('입력된 키워드: ', keyword);
   }
 
   return (

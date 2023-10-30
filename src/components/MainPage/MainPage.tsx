@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as St from "./STMainPage";
 import Banner from "../common/Banner/Banner";
 // import Search from "../common/Search/Search";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import Selector from "../common/Selector/Selector";
 import Card from "../common/Card/Card";
 import FixedButton from "../common/FixedButton/FixedButton";
@@ -11,7 +13,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../../util/Locales/useLanguage";
 import i18n from "../../util/Locales/i18n";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const MainPage: React.FC = () => {
 
@@ -80,7 +82,8 @@ const MainPage: React.FC = () => {
    * 시/도: sido
    * 구/군:  gugun
    */
-  // const [keyword, setKeyword] = useState<string>("");
+  const [keyword, setKeyword] = useState<string>("");
+  const searchRef = useRef<HTMLInputElement>(null);
   const [verify, setVerify] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [categoryList, setCategoryList] = useState<string[]>([]);
@@ -123,7 +126,7 @@ const MainPage: React.FC = () => {
     filterVerifyApi: (verifyType : string) => customAxios.get("/search/byVerify", {
       params: { query: verifyType },
     }),
-    searchApi: () => customAxios.get("/search", {
+    searchApi: (keyword:string) => customAxios.get("/search", {
       params: {
         query : keyword
       }
@@ -227,12 +230,41 @@ const MainPage: React.FC = () => {
    * @method searchHandler
    * @return {string} data
   */
-  // const searchHandler = async(e:React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>)=>{
-  //   setKeyword(e.target.value);
-  //   console.log('검색!', keyword);
-  //   //포스트 조회 로직
-  //   // postListSearch();
-  // }
+  const searchCards = async () => {
+    // 빈칸 입력시 유효성 검사
+    if (keyword.length == 0 || keyword == null || keyword == undefined || keyword == "") {
+      toast.error(t("검색어를 입력해주세요!"), {
+        className: "toast-error toast-container",
+      });
+      return;
+    }
+
+    // 최소 글자 유효성 검사
+    if (keyword.length < 2) {
+      toast.error(t("최소 2글자 이상 입력해 주세요!"), {
+        className: "toast-error toast-container",
+      });
+      return;
+    }
+
+    setLoading(true); // 로딩중
+
+    const response:CardProps[] = await (keyword == '' ? mainAPI.cardListApi() : mainAPI.searchApi(keyword))
+    .then((response) => {
+      return response.data;
+    }).catch((error) => {
+      console.log("게시글 불러오기 에러!", error);
+      throw error;
+    });
+
+    // 검색 버튼을 누르면 필터링
+    setPostList(response);
+
+    setLoading(false);
+    
+    setKeyword("");
+    if (searchRef.current) {searchRef.current.value = "";}
+  }
 
 
   // 핸들러 목록
@@ -264,22 +296,30 @@ const MainPage: React.FC = () => {
   return (
     <>
       <Banner></Banner>
-      {/* <Search
-        value={keyword}
-        onChange={(searchOption: React.ChangeEvent<HTMLInputElement>) => {
-          searchHandler(searchOption);
-        }}
-        onkeyPress={(searchOption: React.KeyboardEvent<HTMLInputElement>) => {
-          searchHandler(searchOption);
-        }}
-      ></Search> */}
+      {/* <Search onSearch={onSearch}></Search> */}
+        <St.SearchBar>
+        <div>
+          <St.SearchInput
+            ref={searchRef}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            placeholder={t("제목 및 글 내용을 검색해 보세요.")}
+          ></St.SearchInput>
+          <p onClick={searchCards}>
+            <FontAwesomeIcon
+              icon={faMagnifyingGlass}
+              style={{ color: "#646464" }}
+            />
+          </p>
+        </div>
+      </St.SearchBar>
       <St.SelectorWrap>
         {/*  게시글 지역 범위 */}
         <Selector
           options={verifyList?.map((item) => ({
             value: t(item),
             label: t(item),
-          }))}
+          }))||[]}
           value={t(verify)}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setVerify(selectedOption.target.value);
@@ -292,7 +332,7 @@ const MainPage: React.FC = () => {
               value: t(sidoName),
               label: t(sidoName),
             }
-          })}
+          })||[]}
           value={t(sido)}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setSido(selectedOption.target.value);
@@ -303,19 +343,18 @@ const MainPage: React.FC = () => {
           options={gugunList?.map((gugunName) => ({
             value: t(gugunName),
             label: t(gugunName),
-          }))}
+          }))||[]}
           value={t(gugun)}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setGugun(selectedOption.target.value);
           }}
-        >
-        </Selector>
+        ></Selector>
         {/* 카테고리 */}
         <Selector
           options={categoryList?.map((item) => ({
             value: t(item),
             label: t(item),
-          }))}
+          }))||[]}
           value={t(category)}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setCategory(selectedOption.target.value);

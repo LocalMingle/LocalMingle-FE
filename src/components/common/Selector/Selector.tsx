@@ -1,20 +1,18 @@
-// Selector.tsx
 import React from "react";
 import * as St from "./STSelector";
 
 interface SelectorProps {
-  value: string|undefined;
-  options: { value: string ; label: string | string[] }[] | undefined;
+  value: string | undefined;
+  options: { value: string ; label: string }[];
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const Selector: React.FC<SelectorProps> = ({ options, onChange }) => {
-  const normalizedOptions = options || [];
+const Selector: React.FC<SelectorProps> = ({ options , onChange }) => {
 
   return (
     <St.SelectorBar>
       <St.Selector onChange={onChange}>
-        {normalizedOptions.map((option, index) => (
+        {options.map((option, index) => (
           <option
             key={index}
             value={

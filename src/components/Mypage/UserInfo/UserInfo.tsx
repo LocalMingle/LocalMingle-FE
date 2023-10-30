@@ -28,6 +28,7 @@ const UserInfo: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [, setInitialNickname] = useState("");
   const [intro, setIntro] = useState("");
+  const [userLocation, setUserLocation] = useState<string>("");
 
   const [nicknameError, setNicknameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -37,6 +38,28 @@ const UserInfo: React.FC = () => {
   const [nameChanged, setNameChanged] = useState(false);
 
   const { t } = useLanguage();
+
+  /**
+   * @description myLocation
+   * 나의 위치 정보 가져오기
+   */
+  const latitude = 37.3347561;
+  const longitude = 126.9519579;
+  
+  const myLocation = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`,
+        {headers : { Authorization: "KakaoAK c833a8561bc180927375b89e710fac02" }},
+        );
+      console.log(response);
+      return response;
+    } catch (error) {
+      console.log("위치 정보 불러오기 실패", error);
+    }
+  }
+  myLocation();
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -97,7 +120,7 @@ const UserInfo: React.FC = () => {
         intro,
         email: "",
         nameChanged: nameChanged,
-        userLocation: "",
+        userLocation,
       });
 
       if (response.message === "회원 정보가 수정되었습니다") {
@@ -274,8 +297,9 @@ const UserInfo: React.FC = () => {
             <input
               type="text"
               readOnly
+              value={userLocation}
+              onChange={(e) => setUserLocation(e.target.value)}
               style={{ backgroundColor: "#f0f0f0" }}
-              value=""
             />
           </St.InputContainer>
           <St.SubmitButtonWrap>
