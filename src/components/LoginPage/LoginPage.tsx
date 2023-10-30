@@ -66,7 +66,7 @@ const LoginPage: React.FC = () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.log(error.message);
-        toast.error("이메일이나 비밀번호를 다시 확인해주세요", {
+        toast.error(t("이메일이나 비밀번호를 다시 확인해주세요"), {
           className: "toast-error toast-container",
         });
       }
