@@ -107,8 +107,8 @@ const ViewPost: React.FC = () => {
   };
 
   // 채팅하기 버튼 클릭 시
-  const handdleChat = () => {
-    alert("[TEST] 채팅방으로 이동!");
+  const handleChat = () => {
+    window.location.href = `/chat/${eventId}`;
   };
 
   return (
@@ -199,7 +199,7 @@ const ViewPost: React.FC = () => {
       <St.ButtonWrap>
         {isAuthor ? (
           <div>
-            <Button bgcolor={"#9ECBFA"} onClick={handdleChat}>
+            <Button bgcolor={"#9ECBFA"} onClick={handleChat}>
               {t("채팅하기")}
             </Button>
           </div>
@@ -207,7 +207,7 @@ const ViewPost: React.FC = () => {
           <div>
             {/* 참가했을 때 */}
             {isJoined === true && (
-              <Button bgcolor={"#9ECBFA"} onClick={handdleChat}>
+              <Button bgcolor={"#9ECBFA"} onClick={handleChat}>
                 {t("채팅하기")}
               </Button>
             )}
