@@ -3,6 +3,7 @@ import Main from "../pages/Main";
 import Join from "../pages/Join";
 import Login from "../pages/Login";
 import Post from "../pages/Post";
+import Chat from "../pages/Chat";
 import MyPage from "../pages/MyPage";
 import PostView from "../pages/PostView";
 import PostUpdate from "../pages/PostUpdate";
@@ -30,7 +31,8 @@ export default function Router() {
         <Route path="/postview/:eventId" element={<PostView />} />
         {/* 게시글 수정 페이지 */}
         <Route path="/post/update/:eventId" element={<PostUpdate />} />
-
+        {/* 채팅 페이지 */}
+        <Route path="/chat/:eventId" element={<Chat />} />
         {/* 마이페이지 - 내 프로필, 생성목록, 참가목록, 회원탈퇴 */}
         <Route path="/mypage" element={<MyPage />}>
           <Route index element={<UserInfo />} />
