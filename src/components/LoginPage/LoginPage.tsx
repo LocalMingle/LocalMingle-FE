@@ -127,18 +127,18 @@ const LoginPage: React.FC = () => {
         <img src="/../src/asset/localMingleImages/Mingle.png" alt="밍글이" />
         <img src="/../src/asset/localMingleImages/textlogo.png" alt="로컬밍글" />
       </St.Icon>
+      {/* 다국어 지원 */}
+      {/* default 값을 공용어인 영어로 지정 */}
       <St.Language onClick={changeLanguage}>
         <button onClick={changeLanguage}>
           {(() => {
             switch (currentLang) {
               case "ko":
-                return <img src="/../src/asset/languageImages/kologo.png" alt="Korean" />
-              case "en":
-                return <img src="/../src/asset/languageImages/enlogo.png" alt="English" />;
+                return <img src="/../src/asset/languageImages/kologo.png" alt="Korean" />;
               case "jp":
                 return <img src="/../src/asset/languageImages/jplogo.png" alt="Japanese" />;
-              default:
-                return null;
+              default: 
+                return <img src="/../src/asset/languageImages/enlogo.png" alt="English" />;
             }
           })()}
         </button>
