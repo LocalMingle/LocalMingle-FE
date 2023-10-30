@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as St from "./STMainPage";
 import Banner from "../common/Banner/Banner";
-// import Search from "../common/Search/Search";
+import Search from "../common/Search/Search";
 import Selector from "../common/Selector/Selector";
 import Card from "../common/Card/Card";
 import FixedButton from "../common/FixedButton/FixedButton";
@@ -80,7 +80,7 @@ const MainPage: React.FC = () => {
    * 시/도: sido
    * 구/군:  gugun
    */
-  // const [keyword, setKeyword] = useState<string>("");
+  const [keyword, setKeyword] = useState<string>("");
   const [verify, setVerify] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [categoryList, setCategoryList] = useState<string[]>([]);
@@ -123,7 +123,7 @@ const MainPage: React.FC = () => {
     filterVerifyApi: (verifyType : string) => customAxios.get("/search/byVerify", {
       params: { query: verifyType },
     }),
-    searchApi: () => customAxios.get("/search", {
+    searchApi: (keyword:string) => customAxios.get("/search", {
       params: {
         query : keyword
       }
@@ -264,15 +264,7 @@ const MainPage: React.FC = () => {
   return (
     <>
       <Banner></Banner>
-      {/* <Search
-        value={keyword}
-        onChange={(searchOption: React.ChangeEvent<HTMLInputElement>) => {
-          searchHandler(searchOption);
-        }}
-        onkeyPress={(searchOption: React.KeyboardEvent<HTMLInputElement>) => {
-          searchHandler(searchOption);
-        }}
-      ></Search> */}
+      <Search></Search>
       <St.SelectorWrap>
         {/*  게시글 지역 범위 */}
         <Selector
