@@ -1,5 +1,15 @@
 import styled from "styled-components";
 
+export const Icon = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  & img:first-child {width: 170px}
+  & img:last-child {width: 220px}
+`
+
 export const LabelWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -70,46 +80,45 @@ export const ErrorMessageLogin = styled.div`
 `;
 
 export const Divider = styled.div`
-  margin-top: 30px;
+  margin-top: 70px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.35);
 `;
 
 export const Line = styled.div`
   width: 80px;
   height: 1px;
-  background: rgba(0, 0, 0, 0.35);
+  background: #E7E7E7;
   margin: 0px;
 `;
 
 export const Text = styled.span`
+  color: #ADADAD;
   margin: 0 10px;
 `;
 
 export const ButtonContainer = styled.div`
   display: flex;
   margin-top: 10px;
+  gap: 15px;
 `;
 
 // 카카오 로그인 버튼
 export const KakaoLoginBtn = styled.img`
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
+  width: 55px;
+  height: 55px;
 `;
 
 // 구글 로그인 버튼
 export const GoogleLoginBtn = styled.img`
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
+  width: 55px;
+  height: 55px;
 `;
 
 // 네이버 버튼
 export const NaverLoginBtn = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
 `;

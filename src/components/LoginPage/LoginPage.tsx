@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import * as ST from "./STLoginPage";
+import * as St from "./STLoginPage";
 import jwtDecode from "jwt-decode";
 import naverLogo from "../../asset/buttonImages/naverlogin.png";
 import googleLogo from "../../asset/buttonImages/googlelogin.png";
@@ -121,81 +121,83 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <ST.Container>
+    <St.Container>
       <Toaster />
-      <h1 onClick={goToMain}>{t("로그인")}</h1>
+      <St.Icon onClick={goToMain}>
+        <img src="/../src/asset/localMingleImages/Mingle.png" alt="밍글이" />
+        <img src="/../src/asset/localMingleImages/textlogo.png" alt="로컬밍글" />
+      </St.Icon>
       <button onClick={changeLanguage}>
         {currentLang === "ko" ? "🇰🇷" : currentLang === "en" ? "🇺🇸" : "🇯🇵"}
       </button>
-      {/* <img src="" alt="logo" onClick={goToMain}>로고</img> */}
-      <ST.LabelWrapper>
+      <St.LabelWrapper>
         <label>{t("이메일")}</label>
-        <ST.InputWithIcon>
-          <ST.StyledInput
+        <St.InputWithIcon>
+          <St.StyledInput
             type="email"
             value={email}
             onChange={handleEmailChange}
           />
           {email && (
-            <ST.ClearIcon onClick={() => setEmail("")}>
+            <St.ClearIcon onClick={() => setEmail("")}>
               <FontAwesomeIcon
                 icon={faCircleXmark}
                 size="sm"
                 style={{ color: "#9ca5b4" }}
               />
-            </ST.ClearIcon>
+            </St.ClearIcon>
           )}
-        </ST.InputWithIcon>
-        <ST.ErrorMessageLogin>{emailError}</ST.ErrorMessageLogin>
-      </ST.LabelWrapper>
-      <ST.LabelWrapper>
+        </St.InputWithIcon>
+        <St.ErrorMessageLogin>{emailError}</St.ErrorMessageLogin>
+      </St.LabelWrapper>
+      <St.LabelWrapper>
         <label>{t("비밀번호")}</label>
-        <ST.InputWithIcon>
-          <ST.StyledInput
+        <St.InputWithIcon>
+          <St.StyledInput
             type="password"
             value={password}
             onChange={handlePasswordChange}
           />
           {password && (
-            <ST.ClearIcon onClick={() => setPassword("")}>
+            <St.ClearIcon onClick={() => setPassword("")}>
               <FontAwesomeIcon
                 icon={faCircleXmark}
                 size="sm"
                 style={{ color: "#9ca5b4" }}
               />
-            </ST.ClearIcon>
+            </St.ClearIcon>
           )}
-        </ST.InputWithIcon>
-        <ST.ErrorMessageLogin>{passwordError}</ST.ErrorMessageLogin>
-      </ST.LabelWrapper>
+        </St.InputWithIcon>
+        <St.ErrorMessageLogin>{passwordError}</St.ErrorMessageLogin>
+      </St.LabelWrapper>
       <Button onClick={handleLogin}>{t("로그인")}</Button>
-      <ST.SignupText>
+      <St.SignupText>
         {t("로컬밍글의 회원이 아니신가요?")}{" "}
         <span onClick={handleJoinClick}>{t("회원가입")}</span>
-      </ST.SignupText>
-      <ST.Divider>
-        <ST.Line />
-        <ST.Text>{t("소셜로그인으로 간편 로그인")}</ST.Text>
-        <ST.Line />
-      </ST.Divider>
-      <ST.ButtonContainer>
-        <ST.KakaoLoginBtn
-          onClick={kakaoLoginHandler}
-          src={kakaoLogo}
-          alt="kakaologin"
-        ></ST.KakaoLoginBtn>
-        <ST.GoogleLoginBtn
-          onClick={googleLoginHandler}
-          src={googleLogo}
-          alt="googlelogin"
-        ></ST.GoogleLoginBtn>
-        <ST.NaverLoginBtn
+      </St.SignupText>
+      <St.Divider>
+        <St.Line />
+        <St.Text>{t("소셜로그인으로 간편 로그인")}</St.Text>
+        <St.Line />
+      </St.Divider>
+      <St.ButtonContainer>
+        <St.NaverLoginBtn
           onClick={naverLoginHandler}
           src={naverLogo}
           alt="naverlogin"
-        ></ST.NaverLoginBtn>
-      </ST.ButtonContainer>
-    </ST.Container>
+        ></St.NaverLoginBtn>
+        <St.GoogleLoginBtn
+          onClick={googleLoginHandler}
+          src={googleLogo}
+          alt="googlelogin"
+        ></St.GoogleLoginBtn>
+        <St.KakaoLoginBtn
+          onClick={kakaoLoginHandler}
+          src={kakaoLogo}
+          alt="kakaologin"
+        ></St.KakaoLoginBtn>
+      </St.ButtonContainer>
+    </St.Container>
   );
 };
 export default LoginPage;
