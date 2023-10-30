@@ -25,12 +25,9 @@ const WritePost: React.FC = () => {
   const [location_District, setLocation_District] = useState<string>("구 / 군");
   const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState<string>("");
-  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [isDeleted, ] = useState<boolean>(false);
   const [isVerified, setIsVerified] = useState<string>("");
-  const [eventImg, setEventImg] = useState<null>(null);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const unusedVariable = [setIsDeleted, setEventImg] ;
+  const [eventImg, ] = useState<null>(null);
 
   useEffect(() => {
     setLocation_City(t("시 / 도"));
