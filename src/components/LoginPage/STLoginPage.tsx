@@ -6,8 +6,16 @@ export const Icon = styled.div`
   align-items: center;
   gap: 20px;
   margin-bottom: 50px;
-  & img:first-child {width: 160px}
-  & img:last-child {width: 210px}
+
+  & img:first-child {
+    width: 160px;
+    cursor: pointer;
+  }
+
+  & img:last-child {
+    width: 210px;
+    cursor: pointer;
+  }
 `
 
 export const LabelWrapper = styled.div`
@@ -109,25 +117,28 @@ export const ButtonContainer = styled.div`
 export const KakaoLoginBtn = styled.img`
   width: 55px;
   height: 55px;
+  cursor: pointer;
 `;
 
 // 구글 로그인 버튼
 export const GoogleLoginBtn = styled.img`
   width: 55px;
   height: 55px;
+  cursor: pointer;
 `;
 
 // 네이버 버튼
 export const NaverLoginBtn = styled.img`
   width: 55px;
   height: 55px;
+  cursor: pointer;
 `;
 
 // 언어선택 버튼
 export const Language = styled.div`
   position: absolute;
-  top: 30px;
-  right: 25px;
+  top: 25px;
+  right: 20px;
 
   & button {
     border: none;
@@ -135,6 +146,7 @@ export const Language = styled.div`
   }
   & img {
     display: block;
-    width: 30px;
+    width: 35px;
+    cursor: pointer;
   }
 `
