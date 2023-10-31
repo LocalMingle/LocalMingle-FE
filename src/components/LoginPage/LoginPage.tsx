@@ -130,7 +130,7 @@ const LoginPage: React.FC = () => {
       {/* 다국어 지원 */}
       {/* default 값을 공용어인 영어로 지정 */}
       <St.Language onClick={changeLanguage}>
-        <button onClick={changeLanguage}>
+        <button>
           {(() => {
             switch (currentLang) {
               case "ko":
