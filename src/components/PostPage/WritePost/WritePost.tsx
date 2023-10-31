@@ -18,9 +18,9 @@ const WritePost: React.FC = () => {
   // 게시글 작성 state
   const [eventName, setEventName] = useState<string>("");
   const [maxSize, setMaxSize] = useState<number>(0);
-  const [eventDate, setEventDate] = useState<string | Date>();
-  const [signupStartDate, setSignupStartDate] = useState<string | Date>();
-  const [signupEndDate, setSignupEndDate] = useState<string | Date>("");
+  const [eventDate, setEventDate] = useState<string>();
+  const [signupStartDate, setSignupStartDate] = useState<string>();
+  const [signupEndDate, setSignupEndDate] = useState<string>();
   const [location_City, setLocation_City] = useState<string>("시 / 도");
   const [location_District, setLocation_District] = useState<string>("구 / 군");
   const [content, setContent] = useState<string>("");
@@ -155,9 +155,9 @@ const WritePost: React.FC = () => {
   interface WritePostData {
     eventName: string;
     maxSize: number;
-    eventDate: Date;
-    signupStartDate: Date;
-    signupEndDate: Date;
+    eventDate: Date | string;
+    signupStartDate: Date | string;
+    signupEndDate: Date | string;
     location_City: string;
     location_District: string;
     content: string;
