@@ -165,13 +165,13 @@ const SignUpForm: React.FC = () => {
 
       timer = setInterval(() => {
         setCountdown((prevCountdown) => {
-          if (prevCountdown !== null) {
-            if (prevCountdown === 0) {
-              clearInterval(timer!);
-              setIsTimerExpired(true);
-              setAuthError(t("인증 코드의 유효시간이 지났습니다."));
-            }
+          if (prevCountdown !== null && prevCountdown > 0) {
             return prevCountdown - 1;
+          } else if (prevCountdown === 0) {
+            clearInterval(timer!);
+            setIsTimerExpired(true);
+            setAuthError(t("인증 코드의 유효시간이 지났습니다."));
+            return 0;
           }
           return null;
         });
@@ -334,11 +334,41 @@ const SignUpForm: React.FC = () => {
   };
   return (
     <ST.Wrapper>
-      <div onClick={goToMain}>{t("회원가입")}</div>
-      <button onClick={handleLanguageChange}>
-        {currentLang === "ko" ? "🇰🇷" : currentLang === "en" ? "🇺🇸" : "🇯🇵"}
-      </button>
-      {/* <img src="" alt="logo" onClick={goToMain}>로고</img> */}
+      <ST.Icon onClick={goToMain}>
+        <img
+          src="/../src/asset/localMingleImages/textlogo.png"
+          alt="로컬밍글"
+        />
+      </ST.Icon>
+      <ST.Language onClick={handleLanguageChange}>
+        <button onClick={handleLanguageChange}>
+          {(() => {
+            switch (currentLang) {
+              case "ko":
+                return (
+                  <img
+                    src="/../src/asset/languageImages/kologo.png"
+                    alt="Korean"
+                  />
+                );
+              case "jp":
+                return (
+                  <img
+                    src="/../src/asset/languageImages/jplogo.png"
+                    alt="Japanese"
+                  />
+                );
+              default:
+                return (
+                  <img
+                    src="/../src/asset/languageImages/enlogo.png"
+                    alt="English"
+                  />
+                );
+            }
+          })()}
+        </button>
+      </ST.Language>
       <ST.LabelWrapper>
         <label>{t("닉네임")}</label>
         <div>
@@ -367,13 +397,15 @@ const SignUpForm: React.FC = () => {
           <input type="email" value={email} onChange={handleEmailChange} />
           {emailSent ? (
             <>
-              <input
+              <ST.EmailCodeConfirmInput
                 type="text"
                 value={authCode}
                 onChange={(e) => setAuthCode(e.target.value)}
                 placeholder={t("인증코드")}
               />
-              <button onClick={handleAuth}>{t("인증")}</button>
+              <ST.EmailCodeConfirmBtn onClick={handleAuth}>
+                {t("인증")}
+              </ST.EmailCodeConfirmBtn>
             </>
           ) : (
             <>
@@ -394,7 +426,7 @@ const SignUpForm: React.FC = () => {
         <ST.CountdownText>
           {countdown !== null && (
             <span>
-              {t("남은 시간:")} {Math.floor(countdown / 60)} {t("분")}{" "}
+              {t("남은 시간")} {Math.floor(countdown / 60)} {t("분")}{" "}
               {countdown % 60} {t("초")}
             </span>
           )}
