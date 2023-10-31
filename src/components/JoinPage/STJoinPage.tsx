@@ -78,7 +78,7 @@ export const DupCheckButton = styled.button`
   background-color: #646464;
   cursor: pointer;
   font-size: 12px;
-  padding: 5px;
+  padding: 6px;
   color: #ffffff;
 `;
 
