@@ -7,7 +7,7 @@ interface ILocation {
 
 export const useGeoLocation = (options = {}) => {
   const [location, setLocation] = useState<ILocation>()
-  const [error, setError] = useState('')
+  const [ , setError] = useState('')
 
   const handleSuccess = (pos: GeolocationPosition) => {
     const { latitude, longitude } = pos.coords
