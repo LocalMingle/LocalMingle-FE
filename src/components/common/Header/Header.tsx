@@ -57,9 +57,20 @@ const Header: React.FC = () => {
           />
           <St.HeaderBtns>
             <button onClick={login}>{t("로그인")}</button>
-            <button onClick={changeLanguage}>
-              {currentLang === "ko" ? "🇰🇷" : currentLang === "en" ? "🇺🇸" : "🇯🇵"}
-            </button>
+            {/* 다국어 지원 */}
+            {/* default 값을 공용어인 영어로 지정 */}
+            <St.Language onClick={changeLanguage}>
+                {(() => {
+                  switch (currentLang) {
+                    case "ko":
+                      return <img src="/../src/asset/languageImages/kologo.png" alt="Korean" />;
+                    case "jp":
+                      return <img src="/../src/asset/languageImages/jplogo.png" alt="Japanese" />;
+                    default: 
+                      return <img src="/../src/asset/languageImages/enlogo.png" alt="English" />;
+                  }
+                })()}
+            </St.Language>
           </St.HeaderBtns>
         </St.HeaderWrap>
       ) : (
@@ -73,9 +84,20 @@ const Header: React.FC = () => {
           <St.HeaderBtns>
             <button onClick={goToMyPage}>{t("마이페이지")}</button>
             <button onClick={logout}>{t("로그아웃")}</button>
-            <button onClick={changeLanguage}>
-              {currentLang === "ko" ? "🇰🇷" : currentLang === "en" ? "🇺🇸" : "🇯🇵"}
-            </button>
+            {/* 다국어 지원 */}
+            {/* default 값을 공용어인 영어로 지정 */}
+            <St.Language onClick={changeLanguage}>
+                {(() => {
+                  switch (currentLang) {
+                    case "ko":
+                      return <img src="/../src/asset/languageImages/kologo.png" alt="Korean" />;
+                    case "jp":
+                      return <img src="/../src/asset/languageImages/jplogo.png" alt="Japanese" />;
+                    default: 
+                      return <img src="/../src/asset/languageImages/enlogo.png" alt="English" />;
+                  }
+                })()}
+            </St.Language>
           </St.HeaderBtns>
         </St.HeaderWrap>
       )}

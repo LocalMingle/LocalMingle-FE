@@ -19,9 +19,9 @@ export const Button = styled.button<ButtonProps>`
   border: 1px solid #adadad;
   color: #646464;
   text-align: center;
-  height: 45px;
+  height: 40px;
   padding: 8px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   width: 120px;

@@ -47,7 +47,7 @@ export const UserJoinForm = styled.div`
 
   h2 {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 800;
     color: #000;
     width: 80%;
     overflow: hidden;
@@ -92,8 +92,8 @@ export const UserPostButtonWrap = styled.div`
     cursor: pointer;
 
     &:first-child {
-      background: #4C6B8B;
-      color: #fff;
+      background: #F7D16F;
+      color: #646464;
     }
   }
 `

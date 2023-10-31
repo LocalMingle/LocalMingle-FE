@@ -56,10 +56,7 @@ export const Title = styled.h3`
 export const CardMiddle = styled.div`
   display: flex;
   align-items: center;
-  
-  & div {
-    margin-right: 10px;
-  }
+  gap: 5px;
 `
 
 export const CardBottom = styled.div`

@@ -67,7 +67,7 @@ export const TextareaWrap = styled.div`
   position: relative;
 
   & > textarea {
-    border-radius: 34px;
+    border-radius: 5px;
     border: 1px solid #e7e7e7;
     resize: none;
     min-height: 330px;

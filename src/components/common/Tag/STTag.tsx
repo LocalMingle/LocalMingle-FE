@@ -17,7 +17,7 @@ export const Tag = styled.p<TagProps>`
   border-radius: 12px;
   height: 30px;
   line-height: 30px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   
   ${(props)=>
