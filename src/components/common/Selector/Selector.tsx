@@ -3,12 +3,11 @@ import * as St from "./STSelector";
 
 interface SelectorProps {
   value: string | undefined;
-  options: { value: string ; label: string }[];
+  options: { value: string; label: string }[];
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const Selector: React.FC<SelectorProps> = ({ options , onChange }) => {
-
+const Selector: React.FC<SelectorProps> = ({ options, onChange }) => {
   return (
     <St.SelectorBar>
       <St.Selector onChange={onChange}>

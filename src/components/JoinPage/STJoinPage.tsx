@@ -75,11 +75,11 @@ export const DupCheckButtonWrap = styled.div`
 export const DupCheckButton = styled.button`
   border: 1px solid #adadad;
   border-radius: 20px;
-  background-color: #f7d16f;
+  background-color: #646464;
   cursor: pointer;
   font-size: 12px;
   padding: 5px;
-  color: #646464;
+  color: #ffffff;
 `;
 
 export const ValidationColor = styled.div<{ isValid: boolean | null }>`
