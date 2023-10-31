@@ -10,7 +10,14 @@ export const ChatListContainer = styled.div`
   padding: 10px;
 `;
 
-// 각 메시지 스타일
+export const MessageItem = styled.div`
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 5px 0;
+  background-color: #f5f5f5;
+`;
+
+// 각 메시지 스타일 box에서? list에서?
 // export const MessageItem = styled.div`
 //   padding: 5px 10px;
 //   border-radius: 5px;
@@ -20,10 +27,3 @@ export const ChatListContainer = styled.div`
 //   max-width: 70%; // 너무 긴 메시지는 줄바꿈하게
 //   word-wrap: break-word;
 // `;
-
-export const MessageItem = styled.div`
-  padding: 5px 10px;
-  border-radius: 5px;
-  margin: 5px 0;
-  background-color: #f5f5f5;
-`;

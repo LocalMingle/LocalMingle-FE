@@ -89,7 +89,11 @@
   "eventName": "eventName",
 
   "시 / 도": "City / Province",
+  "市 / 道": "City / Province",
+  "City / Province": "City / Province",
   "구 / 군": "Distict / Country",
+  "区 / 洞": "Distict / Country",
+  "Distict / Country": "Distict / Country",
   "ex. 서울시 마포구": "ex. Mapo-gu, Seoul",
   "서울특별시": "Seoul",
   "ソウル特別市": "Seoul",

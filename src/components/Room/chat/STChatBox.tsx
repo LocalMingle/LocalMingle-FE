@@ -48,3 +48,10 @@ export const SendButton = styled.button`
   border-radius: 10px;
   padding: 10px 15px;
 `;
+
+export const ErrorMessage = styled.div`
+  color: #da7969;
+  margin: 5px 0;
+  text-align: center;
+  font-weight: bold;
+`;
