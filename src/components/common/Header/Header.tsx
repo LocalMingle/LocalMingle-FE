@@ -60,16 +60,31 @@ const Header: React.FC = () => {
             {/* 다국어 지원 */}
             {/* default 값을 공용어인 영어로 지정 */}
             <St.Language onClick={changeLanguage}>
-                {(() => {
-                  switch (currentLang) {
-                    case "ko":
-                      return <img src="/../src/asset/languageImages/kologo.png" alt="Korean" />;
-                    case "jp":
-                      return <img src="/../src/asset/languageImages/jplogo.png" alt="Japanese" />;
-                    default: 
-                      return <img src="/../src/asset/languageImages/enlogo.png" alt="English" />;
-                  }
-                })()}
+              {(() => {
+                switch (currentLang) {
+                  case "ko":
+                    return (
+                      <img
+                        src="/../src/asset/languageImages/kologo.png"
+                        alt="Korean"
+                      />
+                    );
+                  case "jp":
+                    return (
+                      <img
+                        src="/../src/asset/languageImages/jplogo.png"
+                        alt="Japanese"
+                      />
+                    );
+                  default:
+                    return (
+                      <img
+                        src="/../src/asset/languageImages/enlogo.png"
+                        alt="English"
+                      />
+                    );
+                }
+              })()}
             </St.Language>
           </St.HeaderBtns>
         </St.HeaderWrap>
@@ -87,16 +102,31 @@ const Header: React.FC = () => {
             {/* 다국어 지원 */}
             {/* default 값을 공용어인 영어로 지정 */}
             <St.Language onClick={changeLanguage}>
-                {(() => {
-                  switch (currentLang) {
-                    case "ko":
-                      return <img src="/../src/asset/languageImages/kologo.png" alt="Korean" />;
-                    case "jp":
-                      return <img src="/../src/asset/languageImages/jplogo.png" alt="Japanese" />;
-                    default: 
-                      return <img src="/../src/asset/languageImages/enlogo.png" alt="English" />;
-                  }
-                })()}
+              {(() => {
+                switch (currentLang) {
+                  case "ko":
+                    return (
+                      <img
+                        src="/../src/asset/languageImages/kologo.png"
+                        alt="Korean"
+                      />
+                    );
+                  case "jp":
+                    return (
+                      <img
+                        src="/../src/asset/languageImages/jplogo.png"
+                        alt="Japanese"
+                      />
+                    );
+                  default:
+                    return (
+                      <img
+                        src="/../src/asset/languageImages/enlogo.png"
+                        alt="English"
+                      />
+                    );
+                }
+              })()}
             </St.Language>
           </St.HeaderBtns>
         </St.HeaderWrap>
