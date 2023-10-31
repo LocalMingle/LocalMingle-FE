@@ -63,6 +63,8 @@ export const ErrorMessageJoin = styled.div`
   font-size: 12px;
   color: #da7969;
   text-align: left;
+  margin-top: 5px;
+  margin-left: 5px;
 `;
 
 export const DupCheckButtonWrap = styled.div`
@@ -96,7 +98,7 @@ export const CountdownText = styled.span`
   color: #da7969;
   text-align: center;
   margin-left: 200px;
-  margin-top: 10px;
+  margin-top: -12px;
 `;
 
 export const EmailCodeConfirmBtn = styled.button`
