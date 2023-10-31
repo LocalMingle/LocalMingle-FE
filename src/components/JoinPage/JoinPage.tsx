@@ -423,6 +423,9 @@ const SignUpForm: React.FC = () => {
             </>
           )}
         </div>
+        <ST.ValidationColor isValid={isEmailValid}>
+          {emailError}
+        </ST.ValidationColor>
         <ST.CountdownText>
           {countdown !== null && (
             <span>
@@ -431,9 +434,6 @@ const SignUpForm: React.FC = () => {
             </span>
           )}
         </ST.CountdownText>
-        <ST.ValidationColor isValid={isEmailValid}>
-          {emailError}
-        </ST.ValidationColor>
         {authError && (
           <ST.ValidationColor isValid={isSuccess}>
             {authError}
