@@ -285,9 +285,15 @@ const ModifyPost: React.FC = () => {
         return;
       }
 
-      // 모임인원 체크
+      // 최소 모임인원 체크
       if (maxSize < 0 || maxSize == 0) {
         alert("모임인원은 1명 이상이어야 합니다!");
+        return;
+      }
+
+      // 최대 모임인원 체크
+      if (maxSize > 50) {
+        alert("최대 모임인원은 50명까지 입니다!");
         return;
       }
 
