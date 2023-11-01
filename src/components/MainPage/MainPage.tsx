@@ -95,11 +95,6 @@ const MainPage: React.FC = () => {
   const [verifyList , setVerifyList] = useState<string[]>(); 
   const [postList , setPostList] = useState<CardProps[]>();
   const [loading, setLoading] = useState<boolean>(false);
-
-  console.log("위치", verify);
-  console.log("카테고리", category);
-  console.log("시/도", sido);
-  console.log("구/군", gugun);
   
   /**
    * @description mainAPI: DB에서 받아온 데이터
@@ -270,6 +265,14 @@ const MainPage: React.FC = () => {
     if (searchRef.current) {searchRef.current.value = "";}
   }
 
+  /**
+   * @description 검색창에서 엔터키를 누르면 검색
+   */
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      searchCards();
+    }
+  };
 
   // 핸들러 목록
   useEffect(()=>{
@@ -307,6 +310,7 @@ const MainPage: React.FC = () => {
             ref={searchRef}
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
+            onKeyPress={handleKeyPress}
             placeholder={t("제목 및 글 내용을 검색해 보세요.")}
           ></St.SearchInput>
           <p onClick={searchCards}>
