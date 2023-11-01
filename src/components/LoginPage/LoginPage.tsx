@@ -15,6 +15,12 @@ import { useLanguage } from "../../util/Locales/useLanguage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { validateEmail, validateLoginPassword } from "../../util/validation";
+import textlogo from "../../asset/localMingleImages/textlogo.png";
+import Mingle from "../../asset/localMingleImages/Mingle.png";
+import kologo from "../../asset/languageImages/kologo.png";
+import enlogo from "../../asset/languageImages/enlogo.png";
+import jplogo from "../../asset/languageImages/jplogo.png";
+
 
 interface DecodedToken {
   sub: number;
@@ -124,24 +130,22 @@ const LoginPage: React.FC = () => {
     <St.Container>
       <Toaster />
       <St.Icon onClick={goToMain}>
-        <img src="/../src/asset/localMingleImages/Mingle.png" alt="밍글이" />
-        <img src="/../src/asset/localMingleImages/textlogo.png" alt="로컬밍글" />
+        <img src={Mingle} alt="밍글이" />
+        <img src={textlogo} alt="로컬밍글" />
       </St.Icon>
       {/* 다국어 지원 */}
       {/* default 값을 공용어인 영어로 지정 */}
       <St.Language onClick={changeLanguage}>
-        <button>
-          {(() => {
-            switch (currentLang) {
-              case "ko":
-                return <img src="/../src/asset/languageImages/kologo.png" alt="Korean" />;
-              case "jp":
-                return <img src="/../src/asset/languageImages/jplogo.png" alt="Japanese" />;
-              default: 
-                return <img src="/../src/asset/languageImages/enlogo.png" alt="English" />;
-            }
-          })()}
-        </button>
+        {(() => {
+          switch (currentLang) {
+            case "ko":
+              return (<img src={kologo} alt="Korean" />);
+            case "jp":
+              return (<img src={jplogo} alt="Japanese" />);
+            default: 
+              return (<img src={enlogo} alt="English" />);
+          }
+        })()}
       </St.Language>
       <St.LabelWrapper>
         <label>{t("이메일")}</label>

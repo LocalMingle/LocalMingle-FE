@@ -26,6 +26,10 @@ import {
   verifyEmailCode,
   sendVerificationEmail,
 } from "../../api/api";
+import textlogo from "../../asset/localMingleImages/textlogo.png";
+import kologo from "../../asset/languageImages/kologo.png";
+import enlogo from "../../asset/languageImages/enlogo.png";
+import jplogo from "../../asset/languageImages/jplogo.png";
 
 const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
@@ -336,7 +340,7 @@ const SignUpForm: React.FC = () => {
     <ST.Wrapper>
       <ST.Icon onClick={goToMain}>
         <img
-          src="/../src/asset/localMingleImages/textlogo.png"
+          src={textlogo}
           alt="로컬밍글"
         />
       </ST.Icon>
@@ -347,21 +351,21 @@ const SignUpForm: React.FC = () => {
               case "ko":
                 return (
                   <img
-                    src="/../src/asset/languageImages/kologo.png"
+                    src={kologo}
                     alt="Korean"
                   />
                 );
               case "jp":
                 return (
                   <img
-                    src="/../src/asset/languageImages/jplogo.png"
+                    src={jplogo}
                     alt="Japanese"
                   />
                 );
               default:
                 return (
                   <img
-                    src="/../src/asset/languageImages/enlogo.png"
+                    src={enlogo}
                     alt="English"
                   />
                 );
