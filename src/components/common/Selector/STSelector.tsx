@@ -9,6 +9,7 @@ export const SelectorBar = styled.div`
 `
 
 export const Selector = styled.select`
+  background: #fff;
   border: 1px solid #ADADAD;
   border-radius: 10px;
   width: 100%;
