@@ -137,11 +137,27 @@ table {
 }
 
 /************************************************
+                      폰트
+************************************************/
+/* 기본 폰트 */
+@import url("https://fonts.googleapis.com/earlyaccess/notosanskr.css");
+* {font-family: "Noto Sans KR", sans-serif;}
+
+/* 강조 폰트 */
+@font-face { 
+  font-family: "yangjin", sans-serif;
+  src: url("https://cdn.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff") format(‘woff’); 
+  font-weight: normal;
+  font-style: normal;
+}
+
+/************************************************
                   기본 화면 넓이
 ************************************************/
 body {
   background: #eee;
   color: #131313;
+  font-family: "Noto Sans KR", sans-serif;
 }
 #root {
   width: 500px;
@@ -157,19 +173,4 @@ body {
   #root {
     width: 100%;
   }
-}
-
-/************************************************
-                      폰트
-************************************************/
-/* 기본 폰트 */
-@import url("//fonts.googleapis.com/earlyaccess/notosanskr.css");
-* {font-family: "Noto Sans KR", sans-serif;}
-
-/* 강조 폰트 */
-@font-face { 
-  font-family: "yangjin", sans-serif;
-  src: url("https://cdn.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff") format(‘woff’); 
-  font-weight: normal;
-  font-style: normal;
 }
