@@ -54,6 +54,7 @@ export const InputWrap = styled.div`
       width: 115px;
       background: #fff;
       font-size: 13px;
+      color: #646464;
     }
 
     & input[type="number"] {
