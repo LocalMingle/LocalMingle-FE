@@ -17,6 +17,7 @@ export const HeaderWrap = styled.div`
     padding: 0;
     font-size: 12px;
     font-weight: 700;
+    color: #131313;
   }
 `;
 
