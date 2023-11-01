@@ -17,6 +17,7 @@ export const TitleWrap = styled.div`
     border-radius: 5px;
     padding: 8px;
     width: 100%;
+    font-size: 15px;
   }
 `
 
@@ -26,17 +27,18 @@ export const InputWrap = styled.div`
   & div {
     display: flex;
     align-items: center;
-    font-size: 15px;
+    font-size: 14px;
     margin-bottom: 10px;
 
     & p {
       color: #646464;
-      width: 100px;
+      width: 85px;
     }
 
     & span {
       display: inline-block;
       margin-left: 5px;
+      font-size: 14px;
     }
 
     & input {
@@ -46,11 +48,17 @@ export const InputWrap = styled.div`
     }
 
     & input[type="date"] {
-      width: 110px;
+      border: 1px solid #E7E7E7;
+      border-radius: 5px;
+      padding: 4px;
+      width: 115px;
+      background: #fff;
+      font-size: 13px;
     }
 
     & input[type="number"] {
       width: 70px;
+      font-size: 14px;
     }
   }
 `
@@ -83,7 +91,7 @@ export const ContentsWrap = styled.div`
     padding: 10px 15px;
     resize: none;
     overflow-y: auto;
-    font-size: 15px;
+    font-size: 14px;
   }
 `
 
