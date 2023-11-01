@@ -350,30 +350,32 @@ const WritePost: React.FC = () => {
         </div>
         <div>
           <p>{t("모임주소")}</p>
-          <Selector
-            options={(sidoOptionsData || [])?.map((item) => ({
-              value: item.doName,
-              label: item.doName,
-            }))}
-            value={location_City}
-            onChange={(
-              selectedOption: React.ChangeEvent<HTMLSelectElement>
-            ) => {
-              setLocation_City(selectedOption.target.value);
-            }}
-          ></Selector>
-          <Selector
-            options={(gugunOptionsData || [])?.map((option) => ({
-              value: option.guName,
-              label: option.guName,
-            }))}
-            value={location_District}
-            onChange={(
-              selectedOption: React.ChangeEvent<HTMLSelectElement>
-            ) => {
-              setLocation_District(selectedOption.target.value);
-            }}
-          ></Selector>
+          <St.DatePickerWrap>
+            <Selector
+              options={(sidoOptionsData || [])?.map((item) => ({
+                value: item.doName,
+                label: item.doName,
+              }))}
+              value={location_City}
+              onChange={(
+                selectedOption: React.ChangeEvent<HTMLSelectElement>
+              ) => {
+                setLocation_City(selectedOption.target.value);
+              }}
+            ></Selector>
+            <Selector
+              options={(gugunOptionsData || [])?.map((option) => ({
+                value: option.guName,
+                label: option.guName,
+              }))}
+              value={location_District}
+              onChange={(
+                selectedOption: React.ChangeEvent<HTMLSelectElement>
+              ) => {
+                setLocation_District(selectedOption.target.value);
+              }}
+            ></Selector>
+          </St.DatePickerWrap>
         </div>
         <div>
           <p>{t("모임인원")}</p>

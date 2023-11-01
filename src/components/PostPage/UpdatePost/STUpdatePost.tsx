@@ -6,18 +6,18 @@ export const PostSection = styled.section`
 
 export const SelectorWrap = styled.div`
   display: flex;
-  margin-bottom: 20px;
   gap: 10px;
 `
 
 export const TitleWrap = styled.div`
-  margin-bottom: 20px;
+  margin: 20px 0;
 
   & input {
     border: 1px solid #E7E7E7;
     border-radius: 5px;
     padding: 8px;
     width: 100%;
+    font-size: 15px;
   }
 `
 
@@ -27,17 +27,18 @@ export const InputWrap = styled.div`
   & div {
     display: flex;
     align-items: center;
+    font-size: 14px;
     margin-bottom: 10px;
 
     & p {
       color: #646464;
-      font-size: 15px;
-      width: 100px;
+      width: 85px;
     }
 
     & span {
       display: inline-block;
       margin-left: 5px;
+      font-size: 14px;
     }
 
     & input {
@@ -47,12 +48,29 @@ export const InputWrap = styled.div`
     }
 
     & input[type="date"] {
-      width: 110px;
+      border: 1px solid #E7E7E7;
+      border-radius: 5px;
+      padding: 4px;
+      width: 115px;
+      background: #fff;
+      font-size: 13px;
+      color: #646464;
     }
 
     & input[type="number"] {
       width: 70px;
+      font-size: 14px;
     }
+  }
+`
+
+export const DatePickerWrap = styled.div`
+  & div {
+    margin-bottom: 0;
+  }
+
+  & div:first-child {
+    margin-right: 5px;
   }
 `
 
@@ -73,7 +91,8 @@ export const ContentsWrap = styled.div`
     min-height: 300px;
     padding: 10px 15px;
     resize: none;
-    overflow-y: scroll;
+    overflow-y: auto;
+    font-size: 14px;
   }
 `
 
