@@ -20,7 +20,7 @@ const userLanguage = window.navigator.language.split("-")[0]; // 'ko-KR' 같은 
 i18n.use(initReactI18next).init({
   resources,
   // 사용할 기본 언어 설정
-  lng: localStorage.getItem("language") || userLanguage || "ko",
+  lng: localStorage.getItem("language") || userLanguage || "en",
   // 만약에 해당 언어 리소스없을경우에 사용할 언어
   fallbackLng: "ko",
   // 디버그 모드를 활성화, 디버그 모드에서는 i18n과 관련된 로그와 경고를 출력

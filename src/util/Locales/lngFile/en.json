@@ -1,5 +1,6 @@
 {
   "": "",
+  "ko": "ko",
   "마이페이지": "MyPage",
   "로그아웃": "Logout",
   "로그아웃이 완료되었습니다.": "Logout complete.",
@@ -16,7 +17,7 @@
   "인증코드 보내기": "Send authentication code",
   "인증": "Authentication",
   "인증코드": "Authentication Code",
-  "남은 시간:": "Remain:",
+  "남은 시간": "Remain:",
   "인증되었습니다.": "Authenticated",
   "인증이 되었습니다.": "Authenticated",
   "인증 코드의 유효시간이 지났습니다.": "Authentication code has expired.",
@@ -93,6 +94,7 @@
   "City / Province": "City / Province",
   "구 / 군": "Distict / Country",
   "区 / 洞": "Distict / Country",
+  "District / County District / County": "District / County District / County",
   "Distict / Country": "Distict / Country",
   "ex. 서울시 마포구": "ex. Mapo-gu, Seoul",
   "서울특별시": "Seoul",
