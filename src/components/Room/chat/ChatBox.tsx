@@ -78,7 +78,7 @@ const ChatBox = (props: ChatBoxProps) => {
         console.log("새 메시지:", newMessage);
         setMessages((prevMessages) => {
           const newMessages = [...prevMessages, newMessage];
-          console.log("ChatBox 업데이트된 메시지:", newMessages); // 여기에 추가
+          console.log("ChatBox 업데이트된 메시지:", newMessages);
           return newMessages;
         });
       });
