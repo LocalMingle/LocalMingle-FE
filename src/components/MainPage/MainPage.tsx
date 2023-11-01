@@ -89,7 +89,7 @@ const MainPage: React.FC = () => {
   const [category, setCategory] = useState<string>("");
   const [categoryList, setCategoryList] = useState<string[]>([]);
   const [sidoList, setSidoList] = useState<string[]>();
-  const [gugunList, setGugunList] = useState<string[]>();
+  const [gugunList, setGugunList] = useState<string[]>(["구 / 군"]);
   const [sido, setSido] = useState<string>(t(""));
   const [gugun, setGugun] = useState<string>(t(""));
   const [verifyList , setVerifyList] = useState<string[]>(); 
