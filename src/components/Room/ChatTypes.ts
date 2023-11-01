@@ -4,9 +4,19 @@ export type MessageData = {
   profileImg: string;
   time: string;
   roomId: number;
+  userId?: number;
+  hostUser?: {
+    UserId: number;
+  }[];
+  guestUser?: {
+    UserId: number;
+  }[][];
 };
 
 export type EventDetailResponse = {
+  event: {
+    eventId: number;
+  };
   hostUser: {
     UserId: number;
     nickname: string;
