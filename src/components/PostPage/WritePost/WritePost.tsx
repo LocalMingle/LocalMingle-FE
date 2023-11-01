@@ -25,9 +25,21 @@ const WritePost: React.FC = () => {
   const [location_District, setLocation_District] = useState<string>("구 / 군");
   const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState<string>("");
-  const [isDeleted, ] = useState<boolean>(false);
+  const [isDeleted] = useState<boolean>(false);
   const [isVerified, setIsVerified] = useState<string>("");
-  const [eventImg, ] = useState<null>(null);
+  const [eventImg] = useState<null>(null);
+
+  // 비로그인 접근 시 차단
+  useEffect(() => {
+    if (!accessToken) {
+      toast.error(t("로그인이 필요합니다 😢"), {
+        className: "toast-error toast-container",
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+    }
+  }, [accessToken, navigate, t]);
 
   useEffect(() => {
     setLocation_City(t("시 / 도"));
@@ -80,7 +92,6 @@ const WritePost: React.FC = () => {
     }
   );
 
-  
   // 카테고리 옵션 - DB 연동
   const { data: categoryOptionsData } = useQuery<CategoryOptionsProps, Error>(
     "categoryOptions",
@@ -126,7 +137,9 @@ const WritePost: React.FC = () => {
   }
 
   // 구/군 옵션 - DB 연동
-  const { data: gugunOptionsData, refetch: refetchGugunOptions } = useQuery<GugunOptionsProps[]>(
+  const { data: gugunOptionsData, refetch: refetchGugunOptions } = useQuery<
+    GugunOptionsProps[]
+  >(
     // queryKey를 배열로 감싸서 설정
     ["gugunOptions", location_City],
     async () => {
@@ -149,7 +162,7 @@ const WritePost: React.FC = () => {
   // refetch를 통해 시/도 옵션이 바뀌면 구/군 옵션이 바로 바뀌도록 설정
   useEffect(() => {
     refetchGugunOptions();
-  }, [location_City]);
+  }, [location_City, refetchGugunOptions]);
 
   // 게시글 작성 interface (console.log 기준)
   interface WritePostData {
@@ -270,10 +283,12 @@ const WritePost: React.FC = () => {
       <St.SelectorWrap>
         {/* 카테고리 */}
         <Selector
-          options={categoryOptionsData?.data.category?.map((item:string) => ({
-            value: t(item),
-            label: t(item),
-          }))||[]}
+          options={
+            categoryOptionsData?.data.category?.map((item: string) => ({
+              value: t(item),
+              label: t(item),
+            })) || []
+          }
           value={category}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setCategory(selectedOption.target.value);
@@ -282,10 +297,12 @@ const WritePost: React.FC = () => {
 
         {/* 위치인증 */}
         <Selector
-          options={locationOptionsData?.data?.verify.map((item:string) => ({
-            value: t(item),
-            label: t(item),
-          }))||[]}
+          options={
+            locationOptionsData?.data?.verify.map((item: string) => ({
+              value: t(item),
+              label: t(item),
+            })) || []
+          }
           value={isVerified}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setIsVerified(selectedOption.target.value);
@@ -333,30 +350,32 @@ const WritePost: React.FC = () => {
         </div>
         <div>
           <p>{t("모임주소")}</p>
-          <Selector
-            options={(sidoOptionsData||[])?.map((item) => ({
-              value: item.doName,
-              label: item.doName,
-            }))}
-            value={location_City}
-            onChange={(
-              selectedOption: React.ChangeEvent<HTMLSelectElement>
-            ) => {
-              setLocation_City(selectedOption.target.value);
-            }}
-          ></Selector>
-          <Selector
-            options={(gugunOptionsData||[])?.map((option) => ({
-              value: option.guName,
-              label: option.guName,
-            }))}
-            value={location_District}
-            onChange={(
-              selectedOption: React.ChangeEvent<HTMLSelectElement>
-            ) => {
-              setLocation_District(selectedOption.target.value);
-            }}
-          ></Selector>
+          <St.DatePickerWrap>
+            <Selector
+              options={(sidoOptionsData || [])?.map((item) => ({
+                value: item.doName,
+                label: item.doName,
+              }))}
+              value={location_City}
+              onChange={(
+                selectedOption: React.ChangeEvent<HTMLSelectElement>
+              ) => {
+                setLocation_City(selectedOption.target.value);
+              }}
+            ></Selector>
+            <Selector
+              options={(gugunOptionsData || [])?.map((option) => ({
+                value: option.guName,
+                label: option.guName,
+              }))}
+              value={location_District}
+              onChange={(
+                selectedOption: React.ChangeEvent<HTMLSelectElement>
+              ) => {
+                setLocation_District(selectedOption.target.value);
+              }}
+            ></Selector>
+          </St.DatePickerWrap>
         </div>
         <div>
           <p>{t("모임인원")}</p>

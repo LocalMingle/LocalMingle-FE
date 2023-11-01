@@ -9,6 +9,15 @@ type ChatBoxProps = {
   eventDetail: EventDetailResponse | null;
 };
 
+type MessageType = {
+  message: string;
+  nickname: string;
+  profileImg: string;
+  time: string;
+  roomId: number;
+  userId: number;
+};
+
 const getCurrentUserDetails = (
   eventDetail: EventDetailResponse | null,
   currentUserId: number
@@ -42,6 +51,7 @@ const ChatBox = (props: ChatBoxProps) => {
   const [message, setMessage] = useState("");
   const socket = useContext(SocketContext);
   const [error, setError] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Array<MessageType>>([]);
   const { currentUserNickname, currentUserProfileImg } = getCurrentUserDetails(
     props.eventDetail,
     props.currentUserId
@@ -64,6 +74,22 @@ const ChatBox = (props: ChatBoxProps) => {
 
   useEffect(() => {
     if (socket) {
+      socket.on("new_chat", (newMessage: MessageType) => {
+        console.log("새 메시지:", newMessage);
+        setMessages((prevMessages) => {
+          const newMessages = [...prevMessages, newMessage];
+          console.log("ChatBox 업데이트된 메시지:", newMessages);
+          return newMessages;
+        });
+      });
+      return () => {
+        socket.off("new_chat");
+      };
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    if (socket) {
       socket.on("error", (errorMessage: string) => {
         setError(errorMessage);
       });
@@ -75,11 +101,13 @@ const ChatBox = (props: ChatBoxProps) => {
 
   return (
     <ST.MessageContainer>
-      {/* 여기에는 나의 메시지와 상대방의 메시지가 들어갈 예정.
-      <MyMessage>안녕!</MyMessage>
-      <OtherMessage>안녕하세요!</OtherMessage> 
-      이런 식으로 추가 */}
-
+      {messages.map((message, index) =>
+        message.userId === props.currentUserId ? (
+          <ST.MyMessage key={index}>{message.message}</ST.MyMessage>
+        ) : (
+          <ST.OtherMessage key={index}>{message.message}</ST.OtherMessage>
+        )
+      )}
       <ST.InputContainer>
         <ST.InputField
           type="text"
