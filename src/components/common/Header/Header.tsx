@@ -7,6 +7,10 @@ import { useRecoilState } from "recoil";
 import { isLoginState } from "../../../recoil/atoms/UserState";
 import { useEffect } from "react";
 import { useLanguage } from "../../../util/Locales/useLanguage";
+import textlogo from "../../../asset/localMingleImages/textlogo.png"; 
+import kologo from "../../../asset/languageImages/kologo.png";
+import enlogo from "../../../asset/languageImages/enlogo.png";
+import jplogo from "../../../asset/languageImages/jplogo.png";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -52,7 +56,7 @@ const Header: React.FC = () => {
         <St.HeaderWrap>
           <img
             onClick={goToMain}
-            src="/../src/asset/localMingleImages/textlogo.png"
+            src={textlogo}
             alt="로컬밍글로고"
           />
           <St.HeaderBtns>
@@ -65,21 +69,21 @@ const Header: React.FC = () => {
                   case "ko":
                     return (
                       <img
-                        src="/../src/asset/languageImages/kologo.png"
+                        src={kologo}
                         alt="Korean"
                       />
                     );
                   case "jp":
                     return (
                       <img
-                        src="/../src/asset/languageImages/jplogo.png"
+                        src={jplogo}
                         alt="Japanese"
                       />
                     );
                   default:
                     return (
                       <img
-                        src="/../src/asset/languageImages/enlogo.png"
+                        src={enlogo}
                         alt="English"
                       />
                     );
@@ -93,7 +97,7 @@ const Header: React.FC = () => {
         <St.HeaderWrap>
           <img
             onClick={goToMain}
-            src="/../src/asset/localMingleImages/textlogo.png"
+            src={textlogo}
             alt="로컬밍글로고"
           />
           <St.HeaderBtns>
@@ -107,21 +111,21 @@ const Header: React.FC = () => {
                   case "ko":
                     return (
                       <img
-                        src="/../src/asset/languageImages/kologo.png"
+                        src={kologo}
                         alt="Korean"
                       />
                     );
                   case "jp":
                     return (
                       <img
-                        src="/../src/asset/languageImages/jplogo.png"
+                        src={jplogo}
                         alt="Japanese"
                       />
                     );
                   default:
                     return (
                       <img
-                        src="/../src/asset/languageImages/enlogo.png"
+                        src={enlogo}
                         alt="English"
                       />
                     );
