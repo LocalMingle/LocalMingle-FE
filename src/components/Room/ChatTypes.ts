@@ -7,7 +7,6 @@ export type MessageData = {
 };
 
 export type EventDetailResponse = {
-  eventId: number;
   hostUser: {
     UserId: number;
     nickname: string;
