@@ -9,22 +9,35 @@ export const MessageContainer = styled.div`
 
 // 나의 메시지
 export const MyMessage = styled.div`
-  background-color: #4caf50; // 초록색
-  padding: 10px;
-  border-radius: 10px;
-  align-self: flex-end;
+  display: flex;
+  justify-content: flex-end;
   margin: 5px 0;
-  max-width: 70%;
+
+  & > div {
+    max-width: 70%;
+    padding: 10px 15px;
+    background-color: #4caf50; // 초록색 배경
+    color: white;
+    border-radius: 15px 0px 15px 15px;
+    word-wrap: break-word;
+  }
 `;
 
 // 상대방의 메시지
 export const OtherMessage = styled.div`
-  background-color: #e0e0e0; // 회색
-  padding: 10px;
-  border-radius: 10px;
-  align-self: flex-start;
+  display: flex;
+  justify-content: flex-start;
   margin: 5px 0;
-  max-width: 70%;
+
+  & > div {
+    max-width: 70%;
+    padding: 10px 15px;
+    background-color: #ffffff; // 흰색 배경
+    color: #333333; // 글자색을 검정으로
+    border: 1px solid #e0e0e0; // 테두리 추가
+    border-radius: 0px 15px 15px 15px;
+    word-wrap: break-word;
+  }
 `;
 
 // 메시지 입력 부분

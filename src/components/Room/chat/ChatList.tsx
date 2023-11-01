@@ -26,7 +26,12 @@ const ChatList = (props: ChatListProps) => {
   useEffect(() => {
     if (socket) {
       socket.on("new_chat", (messageData: MessageData) => {
-        setMessages((prevMessages) => [...prevMessages, messageData]);
+        console.log("ChatList에서 새로운 채팅이 도착했어:", messageData);
+        setMessages((prevMessages) => {
+          const newMessages = [...prevMessages, messageData];
+          console.log("ChatList 업데이트된 메시지:", newMessages);
+          return newMessages;
+        });
         if (chatListRef.current) {
           chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
         }
