@@ -21,8 +21,8 @@ const WritePost: React.FC = () => {
   const [eventDate, setEventDate] = useState<string>();
   const [signupStartDate, setSignupStartDate] = useState<string>();
   const [signupEndDate, setSignupEndDate] = useState<string>();
-  const [location_City, setLocation_City] = useState<string>("시 / 도");
-  const [location_District, setLocation_District] = useState<string>("구 / 군");
+  const [location_City, setLocation_City] = useState<string>("");
+  const [location_District, setLocation_District] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [isDeleted] = useState<boolean>(false);
@@ -162,7 +162,13 @@ const WritePost: React.FC = () => {
   // refetch를 통해 시/도 옵션이 바뀌면 구/군 옵션이 바로 바뀌도록 설정
   useEffect(() => {
     refetchGugunOptions();
-  }, [location_City, refetchGugunOptions]);
+
+    // 시/도 옵션 초기화시 구/군 옵션도 초기화... 인데 추가 작업 중
+    if (location_City == t("시 / 도") || location_City == "") {
+      setLocation_District("");
+    }
+
+  }, [location_City, location_District, refetchGugunOptions]);
 
   // 게시글 작성 interface (console.log 기준)
   interface WritePostData {
@@ -265,6 +271,35 @@ const WritePost: React.FC = () => {
       const contentLength = 200;
       if (content.length > contentLength) {
         toast.error(t(`본문 내용은 ${contentLength}자 이내로 입력해주세요!`), {
+          className: "toast-error toast-container",
+        });
+        return;
+      }
+
+      // 샐랙터 체크
+      if (category == t("선택") || category == "") {
+        toast.error(t('카테고리 선택해 주세요!'), {
+          className: "toast-error toast-container",
+        });
+        return;
+      }
+
+      if (isVerified == t("선택") || isVerified == "") {
+        toast.error(t('모임 범위 선택해 주세요!'), {
+          className: "toast-error toast-container",
+        });
+        return;
+      }
+
+      if (location_City == t("시 / 도") || location_City == "") {
+        toast.error(t('시/도 선택해 주세요!'), {
+          className: "toast-error toast-container",
+        });
+        return;
+      }
+
+      if (location_District == t("구 / 군") || location_District == "") {
+        toast.error(t('구/군 선택해 주세요!'), {
           className: "toast-error toast-container",
         });
         return;
