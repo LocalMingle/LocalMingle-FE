@@ -128,16 +128,18 @@ export const ContentWrap = styled.div`
   margin-bottom: 30px;
 `
 
-export const Content = styled.p`
+export const Content = styled.textarea`
   border-radius: 23px;
   border: 1px solid #ADADAD;
   background: #FFF;
   font-size: 15px;
-  line-height: 1.2;
+  line-height: 1.4;
   color: #131313;
   padding: 15px;
   min-height: 300px;
   overflow-y: auto;
+  width: 100%;
+  resize: none;
 `;
 
 export const PostInfo = styled.div`
