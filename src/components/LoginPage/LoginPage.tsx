@@ -131,8 +131,6 @@ const LoginPage: React.FC = () => {
         <img src={Mingle} alt="밍글이" />
         <img src={textlogo} alt="로컬밍글" />
       </St.Icon>
-      {/* 다국어 지원 */}
-      {/* default 값을 공용어인 영어로 지정 */}
       <St.Language onClick={changeLanguage}>
         {(() => {
           switch (currentLang) {
