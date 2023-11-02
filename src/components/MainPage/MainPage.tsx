@@ -124,15 +124,12 @@ const MainPage: React.FC = () => {
         params: { doName: sido, lang },
       }),
     categoryApi: () => customAxios.get("data/toss"),
-    // filterVerifyApi: (verifyType : string) => customAxios.get("/search/byVerify", {
-    //   params: { query: verifyType },
-    // }),
     searchApi: (verify: string, category: string, sido: string, gugun: string, keyword: string) => customAxios.get("/search", {
       params: {
-        verify,
-        category,
-        city : sido,
-        guName : gugun,
+        verify : verify == t('선택') ? '' : verify,
+        category : category,
+        city : sido == t('시 / 도') ? '' : sido,
+        guName : gugun == t('구 / 군') ? '' : gugun,
         keyWord : keyword
       }
     }),
@@ -186,7 +183,7 @@ const MainPage: React.FC = () => {
   const postListSearch = async ()  => {
     setLoading(true); // 로딩중
 
-    const response:CardProps[] = await mainAPI.cardListApi()
+    const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword)
       .then((response) => {
         console.log('게시글 데이터:', response.data);
         return response.data;
@@ -195,30 +192,6 @@ const MainPage: React.FC = () => {
         throw error;
       });
 
-      // 샐랙터 옵션이 설정되면 필터링
-      const newResponse:CardProps[] = response.filter((root:CardProps)=>{
-        if(sido == t('시 / 도')) return true;
-        else if (sido != t('시 / 도') && root.event.location_City == sido)
-          return true;
-        else return false;
-      }).filter((root:CardProps)=>{
-        if(gugun == t('구 / 군')) return true;
-        else if (gugun != t('구 / 군') && root.event.location_District == gugun)
-          return true;
-        else return false;
-      }).filter((root:CardProps)=>{
-        if(category == t('')) return true;
-        else if (category != t('') && root.event.category == category)
-          return true;
-        else return false;
-      })
-      setPostList(newResponse);
-
-    //   if(verify != ''){
-        
-    //   } else {
-    //   setPostList(response);
-    // }
       setPostList(response);
       setLoading(false);
   }
@@ -247,7 +220,7 @@ const MainPage: React.FC = () => {
 
     setLoading(true); // 로딩중
 
-    const response:CardProps[] = await (mainAPI.searchApi(verify, category, sido, gugun, keyword))
+    const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword)
     .then((response) => {
       console.log('필터링 게시글 가져오기', response.data);
       return response.data;
