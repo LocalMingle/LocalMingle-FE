@@ -60,7 +60,7 @@ export const LogoWrap = styled.div`
   & img:last-child {
     width: 90px;
     position: absolute;
-    right: 85px;
+    right: 80px;
     bottom: 20px;
     transform: scaleX(-1);
   }
