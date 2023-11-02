@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/common/Header/Header";
 import MainPage from "../components/MainPage/MainPage";
 import { useEffect } from "react";
@@ -8,18 +9,13 @@ import { isLoginState, userState } from "../recoil/atoms/UserState";
 const Main: React.FC = () => {
   const [, setIsLoginState] = useRecoilState(isLoginState);
   const [, setUser] = useRecoilState(userState);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get("userId");
     const accessToken = urlParams.get("accessToken");
     const refreshToken = urlParams.get("refreshToken");
-    console.log(
-      `Log - userId: ${userId}, accessToken: ${accessToken}, refreshToken: ${refreshToken}`
-    );
-    alert(
-      `Alert - userId: ${userId}, accessToken: ${accessToken}, refreshToken: ${refreshToken}`
-    );
     if (urlParams.size) {
       if (userId !== null) {
         setUser({ userId: Number(userId) });
@@ -30,8 +26,8 @@ const Main: React.FC = () => {
       localStorage.setItem("refreshToken", refreshToken!);
       setIsLoginState(true);
     }
-    window.history.replaceState({}, document.title, "/");
-  }, [setIsLoginState, setUser]);
+    navigate("/", { replace: true });
+  }, [setIsLoginState, setUser, navigate]);
 
   return (
     <>
