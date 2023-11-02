@@ -253,11 +253,11 @@ const MainPage: React.FC = () => {
      * @method sidoHandler
      * @return {string} data("시 / 도", "서울특별시", "경기도"...)
      * 시/도 샐랙터 선택시 구/군 샐랙터에 시/도에 맞는 구/군 목록을 불러옴
-     * 구/군 샐랙터에는 '구/군' 자체가 없어서 프론트에서 추가함
     */
     const sidoHandler = async ()=>{
       const gugun:string[] = await mainAPI.gugunApi(t(sido),lang).then(res=> {return res.data.map(v=> {return t(v.guName)})}).catch(err=>{throw err});
-      setGugunList([...new Set((new Array<string>(t('구 / 군')).concat(gugun)))]);
+      // setGugunList([...new Set((new Array<string>(t('구 / 군')).concat(gugun)))]);
+      setGugunList(gugun);
       //포스트 조회 로직
     }
     if(sido){ 
