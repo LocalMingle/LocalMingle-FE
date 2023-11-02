@@ -160,7 +160,7 @@ const SignUpForm: React.FC = () => {
 
     const startTimer = () => {
       if (countdown === null) {
-        setCountdown(1);
+        setCountdown(300);
       }
 
       if (timer !== null) {

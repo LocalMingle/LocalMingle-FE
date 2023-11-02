@@ -21,6 +21,17 @@ const ChatList = (props: ChatListProps) => {
   const chatListRef = useRef<HTMLDivElement>(null);
   null;
 
+  const getCurrentTime = () => {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const seconds = now.getSeconds().toString().padStart(2, "0");
+    const ampm = hours >= 12 ? "오후" : "오전";
+    const twelveHour = hours % 12 || 12;
+
+    return `${ampm} ${twelveHour}:${minutes}:${seconds}`;
+  };
+
   const hostNickname = props.eventDetail?.hostUser[0]?.nickname;
   const hostProfileImg = props.eventDetail?.hostUser[0]?.profileImg;
   const guestNicknames = props.eventDetail?.guestUser
@@ -31,6 +42,12 @@ const ChatList = (props: ChatListProps) => {
     .map((user) => user.profileImg);
 
   useEffect(() => {
+    if (chatListRef.current) {
+      chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  useEffect(() => {
     if (socket) {
       socket.on("new_chat", (messageData: MessageData) => {
         console.log("ChatList에서 새로운 채팅이 도착했어:", messageData);
@@ -39,9 +56,6 @@ const ChatList = (props: ChatListProps) => {
           console.log("ChatList 업데이트된 메시지:", newMessages);
           return newMessages;
         });
-        if (chatListRef.current) {
-          chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
-        }
       });
 
       socket.on("user_connected", (userData: UserConnectedData) => {
@@ -58,7 +72,7 @@ const ChatList = (props: ChatListProps) => {
           message: `${nickname}${t("님이 들어왔습니다.")}`,
           nickname,
           profileImg: userProfileImg,
-          time: new Date().toISOString(),
+          time: getCurrentTime(),
           roomId: props.eventId,
         };
         setMessages((prevMessages) => [...prevMessages, newUserMessage]);
@@ -79,7 +93,7 @@ const ChatList = (props: ChatListProps) => {
           message: `${nickname}${t("님이 나갔습니다.")}`,
           nickname,
           profileImg: userProfileImg,
-          time: new Date().toISOString(),
+          time: getCurrentTime(),
           roomId: props.eventId,
         };
         setMessages((prevMessages) => [
@@ -113,14 +127,17 @@ const ChatList = (props: ChatListProps) => {
         return (
           <ST.MessageWrapper isMyMessage={isMyMessage} key={key}>
             {!isMyMessage && (
-              <div className="profileWrapper">
+              <ST.ProfileContainer>
                 <ST.ProfileImage src={msg.profileImg} alt={`${msg.nickname}`} />
-                <ST.Nickname className="nickname">{msg.nickname}</ST.Nickname>
-              </div>
+                <ST.Nickname>{msg.nickname}</ST.Nickname>
+              </ST.ProfileContainer>
             )}
-            <ST.MessageItem isMyMessage={isMyMessage}>
-              {msg.message}
-            </ST.MessageItem>
+            <div>
+              <ST.MessageItem isMyMessage={isMyMessage}>
+                <div>{msg.message}</div>
+              </ST.MessageItem>
+              <ST.Timestamp isMyMessage={isMyMessage}>{msg.time}</ST.Timestamp>
+            </div>
           </ST.MessageWrapper>
         );
       })}
