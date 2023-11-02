@@ -269,6 +269,16 @@ const ModifyPost: React.FC = () => {
         return;
       }
 
+      // 모임일시가 오늘 날짜보다 과거인 경우 체크
+      const today = new Date();
+      const yesterday = new Date(today.setDate(today.getDate() - 1));
+      if (new Date(eventDate) < yesterday) {
+        toast.error(t("모임일시는 오늘 날짜보다 과거일 수 없습니다!"), {
+          className: "toast-error toast-container",
+        });
+        return;
+      }
+
       // 모임일시가 참가신청 기간보다 빠른 경우 체크
       if (new Date(eventDate) < new Date(signupStartDate)) {
         toast.error(t("모임일시는 참가신청 기간보다 빠를 수 없습니다!"), {
