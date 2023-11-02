@@ -99,6 +99,11 @@ textarea {
   padding: 0;
 }
 
+input:focus,
+textarea:focus{
+  outline: none;
+}
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
