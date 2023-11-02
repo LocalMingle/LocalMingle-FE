@@ -45,21 +45,24 @@ const UserInfo: React.FC = () => {
    */
   const latitude = 37.3347561;
   const longitude = 126.9519579;
-  
+
   const myLocation = async () => {
     try {
       const response = await axiosInstance.get(
         `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`,
-        {headers : { Authorization: "KakaoAK c833a8561bc180927375b89e710fac02" }},
-        );
+        {
+          headers: {
+            Authorization: "KakaoAK c833a8561bc180927375b89e710fac02",
+          },
+        }
+      );
       console.log(response);
       return response;
     } catch (error) {
       console.log("위치 정보 불러오기 실패", error);
     }
-  }
+  };
   myLocation();
-
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -211,6 +214,11 @@ const UserInfo: React.FC = () => {
   };
 
   const handleCheckNicknameClick = async () => {
+    if (!isNicknameValid) {
+      setNicknameError(t("닉네임이 유효하지 않습니다."));
+      return;
+    }
+
     const errorMessage = t(await handleCheckNickname(nickname));
     setNicknameError(errorMessage);
 
@@ -226,7 +234,15 @@ const UserInfo: React.FC = () => {
   const handleNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setNickname(newValue);
-    setNicknameError(t(UpdateValidateNickname(newValue)));
+
+    const errorMessage = UpdateValidateNickname(newValue);
+    if (errorMessage) {
+      setNicknameError(t(errorMessage));
+      setIsNicknameValid(false);
+    } else {
+      setNicknameError("");
+      setIsNicknameValid(true);
+    }
   };
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
