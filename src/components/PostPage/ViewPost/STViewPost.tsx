@@ -116,6 +116,7 @@ export const EventLocation = styled.div`
 export const MaxSize = styled.div`
   display: flex;
   margin-bottom: 10px;
+  font-size: 15px;
 `;
 
 export const ContentWrap = styled.div`

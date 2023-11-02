@@ -1,0 +1,62 @@
+name: Deploy Frontend to S3 and CloudFront(ver. vite react)
+
+on:
+  push:
+    branches:
+      - main # 배포하려는 브랜치
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # 사용할 Node.js 버전
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18 
+      
+      # 코드에서 사용할 .env 설정 test
+      - name: Create .env.production file
+        run: |
+          echo 'VITE_REACT_APP_URL=${{ secrets.VITE_REACT_APP_URL }}' > .env
+          echo 'VITE_REACT_APP_KAKAO_CLIENT_ID=${{ secrets.VITE_REACT_APP_KAKAO_CLIENT_ID }}' >> .env
+          echo 'VITE_KAKAO_CLIENT_SECRET=${{ secrets.VITE_KAKAO_CLIENT_SECRET }}' >> .env
+          echo 'VITE_REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.VITE_REACT_APP_KAKAO_REDIRECT_URI }}' >> .env
+          echo 'VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}' >> .env
+          echo 'VITE_GOOGLE_CLIENT_SECRET=${{ secrets.VITE_GOOGLE_CLIENT_SECRET }}' >> .env
+          echo 'VITE_GOOGLE_CALLBACK_URL=${{ secrets.VITE_GOOGLE_CALLBACK_URL }}' >> .env
+          echo 'VITE_NAVER_CLIENT_ID=${{ secrets.VITE_NAVER_CLIENT_ID }}' >> .env
+          echo 'VITE_NAVER_CLIENT_SECRET=${{ secrets.VITE_NAVER_CLIENT_SECRET }}' >> .env
+          echo 'VITE_NAVER_CALLBACK_URL=${{ secrets.VITE_NAVER_CALLBACK_URL }}' >> .env
+          
+
+      # 또는 npm install, 프로젝트 종속성 설치 명령
+      - name: Install dependencies
+        run: yarn install 
+
+      # 또는 npm run build, 프로젝트 빌드 명령
+      - name: Build project
+        run: yarn build 
+
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: dist # 빌드된 파일들이 저장된 디렉토리 이름 (Vite에서 기본적으로는 "dist")
+
+      - name: Create CloudFront Invalidation
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
