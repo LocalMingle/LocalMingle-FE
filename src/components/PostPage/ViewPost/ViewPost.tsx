@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { useParams, useNavigate } from "react-router-dom";
@@ -30,6 +30,7 @@ const ViewPost: React.FC = () => {
   const loggedInUserId = user.userId;
   const { eventId } = useParams<{ eventId?: string }>();
   const [, setIsModalOpen] = useRecoilState(modalState);
+  const [isJoined, setIsjoined] = useState(false);
   const navigate = useNavigate();
   const { t } = useLanguage();
 
@@ -58,9 +59,13 @@ const ViewPost: React.FC = () => {
   const isAuthor = eventDetail?.hostUser.some(
     (host) => host.UserId === loggedInUserId
   );
-  const isJoined = eventDetail?.guestUser.some((guestGroup) =>
-    guestGroup.some((guest) => guest.UserId === loggedInUserId)
-  );
+
+  useEffect(() => {
+    const isJoined = eventDetail?.guestUser.some((guestGroup) =>
+      guestGroup.some((guest) => guest.UserId === loggedInUserId)
+    );
+    setIsjoined(!!isJoined);
+  }, [eventDetail, loggedInUserId]);
 
   const handleJoinEvent = async () => {
     const currentGuestCount = eventDetail?.guestUser.length || 0;
