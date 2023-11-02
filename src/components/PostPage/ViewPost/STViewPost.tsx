@@ -140,6 +140,7 @@ export const Content = styled.textarea`
   overflow-y: auto;
   width: 100%;
   resize: none;
+  pointer-events: none;
 `;
 
 export const PostInfo = styled.div`
