@@ -51,16 +51,16 @@ export const LogoWrap = styled.div`
   display: flex;
 
   & img:first-child {
-    width: 80px;
+    width: 70px;
     position: absolute;
-    right: 20px;
+    right: 10px;
     bottom: 20px;
   }
 
   & img:last-child {
-    width: 100px;
+    width: 90px;
     position: absolute;
-    right: 110px;
+    right: 85px;
     bottom: 20px;
     transform: scaleX(-1);
   }
