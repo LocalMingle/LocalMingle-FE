@@ -127,7 +127,7 @@ const MainPage: React.FC = () => {
     searchApi: (verify: string, category: string, sido: string, gugun: string, keyword: string) => customAxios.get("/search", {
       params: {
         verify : verify == t('선택') ? '' : verify,
-        category : category,
+        category : category == t('선택') ? '' : category,
         city : sido == t('시 / 도') ? '' : sido,
         guName : gugun == t('구 / 군') ? '' : gugun,
         keyWord : keyword
