@@ -3,7 +3,7 @@ import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist({
   key: "recoil-persist",
-  storage: sessionStorage, // 세션 스토리지를 사용하고 싶다면 sessionStorage
+  storage: localStorage, // 세션 스토리지를 사용하고 싶다면 sessionStorage
 }); // 로컬 스토리지를 사용하고 싶다면 localStorage
 
 type UserType = {
