@@ -207,50 +207,66 @@ const WritePost: React.FC = () => {
         !signupEndDate ||
         !content
       ) {
-        alert("내용을 모두 입력해주세요!");
+        toast.error(t("내용을 모두 입력해주세요!"), {
+          className: "toast-error toast-container",
+        });
         return;
       }
 
       // 모임일시가 참가신청 기간보다 빠른 경우 체크
       if (new Date(eventDate) < new Date(signupStartDate)) {
-        alert("모임일시는 참가신청 기간보다 빠를 수 없습니다!");
+        toast.error(t("모임일시는 참가신청 기간보다 빠를 수 없습니다!"), {
+          className: "toast-error toast-container",
+        });
         return;
       }
 
       // 참가신청 기간 두번째 input이 첫번째 input보다 빠른 경우 체크
       if (new Date(signupStartDate) > new Date(signupEndDate)) {
-        alert("참가신청 기간은 종료일이 시작일보다 빠를 수 없습니다!");
+        toast.error(t("참가신청 기간은 종료일이 시작일보다 빠를 수 없습니다!"), {
+          className: "toast-error toast-container",
+        });
         return;
       }
 
       // 참가신청 기간 두번째 input이 모임일시보다 빠른 경우 체크
       if (new Date(eventDate) < new Date(signupEndDate)) {
-        alert("참가신청 기간은 모임일시보다 빠를 수 없습니다!");
+        toast.error(t("참가신청 기간은 모임일시보다 빠를 수 없습니다!"), {
+          className: "toast-error toast-container",
+        });
         return;
       }
 
       // 모임일시보다 참가신청 기간이 늦는 경우 체크
       if (new Date(eventDate) < new Date(signupEndDate)) {
-        alert("참가신청 기간은 모임일시보다 늦을 수 없습니다!");
+        toast.error(t("참가신청 기간은 모임일시보다 늦을 수 없습니다!"), {
+          className: "toast-error toast-container",
+        });
         return;
       }
 
       // 최소 모임인원 체크
       if (maxSize < 0 || maxSize == 0) {
-        alert("모임인원은 1명 이상이어야 합니다!");
+        toast.error(t("모임인원은 1명 이상이어야 합니다!"), {
+          className: "toast-error toast-container",
+        });
         return;
       }
 
       // 최대 모임인원 체크
       if (maxSize > 50) {
-        alert("최대 모임인원은 50명까지 입니다!");
+        toast.error(t("최대 모임인원은 50명까지 입니다!"), {
+          className: "toast-error toast-container",
+        });
         return;
       }
 
       // 본문 내용 길이 체크
       const contentLength = 200;
       if (content.length > contentLength) {
-        alert(`본문 내용은 ${contentLength}자 이내로 입력해주세요!`);
+        toast.error(t(`본문 내용은 ${contentLength}자 이내로 입력해주세요!`), {
+          className: "toast-error toast-container",
+        });
         return;
       }
 
