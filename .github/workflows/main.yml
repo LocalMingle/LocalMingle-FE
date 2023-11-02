@@ -34,7 +34,7 @@ jobs:
           echo 'VITE_NAVER_CALLBACK_URL=${{ secrets.VITE_NAVER_CALLBACK_URL }}' >> .env
           
 
-      # 또는 npm install, 프로젝트 종속성 설치 명령
+      # 또는 npm install, 프로젝트 종속성 설치 명령 test
       - name: Install dependencies
         run: yarn install 
 

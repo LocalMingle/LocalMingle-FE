@@ -1,8 +1,10 @@
 import * as ST from "./STChatList";
 import { SocketContext } from "../SocketContext";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext, useRef } from "react";
 import { MessageData, EventDetailResponse } from "../ChatTypes";
 import { useLanguage } from "../../../util/Locales/useLanguage";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 type ChatListProps = {
   eventId: number;
@@ -16,10 +18,15 @@ type UserConnectedData = {
 
 const ChatList = (props: ChatListProps) => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<MessageData[]>([]);
   const socket = useContext(SocketContext);
   const chatListRef = useRef<HTMLDivElement>(null);
   null;
+
+  const navigateToEventDetail = () => {
+    navigate("/");
+  };
 
   const getCurrentTime = () => {
     const now = new Date();
@@ -120,6 +127,11 @@ const ChatList = (props: ChatListProps) => {
 
   return (
     <ST.ChatListContainer ref={chatListRef}>
+      <ST.Header>
+        <ST.Icon icon={faChevronLeft} onClick={navigateToEventDetail} />
+        <ST.EventName>{props.eventDetail.event.eventName}</ST.EventName>
+        <div></div>
+      </ST.Header>
       {messages.map((msg, index) => {
         const key = `${msg.roomId}-${msg.time}-${index}`;
         const isMyMessage = msg.userId === props.currentUserId;
