@@ -25,11 +25,8 @@ const Main: React.FC = () => {
       localStorage.setItem("accessToken", accessToken!);
       localStorage.setItem("refreshToken", refreshToken!);
       setIsLoginState(true);
-
-      setTimeout(() => {
-        navigate("/", { replace: true });
-      }, 1500);
     }
+    navigate("/", { replace: true });
   }, [setIsLoginState, setUser, navigate]);
 
   return (

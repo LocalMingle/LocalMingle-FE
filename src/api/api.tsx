@@ -306,6 +306,7 @@ interface EventDetailResponse {
     updatedAt: Date;
   }>;
   guestUser: GuestUser[][];
+  isJoin: boolean;
 }
 
 type GuestUser = {
