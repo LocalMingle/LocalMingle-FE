@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface MessageItemProps {
   isMyMessage: boolean;
@@ -78,6 +79,29 @@ export const MessageWrapper = styled.div.withConfig({
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
+`;
+
+export const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+`;
+
+export const Icon = styled(FontAwesomeIcon)`
+  margin-top: -20px;
+  cursor: pointer;
+
+  &:hover {
+    color: #6ec0f9; // 원하는 색상으로 바꿔도 됨
+  }
+`;
+
+export const EventName = styled.h2`
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
 `;
 
 export const ProfileContainer = styled.div`
