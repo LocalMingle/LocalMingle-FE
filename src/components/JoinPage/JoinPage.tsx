@@ -261,10 +261,13 @@ const SignUpForm: React.FC = () => {
     }
   };
 
-  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNicknameChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const newValue = e.target.value;
     setNickname(newValue);
-    setNicknameError(t(validateNickname(newValue)));
+    const errorMessage = await handleCheckNickname(newValue);
+    setNicknameError(t(errorMessage));
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {

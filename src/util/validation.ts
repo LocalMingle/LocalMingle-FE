@@ -74,9 +74,8 @@ export function validateBio(bio: string) {
 
 // 프로필수정 닉네임
 export function UpdateValidateNickname(nickname: string) {
-  // 특수문자, 공백, 한글 자음/모음만 사용 불가
-  if (/[!@#$%^&*(),.?":{}|<> ]|[ㄱ-ㅎㅏ-ㅣ]/.test(nickname)) {
-    return "닉네임에는 특수문자, 공백, 단독 자음/모음을 사용할 수 없습니다.";
+  if (/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]/.test(nickname)) {
+    return "닉네임에는 알파벳, 숫자, 한글만 사용할 수 있습니다.";
   }
   if (nickname.length < 2 || nickname.length > 8) {
     return "닉네임은 2자 이상 8자 이하로 입력해야 합니다.";
@@ -144,8 +143,8 @@ export async function handleCheckNickname(nickname: string) {
         return "닉네임은 2자 이상 8자 이하로 입력해야 합니다.";
       }
 
-      if (/[!@#$%^&*(),.?":{}|<> ]|[ㄱ-ㅎㅏ-ㅣ]/.test(nickname)) {
-        return "닉네임에는 특수문자, 공백, 단독 자음/모음을 사용할 수 없습니다.";
+      if (/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]/.test(nickname)) {
+        return "닉네임에는 알파벳, 숫자, 한글만 사용할 수 있습니다.";
       }
 
       return "닉네임을 사용할 수 있습니다.";
