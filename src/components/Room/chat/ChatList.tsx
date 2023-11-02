@@ -2,13 +2,20 @@ import * as ST from "./STChatList";
 import { SocketContext } from "../SocketContext";
 import { useState, useEffect, useContext, useRef } from "react";
 import { MessageData, EventDetailResponse } from "../ChatTypes";
+import { useLanguage } from "../../../util/Locales/useLanguage";
 
 type ChatListProps = {
   eventId: number;
   eventDetail: EventDetailResponse;
+  currentUserId: number;
+};
+type UserConnectedData = {
+  nickname: string;
+  profileImg?: string;
 };
 
 const ChatList = (props: ChatListProps) => {
+  const { t } = useLanguage();
   const [messages, setMessages] = useState<MessageData[]>([]);
   const socket = useContext(SocketContext);
   const chatListRef = useRef<HTMLDivElement>(null);
@@ -37,8 +44,9 @@ const ChatList = (props: ChatListProps) => {
         }
       });
 
-      socket.on("user_connected", (nickname: string) => {
-        let userProfileImg = "";
+      socket.on("user_connected", (userData: UserConnectedData) => {
+        const nickname = userData.nickname;
+        let userProfileImg = userData.profileImg || "";
 
         if (nickname === hostNickname) {
           userProfileImg = hostProfileImg;
@@ -47,7 +55,7 @@ const ChatList = (props: ChatListProps) => {
           userProfileImg = guestProfileImgs[idx];
         }
         const newUserMessage: MessageData = {
-          message: `${nickname}님이 들어왔어.`,
+          message: `${nickname}${t("님이 들어왔습니다.")}`,
           nickname,
           profileImg: userProfileImg,
           time: new Date().toISOString(),
@@ -56,8 +64,10 @@ const ChatList = (props: ChatListProps) => {
         setMessages((prevMessages) => [...prevMessages, newUserMessage]);
       });
 
-      socket.on("disconnect_user", (nickname: string) => {
-        let userProfileImg = "";
+      socket.on("disconnect_user", (userData: UserConnectedData) => {
+        console.log("disconnect_user 이벤트 발생, 받은 데이터:", userData);
+        const nickname = userData.nickname;
+        let userProfileImg = userData.profileImg || "";
 
         if (nickname === hostNickname) {
           userProfileImg = hostProfileImg;
@@ -66,7 +76,7 @@ const ChatList = (props: ChatListProps) => {
           userProfileImg = guestProfileImgs[idx];
         }
         const disconnectedUserMessage: MessageData = {
-          message: `${nickname}님이 나갔어.`,
+          message: `${nickname}${t("님이 나갔습니다.")}`,
           nickname,
           profileImg: userProfileImg,
           time: new Date().toISOString(),
@@ -91,33 +101,27 @@ const ChatList = (props: ChatListProps) => {
     guestProfileImgs,
     hostNickname,
     hostProfileImg,
+    t,
   ]);
 
   return (
     <ST.ChatListContainer ref={chatListRef}>
       {messages.map((msg, index) => {
-        let nickname = "";
-        let profileImg = "";
-
-        if (hostNickname === msg.nickname) {
-          nickname = hostNickname;
-          profileImg = hostProfileImg;
-        } else if (guestNicknames.includes(msg.nickname)) {
-          nickname = msg.nickname;
-          const idx = guestNicknames.indexOf(msg.nickname);
-          profileImg = guestProfileImgs[idx];
-        }
+        const key = `${msg.roomId}-${msg.time}-${index}`;
+        const isMyMessage = msg.userId === props.currentUserId;
 
         return (
-          <div key={index} style={{ display: "flex", alignItems: "center" }}>
-            <img
-              src={profileImg}
-              alt={`${nickname}의 프로필 이미지`}
-              style={{ width: "50px", marginRight: "10px" }}
-            />
-            <div>{nickname}</div>
-            <ST.MessageItem>{msg.message}</ST.MessageItem>
-          </div>
+          <ST.MessageWrapper isMyMessage={isMyMessage} key={key}>
+            {!isMyMessage && (
+              <div className="profileWrapper">
+                <ST.ProfileImage src={msg.profileImg} alt={`${msg.nickname}`} />
+                <ST.Nickname className="nickname">{msg.nickname}</ST.Nickname>
+              </div>
+            )}
+            <ST.MessageItem isMyMessage={isMyMessage}>
+              {msg.message}
+            </ST.MessageItem>
+          </ST.MessageWrapper>
         );
       })}
     </ST.ChatListContainer>

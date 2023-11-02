@@ -38,7 +38,11 @@ const Chat: React.FC = () => {
   return (
     <>
       <Header></Header>
-      <ChatList eventId={eventId} eventDetail={eventDetail}></ChatList>
+      <ChatList
+        eventId={eventId}
+        eventDetail={eventDetail}
+        currentUserId={currentUserId}
+      ></ChatList>
       <ChatBox
         currentUserId={currentUserId}
         eventId={eventId}

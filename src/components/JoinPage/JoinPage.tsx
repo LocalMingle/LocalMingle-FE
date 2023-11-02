@@ -160,7 +160,7 @@ const SignUpForm: React.FC = () => {
 
     const startTimer = () => {
       if (countdown === null) {
-        setCountdown(300);
+        setCountdown(1);
       }
 
       if (timer !== null) {
@@ -339,36 +339,18 @@ const SignUpForm: React.FC = () => {
   return (
     <ST.Wrapper>
       <ST.Icon onClick={goToMain}>
-        <img
-          src={textlogo}
-          alt="로컬밍글"
-        />
+        <img src={textlogo} alt="로컬밍글" />
       </ST.Icon>
       <ST.Language onClick={handleLanguageChange}>
         <button onClick={handleLanguageChange}>
           {(() => {
             switch (currentLang) {
               case "ko":
-                return (
-                  <img
-                    src={kologo}
-                    alt="Korean"
-                  />
-                );
+                return <img src={kologo} alt="Korean" />;
               case "jp":
-                return (
-                  <img
-                    src={jplogo}
-                    alt="Japanese"
-                  />
-                );
+                return <img src={jplogo} alt="Japanese" />;
               default:
-                return (
-                  <img
-                    src={enlogo}
-                    alt="English"
-                  />
-                );
+                return <img src={enlogo} alt="English" />;
             }
           })()}
         </button>
@@ -427,8 +409,8 @@ const SignUpForm: React.FC = () => {
             </>
           )}
         </div>
-        <ST.ValidationColor isValid={isEmailValid}>
-          {emailError}
+        <ST.ValidationColor isValid={isEmailValid || isEmailVerified}>
+          {isEmailVerified ? authError : emailError}
         </ST.ValidationColor>
         <ST.CountdownText>
           {countdown !== null && (

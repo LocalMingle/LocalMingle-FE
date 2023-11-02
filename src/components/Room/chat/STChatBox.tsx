@@ -14,6 +14,7 @@ export const MyMessage = styled.div`
   margin: 5px 0;
 
   & > div {
+    margin-left: auto;
     max-width: 70%;
     padding: 10px 15px;
     background-color: #4caf50; // 초록색 배경

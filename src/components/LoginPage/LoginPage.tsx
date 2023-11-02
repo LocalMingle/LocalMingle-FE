@@ -21,7 +21,6 @@ import kologo from "../../asset/languageImages/kologo.png";
 import enlogo from "../../asset/languageImages/enlogo.png";
 import jplogo from "../../asset/languageImages/jplogo.png";
 
-
 interface DecodedToken {
   sub: number;
 }
@@ -81,7 +80,6 @@ const LoginPage: React.FC = () => {
 
   const kakaoLoginHandler = () => {
     const REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
-    // "https://www.totobon6125.store";
     const kakaoOauthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&redirect_uri=${encodeURIComponent(
       `${REACT_APP_URL}/users/login/kakao`
     )}&client_id=${import.meta.env.VITE_REACT_APP_KAKAO_CLIENT_ID}`;
@@ -139,11 +137,11 @@ const LoginPage: React.FC = () => {
         {(() => {
           switch (currentLang) {
             case "ko":
-              return (<img src={kologo} alt="Korean" />);
+              return <img src={kologo} alt="Korean" />;
             case "jp":
-              return (<img src={jplogo} alt="Japanese" />);
-            default: 
-              return (<img src={enlogo} alt="English" />);
+              return <img src={jplogo} alt="Japanese" />;
+            default:
+              return <img src={enlogo} alt="English" />;
           }
         })()}
       </St.Language>
