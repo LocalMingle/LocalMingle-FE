@@ -44,13 +44,14 @@ const ChatBox = (props: ChatBoxProps) => {
   const [message, setMessage] = useState("");
   const socket = useContext(SocketContext);
   const [error, setError] = useState<string | null>(null);
+  const [isComposing, setIsComposing] = useState(false);
   const { currentUserNickname, currentUserProfileImg } = getCurrentUserDetails(
     props.eventDetail,
     props.currentUserId
   );
 
   const handleSendMessage = () => {
-    if (message.trim() && socket) {
+    if (!isComposing && message.trim() && socket) {
       const currentTime = new Date().toLocaleTimeString();
       const messageData = {
         message: message,
@@ -64,7 +65,6 @@ const ChatBox = (props: ChatBoxProps) => {
       setMessage("");
     }
   };
-
   useEffect(() => {
     if (socket) {
       socket.on("error", (errorMessage: string) => {
@@ -94,8 +94,10 @@ const ChatBox = (props: ChatBoxProps) => {
           type="text"
           value={message}
           onInput={(e) => setMessage((e.target as HTMLInputElement).value)}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
+            if (!isComposing && e.key === "Enter" && !e.shiftKey) {
               handleSendMessage();
               e.preventDefault();
             }
