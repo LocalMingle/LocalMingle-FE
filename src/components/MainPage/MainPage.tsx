@@ -48,6 +48,7 @@ const MainPage: React.FC = () => {
         intro: string;
         profileImg: string;
         updatedAt: string;
+        userLocation: string | null;
       }
     ];
   }
@@ -88,9 +89,9 @@ const MainPage: React.FC = () => {
   const [category, setCategory] = useState<string>("");
   const [categoryList, setCategoryList] = useState<string[]>([]);
   const [sidoList, setSidoList] = useState<string[]>();
-  const [gugunList, setGugunList] = useState<string[]>();
-  const [sido, setSido] = useState<string>(t("시 / 도"));
-  const [gugun, setGugun] = useState<string>(t("구 / 군"));
+  const [gugunList, setGugunList] = useState<string[]>(["구 / 군"]);
+  const [sido, setSido] = useState<string>(t(""));
+  const [gugun, setGugun] = useState<string>(t(""));
   const [verifyList , setVerifyList] = useState<string[]>(); 
   const [postList , setPostList] = useState<CardProps[]>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -123,12 +124,16 @@ const MainPage: React.FC = () => {
         params: { doName: sido, lang },
       }),
     categoryApi: () => customAxios.get("data/toss"),
-    filterVerifyApi: (verifyType : string) => customAxios.get("/search/byVerify", {
-      params: { query: verifyType },
-    }),
-    searchApi: (keyword:string) => customAxios.get("/search", {
+    // filterVerifyApi: (verifyType : string) => customAxios.get("/search/byVerify", {
+    //   params: { query: verifyType },
+    // }),
+    searchApi: (verify: string, category: string, sido: string, gugun: string, keyword: string) => customAxios.get("/search", {
       params: {
-        query : keyword
+        verify,
+        category,
+        city : sido,
+        guName : gugun,
+        keyWord : keyword
       }
     }),
   };
@@ -181,19 +186,9 @@ const MainPage: React.FC = () => {
   const postListSearch = async ()  => {
     setLoading(true); // 로딩중
 
-    // 지역 범위 샐랙터가 선택되지 않은 상태로 다른 샐랙터들이 먼저 선택 되었을 때
-    // 231030 JSY setter가 초기화되지 않는 이슈로 임시로 setTimeout으로 해결. 추후 수정 필요
-    // if(verify == '' && (sido != t('시 / 도') || gugun != t('구 / 군') || category != '')) {
-    //   toast.error(t('지역 범위를 먼저 선택해 주세요'));
-    //   setTimeout(()=>{
-    //     window.location.reload();
-    //   }, 1000);
-    //   return false;
-    // }
-
-    const response:CardProps[] = await (verify == '' ? mainAPI.cardListApi() : mainAPI.filterVerifyApi(t(verify)))
+    const response:CardProps[] = await mainAPI.cardListApi()
       .then((response) => {
-        // console.log('게시글 데이터:', response.data);
+        console.log('게시글 데이터:', response.data);
         return response.data;
       }).catch((error) => {
         console.log("게시글 불러오기 에러!", error);
@@ -201,27 +196,30 @@ const MainPage: React.FC = () => {
       });
 
       // 샐랙터 옵션이 설정되면 필터링
-      if(verify != ''){
-        const newResponse:CardProps[] = response.filter((root:CardProps)=>{
-          if(sido == t('시 / 도')) return true;
-          else if (sido != t('시 / 도') && root.event.location_City == sido)
-            return true;
-          else return false;
-        }).filter((root:CardProps)=>{
-          if(gugun == t('구 / 군')) return true;
-          else if (gugun != t('구 / 군') && root.event.location_District == gugun)
-            return true;
-          else return false;
-        }).filter((root:CardProps)=>{
-          if(category == t('')) return true;
-          else if (category != t('') && root.event.category == category)
-            return true;
-          else return false;
-        })
-        setPostList(newResponse);
-      } else {
-        setPostList(response);
-      }
+      const newResponse:CardProps[] = response.filter((root:CardProps)=>{
+        if(sido == t('시 / 도')) return true;
+        else if (sido != t('시 / 도') && root.event.location_City == sido)
+          return true;
+        else return false;
+      }).filter((root:CardProps)=>{
+        if(gugun == t('구 / 군')) return true;
+        else if (gugun != t('구 / 군') && root.event.location_District == gugun)
+          return true;
+        else return false;
+      }).filter((root:CardProps)=>{
+        if(category == t('')) return true;
+        else if (category != t('') && root.event.category == category)
+          return true;
+        else return false;
+      })
+      setPostList(newResponse);
+
+    //   if(verify != ''){
+        
+    //   } else {
+    //   setPostList(response);
+    // }
+      setPostList(response);
       setLoading(false);
   }
 
@@ -249,8 +247,9 @@ const MainPage: React.FC = () => {
 
     setLoading(true); // 로딩중
 
-    const response:CardProps[] = await (keyword == '' ? mainAPI.cardListApi() : mainAPI.searchApi(keyword))
+    const response:CardProps[] = await (mainAPI.searchApi(verify, category, sido, gugun, keyword))
     .then((response) => {
+      console.log('필터링 게시글 가져오기', response.data);
       return response.data;
     }).catch((error) => {
       console.log("게시글 불러오기 에러!", error);
@@ -266,6 +265,14 @@ const MainPage: React.FC = () => {
     if (searchRef.current) {searchRef.current.value = "";}
   }
 
+  /**
+   * @description 검색창에서 엔터키를 누르면 검색
+   */
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      searchCards();
+    }
+  };
 
   // 핸들러 목록
   useEffect(()=>{
@@ -303,6 +310,7 @@ const MainPage: React.FC = () => {
             ref={searchRef}
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
+            onKeyPress={handleKeyPress}
             placeholder={t("제목 및 글 내용을 검색해 보세요.")}
           ></St.SearchInput>
           <p onClick={searchCards}>
@@ -363,7 +371,7 @@ const MainPage: React.FC = () => {
       </St.SelectorWrap>
       {/* 카드 */}
       {postList?.map((postDataItem, index) => (
-        <CustomLink to={`/postview/${verify == '' ? postDataItem.event.eventId : postDataItem.event.eventId}`}>
+        <CustomLink to={`/postview/${postDataItem.event.eventId}`}>
           <Card key={index} {...postDataItem}></Card>
         </CustomLink>
       ))}
