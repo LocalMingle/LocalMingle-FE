@@ -93,7 +93,7 @@ const ChatBox = (props: ChatBoxProps) => {
         <ST.InputField
           type="text"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onInput={(e) => setMessage((e.target as HTMLInputElement).value)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               handleSendMessage();
@@ -103,6 +103,7 @@ const ChatBox = (props: ChatBoxProps) => {
           placeholder={t("내용을 입력하세요")}
           maxLength={200}
         />
+
         <ST.SendButton onClick={handleSendMessage}>{t("전송")}</ST.SendButton>
       </ST.InputContainer>
       {error && <ST.ErrorMessage>{error}</ST.ErrorMessage>}

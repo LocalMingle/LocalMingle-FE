@@ -4,7 +4,9 @@ import styled from "styled-components";
 export const MessageContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   margin: 10px;
+  margin-top: 90px;
 `;
 
 // 나의 메시지
@@ -54,6 +56,7 @@ export const InputField = styled.input`
   border: none;
   border-radius: 10px;
   margin-right: 10px;
+  height: 40px;
 `;
 
 export const SendButton = styled.button`
@@ -61,6 +64,7 @@ export const SendButton = styled.button`
   border: none;
   border-radius: 10px;
   padding: 10px 15px;
+  color: black;
 `;
 
 export const ErrorMessage = styled.div`

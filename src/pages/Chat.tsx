@@ -7,6 +7,10 @@ import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../recoil/atoms/UserState";
 import { EventDetailResponse } from "../components/Room/ChatTypes";
+import {
+  MyPageContainer,
+  MyPageWrap,
+} from "../components/Room/chat/STChatList";
 
 const Chat: React.FC = () => {
   const [eventDetail, setEventDetail] = useState<EventDetailResponse | null>(
@@ -38,16 +42,20 @@ const Chat: React.FC = () => {
   return (
     <>
       <Header></Header>
-      <ChatList
-        eventId={eventId}
-        eventDetail={eventDetail}
-        currentUserId={currentUserId}
-      ></ChatList>
-      <ChatBox
-        currentUserId={currentUserId}
-        eventId={eventId}
-        eventDetail={eventDetail}
-      ></ChatBox>
+      <MyPageContainer>
+        <MyPageWrap>
+          <ChatList
+            eventId={eventId}
+            eventDetail={eventDetail}
+            currentUserId={currentUserId}
+          ></ChatList>
+          <ChatBox
+            currentUserId={currentUserId}
+            eventId={eventId}
+            eventDetail={eventDetail}
+          ></ChatBox>
+        </MyPageWrap>
+      </MyPageContainer>
     </>
   );
 };
