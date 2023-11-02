@@ -185,7 +185,7 @@ const MainPage: React.FC = () => {
 
     const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword)
       .then((response) => {
-        console.log('게시글 데이터:', response.data);
+        // console.log('게시글 데이터:', response.data);
         return response.data;
       }).catch((error) => {
         console.log("게시글 불러오기 에러!", error);
@@ -222,7 +222,7 @@ const MainPage: React.FC = () => {
 
     const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword)
     .then((response) => {
-      console.log('필터링 게시글 가져오기', response.data);
+      // console.log('필터링 게시글 가져오기', response.data);
       return response.data;
     }).catch((error) => {
       console.log("게시글 불러오기 에러!", error);
