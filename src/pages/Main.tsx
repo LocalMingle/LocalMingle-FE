@@ -19,14 +19,17 @@ const Main: React.FC = () => {
     if (urlParams.size) {
       if (userId !== null) {
         setUser({ userId: Number(userId) });
-        document.cookie = `accessToken=${accessToken}; path=/;`;
-        document.cookie = `refreshToken=${refreshToken}; path=/;`;
-        setIsLoginState(true);
       } else {
         console.error("userId is null");
       }
+      localStorage.setItem("accessToken", accessToken!);
+      localStorage.setItem("refreshToken", refreshToken!);
+      setIsLoginState(true);
+
+      setTimeout(() => {
+        navigate("/", { replace: true });
+      }, 1500);
     }
-    navigate("/", { replace: true });
   }, [setIsLoginState, setUser, navigate]);
 
   return (
