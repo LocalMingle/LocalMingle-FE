@@ -1,7 +1,7 @@
 import React from "react";
 import * as St from "./STBanner";
-import local from "../../../asset/localMingleImages/local.png";
-import mingle from "../../../asset/localMingleImages/mingle_2.png";
+// import local from "../../../asset/localMingleImages/local.png";
+// import mingle from "../../../asset/localMingleImages/mingle_2.png";
 import eyes from "../../../asset/localMingleImages/eyes.png";
 
 const Banner: React.FC = () => {
@@ -16,10 +16,10 @@ const Banner: React.FC = () => {
         <h3>동네 사람들과 같은 취미 공유!</h3>
         <p>지금 다양한 사람들과 함께<br/>소모임을 즐겨 보세요~</p>
 
-        <St.LogoWrap>
+        {/* <St.LogoWrap>
           <img src={local} alt="Local" />
           <img src={mingle} alt="Mingle" />
-        </St.LogoWrap>
+        </St.LogoWrap> */}
 
       </St.BannerContent>
     </St.BannerSection>
