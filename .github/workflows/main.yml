@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: 18 
       
-      # 코드에서 사용할 .env 설정
+      # 코드에서 사용할 .env 설정 test
       - name: Create .env.production file
         run: |
           echo 'VITE_REACT_APP_URL=${{ secrets.VITE_REACT_APP_URL }}' > .env
