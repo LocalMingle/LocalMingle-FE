@@ -14,6 +14,12 @@ const Main: React.FC = () => {
     const userId = urlParams.get("userId");
     const accessToken = urlParams.get("accessToken");
     const refreshToken = urlParams.get("refreshToken");
+    console.log(
+      `Log - userId: ${userId}, accessToken: ${accessToken}, refreshToken: ${refreshToken}`
+    );
+    alert(
+      `Alert - userId: ${userId}, accessToken: ${accessToken}, refreshToken: ${refreshToken}`
+    );
     if (urlParams.size) {
       if (userId !== null) {
         setUser({ userId: Number(userId) });
