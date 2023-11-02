@@ -2,6 +2,7 @@ import * as ST from "./STChatBox";
 import { useContext, useState, useEffect } from "react";
 import { SocketContext } from "../SocketContext";
 import { EventDetailResponse } from "../ChatTypes";
+import { useLanguage } from "../../../util/Locales/useLanguage";
 
 type ChatBoxProps = {
   currentUserId: number;
@@ -39,6 +40,7 @@ const getCurrentUserDetails = (
 };
 
 const ChatBox = (props: ChatBoxProps) => {
+  const { t } = useLanguage();
   const [message, setMessage] = useState("");
   const socket = useContext(SocketContext);
   const [error, setError] = useState<string | null>(null);
@@ -98,14 +100,13 @@ const ChatBox = (props: ChatBoxProps) => {
               e.preventDefault();
             }
           }}
-          placeholder="내용을 입력하세요"
+          placeholder={t("내용을 입력하세요")}
           maxLength={200}
         />
-        <ST.SendButton onClick={handleSendMessage}>전송</ST.SendButton>
+        <ST.SendButton onClick={handleSendMessage}>{t("전송")}</ST.SendButton>
       </ST.InputContainer>
       {error && <ST.ErrorMessage>{error}</ST.ErrorMessage>}
     </ST.MessageContainer>
   );
 };
-
 export default ChatBox;

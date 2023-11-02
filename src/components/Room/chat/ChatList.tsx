@@ -2,6 +2,7 @@ import * as ST from "./STChatList";
 import { SocketContext } from "../SocketContext";
 import { useState, useEffect, useContext, useRef } from "react";
 import { MessageData, EventDetailResponse } from "../ChatTypes";
+import { useLanguage } from "../../../util/Locales/useLanguage";
 
 type ChatListProps = {
   eventId: number;
@@ -14,6 +15,7 @@ type UserConnectedData = {
 };
 
 const ChatList = (props: ChatListProps) => {
+  const { t } = useLanguage();
   const [messages, setMessages] = useState<MessageData[]>([]);
   const socket = useContext(SocketContext);
   const chatListRef = useRef<HTMLDivElement>(null);
@@ -53,7 +55,7 @@ const ChatList = (props: ChatListProps) => {
           userProfileImg = guestProfileImgs[idx];
         }
         const newUserMessage: MessageData = {
-          message: `${nickname}님이 들어왔습니다.`,
+          message: `${nickname}${t("님이 들어왔습니다.")}`,
           nickname,
           profileImg: userProfileImg,
           time: new Date().toISOString(),
@@ -74,7 +76,7 @@ const ChatList = (props: ChatListProps) => {
           userProfileImg = guestProfileImgs[idx];
         }
         const disconnectedUserMessage: MessageData = {
-          message: `${nickname}님이 나갔습니다.`,
+          message: `${nickname}${t("님이 나갔습니다.")}`,
           nickname,
           profileImg: userProfileImg,
           time: new Date().toISOString(),
@@ -99,6 +101,7 @@ const ChatList = (props: ChatListProps) => {
     guestProfileImgs,
     hostNickname,
     hostProfileImg,
+    t,
   ]);
 
   return (

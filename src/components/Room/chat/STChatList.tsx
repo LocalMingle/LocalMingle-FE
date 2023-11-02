@@ -17,7 +17,9 @@ export const ChatListContainer = styled.div`
   padding: 10px;
 `;
 
-export const MessageItem = styled.div<MessageItemProps>`
+export const MessageItem = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["isMyMessage"].includes(prop),
+})<MessageItemProps>`
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 14px;
@@ -33,7 +35,9 @@ export const MessageItem = styled.div<MessageItemProps>`
   text-align: center;
 `;
 
-export const MessageWrapper = styled.div<MessageWrapperProps>`
+export const MessageWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["isMyMessage"].includes(prop),
+})<MessageWrapperProps>`
   display: flex;
   align-items: flex-start;
   justify-content: ${(props) =>
