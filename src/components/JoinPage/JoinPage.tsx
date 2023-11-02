@@ -60,7 +60,7 @@ const SignUpForm: React.FC = () => {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
-  const [isSuccess, setIsSuccess] = useState<null | boolean>(null);
+  const [, setIsSuccess] = useState<null | boolean>(null);
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
 
   const handleSignUp = async () => {
@@ -420,11 +420,6 @@ const SignUpForm: React.FC = () => {
             </span>
           )}
         </ST.CountdownText>
-        {authError && (
-          <ST.ValidationColor isValid={isSuccess}>
-            {authError}
-          </ST.ValidationColor>
-        )}
       </ST.LabelWrapper>
       <ST.LabelWrapper>
         <label>{t("비밀번호")}</label>
