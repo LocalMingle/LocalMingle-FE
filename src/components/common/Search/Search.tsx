@@ -21,7 +21,7 @@ const Search: React.FC<SearchProps> = ( {onSearch} ) => {
     }
 
     onSearch(keyword);
-    console.log('입력된 키워드: ', keyword);
+    // console.log('입력된 키워드: ', keyword);
   }
 
   return (

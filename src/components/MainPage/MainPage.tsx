@@ -188,7 +188,7 @@ const MainPage: React.FC = () => {
         // console.log('게시글 데이터:', response.data);
         return response.data;
       }).catch((error) => {
-        console.log("게시글 불러오기 에러!", error);
+        // console.log("게시글 불러오기 에러!", error);
         throw error;
       });
 
@@ -225,7 +225,7 @@ const MainPage: React.FC = () => {
       // console.log('필터링 게시글 가져오기', response.data);
       return response.data;
     }).catch((error) => {
-      console.log("게시글 불러오기 에러!", error);
+      // console.log("게시글 불러오기 에러!", error);
       throw error;
     });
 

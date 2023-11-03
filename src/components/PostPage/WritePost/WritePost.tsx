@@ -85,7 +85,7 @@ const WritePost: React.FC = () => {
           return response;
         })
         .catch((error) => {
-          console.log("위치 인증 여부 불러오기 실패", error);
+          // console.log("위치 인증 여부 불러오기 실패", error);
           throw error;
         });
       return response;
@@ -102,7 +102,7 @@ const WritePost: React.FC = () => {
           return response;
         })
         .catch((error) => {
-          console.log("카테고리 옵션 카테고리 불러오기 실패", error);
+          // console.log("카테고리 옵션 카테고리 불러오기 실패", error);
           throw error;
         });
       return response;
@@ -124,7 +124,7 @@ const WritePost: React.FC = () => {
           return response.data.items;
         })
         .catch((error) => {
-          console.log("시/도 불러오기 실패", error);
+          // console.log("시/도 불러오기 실패", error);
           throw error;
         });
       return response;
@@ -149,7 +149,7 @@ const WritePost: React.FC = () => {
           return response.data;
         })
         .catch((error) => {
-          console.log("구/군 불러오기 실패", error);
+          // console.log("구/군 불러오기 실패", error);
           throw error;
         });
       return response;
@@ -335,7 +335,7 @@ const WritePost: React.FC = () => {
       });
       navigate("/");
     } catch (error) {
-      console.log("게시글 작성 실패", error);
+      // console.log("게시글 작성 실패", error);
     }
   };
 
