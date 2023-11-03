@@ -57,10 +57,10 @@ const ChatList = (props: ChatListProps) => {
   useEffect(() => {
     if (socket) {
       socket.on("new_chat", (messageData: MessageData) => {
-        console.log("ChatList에서 새로운 채팅이 도착했어:", messageData);
+        // console.log("ChatList에서 새로운 채팅이 도착했어:", messageData);
         setMessages((prevMessages) => {
           const newMessages = [...prevMessages, messageData];
-          console.log("ChatList 업데이트된 메시지:", newMessages);
+          // console.log("ChatList 업데이트된 메시지:", newMessages);
           return newMessages;
         });
       });
@@ -86,7 +86,7 @@ const ChatList = (props: ChatListProps) => {
       });
 
       socket.on("disconnect_user", (userData: UserConnectedData) => {
-        console.log("disconnect_user 이벤트 발생, 받은 데이터:", userData);
+        // console.log("disconnect_user 이벤트 발생, 받은 데이터:", userData);
         const nickname = userData.nickname;
         let userProfileImg = userData.profileImg || "";
 

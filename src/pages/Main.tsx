@@ -20,7 +20,7 @@ const Main: React.FC = () => {
       if (userId !== null) {
         setUser({ userId: Number(userId) });
       } else {
-        console.error("userId is null");
+        // console.error("userId is null");
       }
       localStorage.setItem("accessToken", accessToken!);
       localStorage.setItem("refreshToken", refreshToken!);

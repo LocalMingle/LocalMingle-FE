@@ -58,7 +58,7 @@ const JoinList: React.FC = () => {
         });
       }
     } catch (error) {
-      console.error("참석 취소 중 오류 발생:", error);
+      // console.error("참석 취소 중 오류 발생:", error);
     }
   };
 

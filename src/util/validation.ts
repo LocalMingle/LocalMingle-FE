@@ -152,7 +152,7 @@ export async function handleCheckNickname(nickname: string) {
       return "닉네임 확인 중 오류 발생.";
     }
   } catch (error) {
-    console.error("닉네임 중복 확인 중 오류 발생:", error);
+    // console.error("닉네임 중복 확인 중 오류 발생:", error);
     return "닉네임 중복 확인 중 오류 발생.";
   }
 }
@@ -171,7 +171,7 @@ export async function handleCheckEmail(email: string) {
       return "이메일 확인 중 오류 발생.";
     }
   } catch (error) {
-    console.error("이메일 중복 확인 중 오류 발생:", error);
+    // console.error("이메일 중복 확인 중 오류 발생:", error);
     return "이메일 중복 확인 중 오류 발생.";
   }
 }

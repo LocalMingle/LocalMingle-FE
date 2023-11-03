@@ -217,7 +217,7 @@ const SignUpForm: React.FC = () => {
       setShouldRunTimer(false);
       setShouldRunTimer(true);
     } catch (error) {
-      console.error("이메일 보내기 실패:", error);
+      // console.error("이메일 보내기 실패:", error);
     }
   };
 
@@ -255,7 +255,7 @@ const SignUpForm: React.FC = () => {
     } catch (error) {
       setIsLoading(false);
 
-      console.error("인증 실패:", error);
+      // console.error("인증 실패:", error);
       setAuthError(t("인증코드를 다시 확인해주세요."));
       setIsSuccess(false);
     }

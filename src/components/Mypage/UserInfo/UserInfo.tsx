@@ -56,10 +56,10 @@ const UserInfo: React.FC = () => {
           },
         }
       );
-      console.log(response);
+      // console.log(response);
       return response;
     } catch (error) {
-      console.log("위치 정보 불러오기 실패", error);
+      // console.log("위치 정보 불러오기 실패", error);
     }
   };
   myLocation();
@@ -77,7 +77,7 @@ const UserInfo: React.FC = () => {
           setProfileImage(profileImgURL);
         }
       } catch (error) {
-        console.error("프로필 이미지를 불러오는 중 오류 발생:", error);
+        // console.error("프로필 이미지를 불러오는 중 오류 발생:", error);
       }
     };
 
@@ -89,7 +89,7 @@ const UserInfo: React.FC = () => {
       try {
         const token = localStorage.getItem("accessToken");
         if (!token) {
-          console.error("토큰이 없습니다.");
+          // console.error("토큰이 없습니다.");
           return;
         }
         const response = await axiosInstance.get("users/me", {
@@ -109,7 +109,7 @@ const UserInfo: React.FC = () => {
           setIntro(userDetail.intro ? userDetail.intro : "");
         }
       } catch (error) {
-        console.error("사용자 정보를 불러오는 중 오류 발생:", error);
+        // console.error("사용자 정보를 불러오는 중 오류 발생:", error);
       }
     };
 
@@ -135,9 +135,9 @@ const UserInfo: React.FC = () => {
       setNicknameError("");
     } catch (error) {
       if (error instanceof Error) {
-        console.error(error.message);
+        // console.error(error.message);
       } else {
-        console.error(error);
+        // console.error(error);
       }
       toast.error(t("수정에 실패했습니다."), {
         className: "toast-error toast-container",
@@ -151,7 +151,7 @@ const UserInfo: React.FC = () => {
       const validationError = validateImageUpload(file);
       setImageError(validationError);
       if (validationError) {
-        console.error(validationError);
+        // console.error(validationError);
         toast.error(t(validationError), {
           className: "toast-error toast-container",
         });
@@ -162,7 +162,7 @@ const UserInfo: React.FC = () => {
         const uploadedImage = await uploadProfileImage(file);
         setProfileImage(uploadedImage.profileImgURL);
       } catch (error) {
-        console.error(t("이미지 업로드 중 오류 발생:"), error);
+        // console.error(t("이미지 업로드 중 오류 발생:"), error);
       }
     }
   };
@@ -196,7 +196,7 @@ const UserInfo: React.FC = () => {
         setConfirmPassword("");
       }
     } catch (error: unknown) {
-      console.error("비밀번호 변경 중 오류: ", error);
+      // console.error("비밀번호 변경 중 오류: ", error);
       if (error && typeof error === "object" && "response" in error) {
         type AxiosErrorType = {
           response?: { status?: number; data?: unknown };

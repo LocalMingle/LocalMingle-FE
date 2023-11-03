@@ -24,7 +24,7 @@ i18n.use(initReactI18next).init({
   // 만약에 해당 언어 리소스없을경우에 사용할 언어
   fallbackLng: "ko",
   // 디버그 모드를 활성화, 디버그 모드에서는 i18n과 관련된 로그와 경고를 출력
-  debug: true,
+  // debug: true,
   // 번역 키(key)에서 구분자를 사용하지 않도록 설정, 이는 번역 키를 더 직관적으로 사용하기 위한 설정
   keySeparator: ".", // or true
   // HTML 태그나 특수 문자를 이스케이프하지 않도록 한다.
