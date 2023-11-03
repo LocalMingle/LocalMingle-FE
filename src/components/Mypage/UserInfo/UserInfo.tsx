@@ -43,26 +43,26 @@ const UserInfo: React.FC = () => {
    * @description myLocation
    * 나의 위치 정보 가져오기
    */
-  const latitude = 37.3347561;
-  const longitude = 126.9519579;
+  // const latitude = 37.3347561;
+  // const longitude = 126.9519579;
 
-  const myLocation = async () => {
-    try {
-      const response = await axiosInstance.get(
-        `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`,
-        {
-          headers: {
-            Authorization: "KakaoAK c833a8561bc180927375b89e710fac02",
-          },
-        }
-      );
-      console.log(response);
-      return response;
-    } catch (error) {
-      console.log("위치 정보 불러오기 실패", error);
-    }
-  };
-  myLocation();
+  // const myLocation = async () => {
+  //   try {
+  //     const response = await axiosInstance.get(
+  //       `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`,
+  //       {
+  //         headers: {
+  //           Authorization: "KakaoAK c833a8561bc180927375b89e710fac02",
+  //         },
+  //       }
+  //     );
+  //     console.log(response);
+  //     return response;
+  //   } catch (error) {
+  //     console.log("위치 정보 불러오기 실패", error);
+  //   }
+  // };
+  // myLocation();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

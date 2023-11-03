@@ -8,7 +8,7 @@ import { useLanguage } from "../../../util/Locales/useLanguage";
 import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import i18n from "../../../util/Locales/i18n";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const ModifyPost: React.FC = () => {
   const { t } = useLanguage();
@@ -240,7 +240,9 @@ const ModifyPost: React.FC = () => {
       // console.log('게시글 값?', response.data);
       return response.data;
     } catch (error) {
-      console.log("게시글 수정 실패!", error);
+      toast.error(t("게시글 수정 실패!"), {
+        className: "toast-error toast-container",
+      });
       throw error;
     }
   });
@@ -385,7 +387,9 @@ const ModifyPost: React.FC = () => {
       });
       navigate("/mypage/makelist");
     } catch (error) {
-      console.log("게시글 수정 실패!", error);
+      toast.error(t("게시글 수정 실패!"), {
+        className: "toast-error toast-container",
+      });
       throw error;
     }
   };
