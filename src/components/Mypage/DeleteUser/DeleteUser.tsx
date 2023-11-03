@@ -18,7 +18,7 @@ const DeleteUser: React.FC = () => {
 
   const mutation = useMutation(deleteUserAPI, {
     onSuccess: (data) => {
-      console.log(t("회원탈퇴 성공!"), data);
+      t("회원탈퇴 성공!"), data;
       toast.success(t("탈퇴가 완료되었습니다!"), {
         className: "toast-success toast-container",
       });
@@ -26,7 +26,7 @@ const DeleteUser: React.FC = () => {
       queryClient.invalidateQueries("someQueryKey");
     },
     onError: (error) => {
-      console.log(t("회원탈퇴 실패! 왜인지 알아보자"), error);
+      t("회원탈퇴 실패! 왜인지 알아보자"), error;
       setPasswordError(t("비밀번호를 다시 확인해주세요."));
     },
   });

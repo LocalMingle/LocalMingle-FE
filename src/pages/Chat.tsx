@@ -27,7 +27,7 @@ const Chat: React.FC = () => {
       const detail = await getEventDetail(id);
       setEventDetail(detail);
     } catch (error) {
-      console.error("이벤트 상세 정보 불러오기 실패:", error);
+      // console.error("이벤트 상세 정보 불러오기 실패:", error);
     }
   };
 

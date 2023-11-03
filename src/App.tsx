@@ -18,10 +18,10 @@ const App: React.FC = () => {
       }
     );
     socketInstance.on("connect_error", () => {
-      console.error("소켓 연결에 문제가 있어!");
+      // console.error("소켓 연결에 문제가 있어!");
     });
     socketInstance.on("reconnect_failed", () => {
-      console.error("소켓 재연결 실패!");
+      // console.error("소켓 재연결 실패!");
     });
     setSocket(socketInstance);
     return () => {
