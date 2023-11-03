@@ -150,3 +150,10 @@ export const Language = styled.div`
     cursor: pointer;
   }
 `;
+
+export const StyledCheckboxLabel = styled.label`
+  margin-bottom: 10px;
+  color: #646464;
+  display: flex;
+  align-items: center;
+`;
