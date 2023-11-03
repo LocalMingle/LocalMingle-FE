@@ -16,16 +16,28 @@ const Main: React.FC = () => {
     const accessToken = urlParams.get("accessToken");
     const refreshToken = urlParams.get("refreshToken");
 
-    if (urlParams.size) {
-      if (userId !== null && accessToken !== null && refreshToken !== null) {
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
-        setUser({ userId: Number(userId) });
-        setIsLoginState(true);
+    if (
+      urlParams.size &&
+      userId !== null &&
+      accessToken !== null &&
+      refreshToken !== null
+    ) {
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      setUser({ userId: Number(userId) });
+      setIsLoginState(true);
+
+      // localStorage에 값이 제대로 저장되었는지 확인
+      const isStorageSet =
+        localStorage.getItem("accessToken") === accessToken &&
+        localStorage.getItem("refreshToken") === refreshToken;
+
+      // 저장이 완료되었다면 페이지 이동
+      if (isStorageSet) {
+        navigate("/", { replace: true });
       }
     }
-    navigate("/", { replace: true });
-  }, []); // useEffect의 두 번째 인자를 빈 배열로 도전
+  }, []);
 
   return (
     <>
