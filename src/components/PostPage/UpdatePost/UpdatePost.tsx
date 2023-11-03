@@ -8,7 +8,7 @@ import { useLanguage } from "../../../util/Locales/useLanguage";
 import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import i18n from "../../../util/Locales/i18n";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const ModifyPost: React.FC = () => {
   const { t } = useLanguage();
