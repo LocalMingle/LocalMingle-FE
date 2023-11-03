@@ -457,6 +457,10 @@ const SignUpForm: React.FC = () => {
         <input type="text" value={bio} onChange={handleBioChange} />
         <ST.ErrorMessageJoin>{bioError}</ST.ErrorMessageJoin>
       </ST.LabelWrapper>
+      <ST.StyledCheckboxLabel>
+        <input type="checkbox" id="agree" style={{ marginRight: "10px" }} />
+        {t("(필수) 통합서비스 이용약관 및 개인정보 처리방침에 동의 합니다.")}
+      </ST.StyledCheckboxLabel>
       {isLoading && <div>{t("회원가입 중...")}</div>}
       <Button onClick={handleSignUp}>{t("회원가입")}</Button>
     </ST.Wrapper>
