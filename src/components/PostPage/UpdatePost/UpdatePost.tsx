@@ -81,7 +81,7 @@ const ModifyPost: React.FC = () => {
       return response;
     }
   );
-  
+
   // 카테고리 옵션 - DB 연동
   const { data: categoryOptionsData } = useQuery<CategoryOptionsProps, Error>(
     "categoryOptions",
@@ -157,9 +157,7 @@ const ModifyPost: React.FC = () => {
     if (location_City == t("시 / 도") || location_City == "") {
       setLocation_District("");
     }
-
-  }, [location_City, location_District, refetchGugunOptions]);
-
+  }, [location_City, location_District, refetchGugunOptions, t]);
 
   // 게시글 정보 가져오기 interface (console.log 기준)
   interface GetPostData {
@@ -291,9 +289,12 @@ const ModifyPost: React.FC = () => {
 
       // 참가신청 기간 두번째 input이 첫번째 input보다 빠른 경우 체크
       if (new Date(signupStartDate) > new Date(signupEndDate)) {
-        toast.error(t("참가신청 기간은 종료일이 시작일보다 빠를 수 없습니다!"), {
-          className: "toast-error toast-container",
-        });
+        toast.error(
+          t("참가신청 기간은 종료일이 시작일보다 빠를 수 없습니다!"),
+          {
+            className: "toast-error toast-container",
+          }
+        );
         return;
       }
 
@@ -332,36 +333,41 @@ const ModifyPost: React.FC = () => {
       // 본문 내용 길이 체크
       const contentLength = 200;
       if (content.length > contentLength) {
-        toast.error(t(`본문 내용은 ${contentLength}자 이내로 입력해주세요!`), {
-          className: "toast-error toast-container",
-        });
+        toast.error(
+          t("본문 내용은 {{contentLength}}자 이내로 입력해주세요!", {
+            contentLength,
+          }),
+          {
+            className: "toast-error toast-container",
+          }
+        );
         return;
       }
 
       // 샐랙터 체크
       if (category == t("선택") || category == "") {
-        toast.error(t('카테고리 선택해 주세요!'), {
+        toast.error(t("카테고리 선택해 주세요!"), {
           className: "toast-error toast-container",
         });
         return;
       }
 
       if (isVerified == t("선택") || isVerified == "") {
-        toast.error(t('모임 범위 선택해 주세요!'), {
+        toast.error(t("모임 범위 선택해 주세요!"), {
           className: "toast-error toast-container",
         });
         return;
       }
 
       if (location_City == t("시 / 도") || location_City == "") {
-        toast.error(t('시/도 선택해 주세요!'), {
+        toast.error(t("시/도 선택해 주세요!"), {
           className: "toast-error toast-container",
         });
         return;
       }
 
       if (location_District == t("구 / 군") || location_District == "") {
-        toast.error(t('구/군 선택해 주세요!'), {
+        toast.error(t("구/군 선택해 주세요!"), {
           className: "toast-error toast-container",
         });
         return;
@@ -404,10 +410,12 @@ const ModifyPost: React.FC = () => {
       <St.SelectorWrap>
         {/* 카테고리 */}
         <Selector
-          options={categoryOptionsData?.data.category?.map((item:string) => ({
-            value: t(item||''),
-            label: t(item||''),
-          }))||[]}
+          options={
+            categoryOptionsData?.data.category?.map((item: string) => ({
+              value: t(item || ""),
+              label: t(item || ""),
+            })) || []
+          }
           value={category}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setCategory(selectedOption.target.value);
@@ -416,10 +424,12 @@ const ModifyPost: React.FC = () => {
 
         {/* 위치인증 */}
         <Selector
-          options={locationOptionsData?.data.verify?.map((item:string) => ({
-            value: t(item||''),
-            label: t(item||''),
-          }))||[]}
+          options={
+            locationOptionsData?.data.verify?.map((item: string) => ({
+              value: t(item || ""),
+              label: t(item || ""),
+            })) || []
+          }
           value={isVerified}
           onChange={(selectedOption: React.ChangeEvent<HTMLSelectElement>) => {
             setIsVerified(selectedOption.target.value);
@@ -469,7 +479,7 @@ const ModifyPost: React.FC = () => {
           <p>{t("모임주소")}</p>
           <St.DatePickerWrap>
             <Selector
-              options={(sidoOptionsData||[])?.map((item) => ({
+              options={(sidoOptionsData || [])?.map((item) => ({
                 value: t(item.doName),
                 label: t(item.doName),
               }))}
@@ -481,7 +491,7 @@ const ModifyPost: React.FC = () => {
               }}
             ></Selector>
             <Selector
-              options={(gugunOptionsData||[])?.map((option) => ({
+              options={(gugunOptionsData || [])?.map((option) => ({
                 value: t(option.guName),
                 label: t(option.guName),
               }))}
