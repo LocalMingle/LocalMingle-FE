@@ -45,7 +45,7 @@ const ViewPost: React.FC = () => {
       enabled: !!eventId,
       retry: 1,
       onError: () => {
-        navigate("/login");
+        navigate("/");
         toast.error(t("로그인시 확인이 가능합니다 😢"), {
           className: "toast-error toast-container",
         });

@@ -4,13 +4,21 @@ interface ButtonProps {
   children: React.ReactNode;
   onClick: () => void;
   bgcolor?: string;
+  disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, onClick, bgcolor }) => {
+const Button: React.FC<ButtonProps> = ({
+  children,
+  onClick,
+  bgcolor,
+  disabled,
+}) => {
   return (
     <>
-      <St.ButtonWrap onClick={onClick}>
-        <St.Button bgcolor={bgcolor}>{children}</St.Button>
+      <St.ButtonWrap>
+        <St.Button bgcolor={bgcolor} onClick={onClick} disabled={disabled}>
+          {children}
+        </St.Button>
       </St.ButtonWrap>
     </>
   );
