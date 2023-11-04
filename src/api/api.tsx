@@ -79,7 +79,6 @@ export const deleteUser = async (password: string) => {
     return response.data;
   } catch (error) {
     console.error("회원 탈퇴에 실패했어요!", error);
-    throw error;
   }
 };
 
@@ -151,7 +150,6 @@ export const uploadProfileImage = async (file: File) => {
     }
   } catch (error) {
     console.error("이미지 업로드 중 오류 발생:", error);
-    throw error;
   }
 };
 
@@ -162,7 +160,6 @@ export const getUserProfileImage = async () => {
     return response.data.UserDetail[0].profileImg;
   } catch (error) {
     console.error("프로필 이미지를 가져오는 중 오류 발생:", error);
-    throw error;
   }
 };
 
@@ -175,7 +172,6 @@ export const checkNickname = async (nickname: string) => {
     return response.data;
   } catch (error) {
     console.error("닉네임 중복 확인 중 오류 발생:", error);
-    throw error;
   }
 };
 
@@ -186,7 +182,6 @@ export const checkEmail = async (email: string) => {
     return response.data;
   } catch (error) {
     console.error("이메일 중복 확인 중 오류 발생:", error);
-    throw error;
   }
 };
 
@@ -197,7 +192,6 @@ export const deleteEvent = async (eventId: number) => {
     return response.data;
   } catch (error) {
     console.error("글목록 삭제 중 오류 발생:", error);
-    throw error;
   }
 };
 
@@ -216,7 +210,6 @@ export const getEvents = async (userId: number) => {
     return response.data;
   } catch (error) {
     console.error("글목록 불러오기 중 오류 발생:", error);
-    throw error;
   }
 };
 
@@ -268,7 +261,6 @@ export const getJoinedEvents = async (userId: number) => {
     }
   } catch (error) {
     console.error("참가한 이벤트 목록 불러오기 중 오류 발생:", error);
-    throw error;
   }
 };
 
@@ -383,7 +375,6 @@ export const updatePassword = async (newPassword: string) => {
     return response.data;
   } catch (error) {
     console.error("패스워드 업데이트 실패 😢", error);
-    throw error;
   }
 };
 
@@ -423,7 +414,6 @@ export const joinEvent = async (eventId: number) => {
     return null;
   } catch (error) {
     console.error("참가 신청 중 오류 발생:", error);
-    throw error;
   }
 };
 
@@ -456,6 +446,5 @@ export const cancelEventJoin = async (eventId: number) => {
     return null;
   } catch (error) {
     console.error("참가 취소 중 오류 발생:", error);
-    throw error;
   }
 };
