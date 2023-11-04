@@ -1,7 +1,5 @@
 import React from "react";
 import * as St from "./STBanner";
-import local from "../../../asset/localMingleImages/local.png";
-import mingle from "../../../asset/localMingleImages/mingle_2.png";
 import eyes from "../../../asset/localMingleImages/eyes.png";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 
@@ -22,10 +20,9 @@ const Banner: React.FC = () => {
           {t("소모임을 즐겨 보세요~")}
         </p>
 
-        <St.LogoWrap>
-          <img src={local} alt="로컬이" />
-          <img src={mingle} alt="밍글이" />
-        </St.LogoWrap>
+        {/* <St.LogoWrap>
+        </St.LogoWrap> */}
+
       </St.BannerContent>
     </St.BannerSection>
   );
