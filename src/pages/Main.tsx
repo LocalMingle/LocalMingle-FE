@@ -16,12 +16,7 @@ const Main: React.FC = () => {
     const accessToken = urlParams.get("accessToken");
     const refreshToken = urlParams.get("refreshToken");
 
-    if (
-      urlParams.size &&
-      userId !== null &&
-      accessToken !== null &&
-      refreshToken !== null
-    ) {
+    if (userId !== null && accessToken !== null && refreshToken !== null) {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       setUser({ userId: Number(userId) });

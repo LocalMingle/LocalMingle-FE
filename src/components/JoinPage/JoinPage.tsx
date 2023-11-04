@@ -39,6 +39,7 @@ const SignUpForm: React.FC = () => {
   const { currentLang, t, changeLanguage } = useLanguage();
   const [shouldRunTimer, setShouldRunTimer] = useState(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [verifiedEmail, setVerifiedEmail] = useState<string | null>(null);
 
   const [bio, setBio] = useState("");
   const [password, setPassword] = useState("");
@@ -64,7 +65,7 @@ const SignUpForm: React.FC = () => {
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
 
   const handleSignUp = async () => {
-    if (!isNicknameChecked && !isEmailVerified) {
+    if (!isNicknameChecked || !isEmailVerified || email !== verifiedEmail) {
       toast.error(t("닉네임 중복 체크와 이메일 인증을 해주세요."), {
         className: "toast-error toast-container",
       });
@@ -205,6 +206,7 @@ const SignUpForm: React.FC = () => {
     }
 
     setIsEmailValid(true);
+    setIsLoading(true); // API 호출 전에 로딩 상태를 true로 변경해줘
 
     try {
       toast.success(t("인증코드가 전송되었습니다."), {
@@ -218,6 +220,8 @@ const SignUpForm: React.FC = () => {
       setShouldRunTimer(true);
     } catch (error) {
       // console.error("이메일 보내기 실패:", error);
+    } finally {
+      setIsLoading(false); // API 호출이 끝나면 로딩 상태를 false로 변경해줘
     }
   };
 
@@ -226,7 +230,6 @@ const SignUpForm: React.FC = () => {
 
     try {
       const response = await verifyEmailCode(Number(authCode));
-
       setIsLoading(false);
 
       if (response.status === 201) {
@@ -235,6 +238,7 @@ const SignUpForm: React.FC = () => {
           setAuthError(t("인증이 되었습니다."));
           setIsSuccess(true);
           setCountdown(null);
+          setVerifiedEmail(email);
         } else if (response.data.message === "인증 실패") {
           setAuthError(t("인증코드를 다시 확인해주세요."));
           setIsSuccess(false);
@@ -401,7 +405,7 @@ const SignUpForm: React.FC = () => {
               <ST.DupCheckButtonWrap>
                 <ST.DupCheckButton
                   onClick={handleSendEmail}
-                  disabled={!isEmailValid}
+                  disabled={!isEmailValid || emailSent || isLoading}
                 >
                   {t("인증코드 보내기")}
                 </ST.DupCheckButton>
