@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import * as St from "./STLoginPage";
 import jwtDecode from "jwt-decode";
-// import naverLogo from "../../asset/buttonImages/naverlogin.png";
-// import googleLogo from "../../asset/buttonImages/googlelogin.png";
+import naverLogo from "../../asset/buttonImages/naverlogin.png";
+import googleLogo from "../../asset/buttonImages/googlelogin.png";
 import kakaoLogo from "../../asset/buttonImages/kakaologin.png";
 import { useRecoilState } from "recoil";
 import { setTokens } from "../../util/token";
@@ -86,26 +86,26 @@ const LoginPage: React.FC = () => {
     window.location.href = kakaoOauthURL;
   };
 
-  // const googleLoginHandler = () => {
-  //   const REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
-  //   const googleOauthURL = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${
-  //     import.meta.env.VITE_GOOGLE_CLIENT_ID
-  //   }&scope=openid%20profile%20email&redirect_uri=${encodeURIComponent(
-  //     `${REACT_APP_URL}/users/login/google`
-  //   )}&access_type=offline`;
-  //   window.location.href = googleOauthURL;
-  // };
+  const googleLoginHandler = () => {
+    const REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
+    const googleOauthURL = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${
+      import.meta.env.VITE_GOOGLE_CLIENT_ID
+    }&scope=openid%20profile%20email&redirect_uri=${encodeURIComponent(
+      `${REACT_APP_URL}/users/login/google`
+    )}&access_type=offline`;
+    window.location.href = googleOauthURL;
+  };
 
-  // const naverLoginHandler = () => {
-  //   const REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
-  //   const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID;
-  //   const STATE = "false";
-  //   const naverOauthURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=${STATE}&redirect_uri=${encodeURIComponent(
-  //     `${REACT_APP_URL}/users/login/naver`
-  //   )}`;
+  const naverLoginHandler = () => {
+    const REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
+    const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID;
+    const STATE = "false";
+    const naverOauthURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=${STATE}&redirect_uri=${encodeURIComponent(
+      `${REACT_APP_URL}/users/login/naver`
+    )}`;
 
-  //   window.location.href = naverOauthURL;
-  // };
+    window.location.href = naverOauthURL;
+  };
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setEmail(newValue);
@@ -194,7 +194,7 @@ const LoginPage: React.FC = () => {
         <St.Line />
       </St.Divider>
       <St.ButtonContainer>
-        {/* <St.NaverLoginBtn
+        <St.NaverLoginBtn
           onClick={naverLoginHandler}
           src={naverLogo}
           alt="naverlogin"
@@ -203,7 +203,7 @@ const LoginPage: React.FC = () => {
           onClick={googleLoginHandler}
           src={googleLogo}
           alt="googlelogin"
-        ></St.GoogleLoginBtn> */}
+        ></St.GoogleLoginBtn>
         <St.KakaoLoginBtn
           onClick={kakaoLoginHandler}
           src={kakaoLogo}
