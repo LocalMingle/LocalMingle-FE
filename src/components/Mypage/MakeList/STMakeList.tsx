@@ -37,7 +37,7 @@ export const UserPostForm = styled.div`
   margin-top: 8px;
   padding: 15px 8px;
   border-radius: 4px;
-  border: 1px solid #E7E7E7;
+  border: 1px solid #e7e7e7;
   cursor: pointer;
   width: 100%;
 
@@ -64,7 +64,7 @@ export const UserPostButtonWrap = styled.div`
 
   & > button {
     font-size: 12px;
-    border: 1px solid #ADADAD;
+    border: 1px solid #adadad;
     border-radius: 15px;
     padding: 4px 8px;
     cursor: pointer;
@@ -75,7 +75,7 @@ export const UserPostButtonWrap = styled.div`
     }
 
     &:last-child {
-      background: #E3653F;
+      background: #e3653f;
       color: #fff;
     }
   }
@@ -89,4 +89,31 @@ export const NoEventMessage = styled.div`
   color: #646464;
   margin-top: 20px;
   user-select: none;
+`;
+
+export const ToastWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const ConfirmButton = styled.button`
+  background-color: #e3653f;
+  color: white;
+  font-size: 12px;
+  border: 1px solid #adadad;
+  border-radius: 15px;
+  padding: 4px 8px;
+  cursor: pointer;
+`;
+
+export const CancelButton = styled.button`
+  background-color: #ffffff;
+  color: #646464;
+  font-size: 12px;
+  border: 1px solid #adadad;
+  border-radius: 15px;
+  padding: 4px 8px;
+  cursor: pointer;
+  margin-left: 4px;
 `;

@@ -62,17 +62,17 @@ export const UserJoinFormWrap = styled.div`
   flex-direction: column;
   overflow: hidden;
   width: 70%;
-`
+`;
 
 export const CategoryLocationWrapper = styled.div`
   font-size: 12px;
-  color: #1E1E1E;
+  color: #1e1e1e;
   margin-top: 5px;
 
   & span:first-child::after {
     display: inline-block;
     content: "";
-    border-right: 1px solid #1E1E1E;
+    border-right: 1px solid #1e1e1e;
     width: 2px;
     height: 10px;
     margin: 0 3px 0 0;
@@ -86,17 +86,17 @@ export const UserPostButtonWrap = styled.div`
 
   & > button {
     font-size: 12px;
-    border: 1px solid #ADADAD;
+    border: 1px solid #adadad;
     border-radius: 15px;
     padding: 4px 8px;
     cursor: pointer;
 
     &:first-child {
-      background: #F7D16F;
+      background: #f7d16f;
       color: #646464;
     }
   }
-`
+`;
 
 export const NoEventMessage = styled.div`
   display: flex;
@@ -106,4 +106,31 @@ export const NoEventMessage = styled.div`
   color: #646464;
   margin-top: 20px;
   user-select: none;
+`;
+
+export const ToastWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const ConfirmButton = styled.button`
+  background-color: #e3653f;
+  color: white;
+  font-size: 12px;
+  border: 1px solid #adadad;
+  border-radius: 15px;
+  padding: 4px 8px;
+  cursor: pointer;
+`;
+
+export const CancelButton = styled.button`
+  background-color: #ffffff;
+  color: #646464;
+  font-size: 12px;
+  border: 1px solid #adadad;
+  border-radius: 15px;
+  padding: 4px 8px;
+  cursor: pointer;
+  margin-left: 4px;
 `;
