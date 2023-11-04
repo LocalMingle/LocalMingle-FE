@@ -37,10 +37,16 @@ const JoinList: React.FC = () => {
     setLoading(true);
     try {
       const joinedEvents: Event[] = await getJoinedEvents(Number(userId));
-      const formattedEvents = joinedEvents.map((event) => ({
-        ...event,
-        createdAt: formatDate(event.createdAt),
-      }));
+      const formattedEvents = joinedEvents
+        .sort((a, b) => {
+          const dateA = new Date(a.createdAt);
+          const dateB = new Date(b.createdAt);
+          return dateB.getTime() - dateA.getTime();
+        })
+        .map((event) => ({
+          ...event,
+          createdAt: formatDate(event.createdAt),
+        }));
       setEvents(formattedEvents);
     } catch (error) {
       console.error("이벤트 불러오기 실패:", error);
@@ -94,7 +100,7 @@ const JoinList: React.FC = () => {
   };
 
   if (loading) {
-    return <p>로딩 중...</p>;
+    return <p>{t("로딩중...")}</p>;
   }
 
   return (
@@ -104,7 +110,7 @@ const JoinList: React.FC = () => {
           <St.MyPageWrap>
             <div>
               {events.map((event) => (
-                <St.UserJoinForm key={event.createdAt}>
+                <St.UserJoinForm key={event.id}>
                   <St.UserJoinFormWrap>
                     <h2 onClick={() => handlePostClick(event.eventId)}>
                       {event.eventName}
