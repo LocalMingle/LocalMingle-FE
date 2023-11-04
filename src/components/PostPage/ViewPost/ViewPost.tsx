@@ -99,10 +99,11 @@ const ViewPost: React.FC = () => {
   } = eventDetail.event;
 
   const { nickname, profileImg } = eventDetail.hostUser[0];
-  const flattenedGuests = eventDetail.guestUser.reduce(
-    (acc, val) => acc.concat(val),
-    []
-  );
+  const flattenedGuests = [
+    ...eventDetail.hostUser,
+    ...eventDetail.guestUser.reduce((acc, val) => acc.concat(val), []),
+  ];
+
   // 참가리 리스트 모달창 열기
   const openModal = () => {
     setIsModalOpen(true);
@@ -171,7 +172,7 @@ const ViewPost: React.FC = () => {
         <St.MaxSize>
           <p>{t("모집인원")}</p>
           <span>
-            {eventDetail.guestList} / {maxSize}
+            {eventDetail.guestList + 1} / {maxSize}
           </span>
           &nbsp;{t("명")}
         </St.MaxSize>
