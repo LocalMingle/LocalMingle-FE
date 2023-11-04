@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as St from "./STHeader";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -11,11 +11,18 @@ import textlogo from "../../../asset/localMingleImages/textlogo.png";
 import kologo from "../../../asset/languageImages/kologo.png";
 import enlogo from "../../../asset/languageImages/enlogo.png";
 import jplogo from "../../../asset/languageImages/jplogo.png";
+// import ringlogo from "../../../asset/headerImages/ringlogo.png"
+import userlogo from "../../../asset/headerImages/userlogo.png";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLoginState] = useRecoilState(isLoginState);
+  const [showDropdown, setShowDropdown] = useState(false);
   const { currentLang, t, changeLanguage } = useLanguage();
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -51,52 +58,40 @@ const Header: React.FC = () => {
 
   return (
     <>
-      {isLogin === false ? (
-        /* 로그인 전 */
-        <St.HeaderWrap>
-          <img onClick={goToMain} src={textlogo} alt="로컬밍글로고" />
-          <St.HeaderBtns>
+      <St.HeaderWrap>
+        <img onClick={goToMain} src={textlogo} alt="로컬밍글로고" />
+        <St.HeaderBtns>
+          {isLogin ? (
+            <St.UserLogo onClick={toggleDropdown}>
+              <img src={userlogo} alt="User" />
+              {showDropdown && (
+                <St.Dropdown>
+                  <St.MyPageButton onClick={goToMyPage}>
+                    {t("마이페이지")}
+                  </St.MyPageButton>
+                  <St.DropdownButton onClick={logout}>
+                    {t("로그아웃")}
+                  </St.DropdownButton>
+                </St.Dropdown>
+              )}
+            </St.UserLogo>
+          ) : (
             <button onClick={login}>{t("로그인")}</button>
-            {/* 다국어 지원 */}
-            {/* default 값을 공용어인 영어로 지정 */}
-            <St.Language onClick={changeLanguage}>
-              {(() => {
-                switch (currentLang) {
-                  case "ko":
-                    return <img src={kologo} alt="Korean" />;
-                  case "jp":
-                    return <img src={jplogo} alt="Japanese" />;
-                  default:
-                    return <img src={enlogo} alt="English" />;
-                }
-              })()}
-            </St.Language>
-          </St.HeaderBtns>
-        </St.HeaderWrap>
-      ) : (
-        /* 로그인 후 */
-        <St.HeaderWrap>
-          <img onClick={goToMain} src={textlogo} alt="로컬밍글로고" />
-          <St.HeaderBtns>
-            <button onClick={goToMyPage}>{t("마이페이지")}</button>
-            <button onClick={logout}>{t("로그아웃")}</button>
-            {/* 다국어 지원 */}
-            {/* default 값을 공용어인 영어로 지정 */}
-            <St.Language onClick={changeLanguage}>
-              {(() => {
-                switch (currentLang) {
-                  case "ko":
-                    return <img src={kologo} alt="Korean" />;
-                  case "jp":
-                    return <img src={jplogo} alt="Japanese" />;
-                  default:
-                    return <img src={enlogo} alt="English" />;
-                }
-              })()}
-            </St.Language>
-          </St.HeaderBtns>
-        </St.HeaderWrap>
-      )}
+          )}
+          <St.Language onClick={changeLanguage}>
+            {(() => {
+              switch (currentLang) {
+                case "ko":
+                  return <img src={kologo} alt="Korean" />;
+                case "jp":
+                  return <img src={jplogo} alt="Japanese" />;
+                default:
+                  return <img src={enlogo} alt="English" />;
+              }
+            })()}
+          </St.Language>
+        </St.HeaderBtns>
+      </St.HeaderWrap>
     </>
   );
 };
