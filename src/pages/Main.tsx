@@ -15,7 +15,9 @@ const Main: React.FC = () => {
     const userId = urlParams.get("userId");
     const accessToken = urlParams.get("accessToken");
     const refreshToken = urlParams.get("refreshToken");
-
+    alert(
+      `userId: ${userId}\naccessToken: ${accessToken}\nrefreshToken: ${refreshToken}\nurlParams.size: ${urlParams.size}`
+    );
     if (
       urlParams.size &&
       userId !== null &&
