@@ -45,12 +45,10 @@ const ViewPost: React.FC = () => {
       enabled: !!eventId,
       retry: 1,
       onError: () => {
-        toast.error(t("로그인이 필요합니다 😢"), {
+        navigate("/login");
+        toast.error(t("로그인시 확인이 가능합니다 😢"), {
           className: "toast-error toast-container",
         });
-        setTimeout(() => {
-          navigate("/login");
-        }, 1000);
       },
     }
   );
@@ -84,8 +82,8 @@ const ViewPost: React.FC = () => {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError || !eventDetail) return <div>{t("오류 발생 😢")}</div>;
+  if (isLoading) return null;
+  if (isError || !eventDetail) return null;
 
   const {
     category,
