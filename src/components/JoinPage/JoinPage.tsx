@@ -205,6 +205,7 @@ const SignUpForm: React.FC = () => {
     }
 
     setIsEmailValid(true);
+    setIsLoading(true); // API 호출 전에 로딩 상태를 true로 변경해줘
 
     try {
       toast.success(t("인증코드가 전송되었습니다."), {
@@ -218,6 +219,8 @@ const SignUpForm: React.FC = () => {
       setShouldRunTimer(true);
     } catch (error) {
       // console.error("이메일 보내기 실패:", error);
+    } finally {
+      setIsLoading(false); // API 호출이 끝나면 로딩 상태를 false로 변경해줘
     }
   };
 
@@ -401,7 +404,7 @@ const SignUpForm: React.FC = () => {
               <ST.DupCheckButtonWrap>
                 <ST.DupCheckButton
                   onClick={handleSendEmail}
-                  disabled={!isEmailValid}
+                  disabled={!isEmailValid || emailSent || isLoading}
                 >
                   {t("인증코드 보내기")}
                 </ST.DupCheckButton>
