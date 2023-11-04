@@ -269,6 +269,16 @@ const ModifyPost: React.FC = () => {
         return;
       }
 
+      // 게시글 제목 길이
+      const eventNameLength = 20;
+      if (eventName.length > eventNameLength) {
+        toast.error(t(`게시글 제목은 ${eventNameLength}자 이내로 입력해주세요!`), {
+            className: "toast-error toast-container",
+          }
+        );
+        return;
+      }
+
       // 모임일시가 오늘 날짜보다 과거인 경우 체크
       const today = new Date();
       const yesterday = new Date(today.setDate(today.getDate() - 1));
@@ -439,7 +449,7 @@ const ModifyPost: React.FC = () => {
       <St.TitleWrap>
         <input
           type="text"
-          placeholder={t("제목을 입력하세요")}
+          placeholder={t("제목을 입력하세요 (최대 20자 이내)")}
           value={eventName}
           onChange={(e) => {
             setEventName(e.target.value);
@@ -519,7 +529,7 @@ const ModifyPost: React.FC = () => {
       </St.InputWrap>
       <St.ContentsWrap>
         <textarea
-          placeholder={t("내용을 입력하세요")}
+          placeholder={t("내용을 입력하세요 (최대 200자 이내)")}
           value={content}
           onChange={(e) => {
             setContent(e.target.value);
