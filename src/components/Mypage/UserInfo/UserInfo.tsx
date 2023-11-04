@@ -288,7 +288,10 @@ const UserInfo: React.FC = () => {
                 onChange={handleNicknameChange}
               />
               <St.DupCheckButtonWrap>
-                <St.DupCheckButton onClick={handleCheckNicknameClick}>
+                <St.DupCheckButton
+                  onClick={handleCheckNicknameClick}
+                  disabled={!isNicknameValid}
+                >
                   {t("중복 체크")}
                 </St.DupCheckButton>
               </St.DupCheckButtonWrap>

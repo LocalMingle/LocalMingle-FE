@@ -127,24 +127,20 @@ export function validateImageUpload(file: File | null) {
 // 닉네임 중복검사
 export async function handleCheckNickname(nickname: string) {
   try {
+    const basicErrorMessage = validateNickname(nickname);
+    if (basicErrorMessage) {
+      return basicErrorMessage;
+    }
+
     const data = await checkNickname(nickname);
     const statusMessage = parseInt(data.message, 10);
 
     if (statusMessage === 201) {
       return "닉네임이 중복되었습니다.";
     } else if (statusMessage === 200) {
-      // 추가 중복 검사
       const additionalErrorMessage = UpdateValidateNickname(nickname);
       if (additionalErrorMessage) {
         return additionalErrorMessage;
-      }
-
-      if (nickname.length < 2 || nickname.length > 8) {
-        return "닉네임은 2자 이상 8자 이하로 입력해야 합니다.";
-      }
-
-      if (/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]/.test(nickname)) {
-        return "닉네임에는 알파벳, 숫자, 한글만 사용할 수 있습니다.";
       }
 
       return "닉네임을 사용할 수 있습니다.";
