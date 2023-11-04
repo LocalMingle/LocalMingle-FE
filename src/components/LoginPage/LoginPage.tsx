@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { validateEmail, validateLoginPassword } from "../../util/validation";
 import textlogo from "../../asset/localMingleImages/textlogo.png";
-import Mingle from "../../asset/localMingleImages/Mingle.png";
+import Mingle from "../../asset/localMingleImages/mingle.png";
 import kologo from "../../asset/languageImages/kologo.png";
 import enlogo from "../../asset/languageImages/enlogo.png";
 import jplogo from "../../asset/languageImages/jplogo.png";
