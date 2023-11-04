@@ -3,7 +3,7 @@ name: Deploy Frontend to S3 and CloudFront(ver. vite react)
 on:
   push:
     branches:
-      - dev # 배포하려는 브랜치
+      - Dev # 배포하려는 브랜치
 
 jobs:
   build-and-deploy:
