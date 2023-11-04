@@ -39,6 +39,7 @@ const SignUpForm: React.FC = () => {
   const { currentLang, t, changeLanguage } = useLanguage();
   const [shouldRunTimer, setShouldRunTimer] = useState(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [verifiedEmail, setVerifiedEmail] = useState<string | null>(null);
 
   const [bio, setBio] = useState("");
   const [password, setPassword] = useState("");
@@ -64,7 +65,7 @@ const SignUpForm: React.FC = () => {
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
 
   const handleSignUp = async () => {
-    if (!isNicknameChecked && !isEmailVerified) {
+    if (!isNicknameChecked || !isEmailVerified || email !== verifiedEmail) {
       toast.error(t("닉네임 중복 체크와 이메일 인증을 해주세요."), {
         className: "toast-error toast-container",
       });
@@ -229,7 +230,6 @@ const SignUpForm: React.FC = () => {
 
     try {
       const response = await verifyEmailCode(Number(authCode));
-
       setIsLoading(false);
 
       if (response.status === 201) {
@@ -238,6 +238,7 @@ const SignUpForm: React.FC = () => {
           setAuthError(t("인증이 되었습니다."));
           setIsSuccess(true);
           setCountdown(null);
+          setVerifiedEmail(email);
         } else if (response.data.message === "인증 실패") {
           setAuthError(t("인증코드를 다시 확인해주세요."));
           setIsSuccess(false);
