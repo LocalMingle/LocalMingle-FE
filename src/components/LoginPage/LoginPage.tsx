@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { validateEmail, validateLoginPassword } from "../../util/validation";
 import textlogo from "../../asset/localMingleImages/textlogo.png";
-import Mingle from "../../asset/localMingleImages/mingle.png";
+import mingle from "../../asset/localMingleImages/mingle.png";
 import kologo from "../../asset/languageImages/kologo.png";
 import enlogo from "../../asset/languageImages/enlogo.png";
 import jplogo from "../../asset/languageImages/jplogo.png";
@@ -128,7 +128,7 @@ const LoginPage: React.FC = () => {
     <St.Container>
       <Toaster />
       <St.Icon onClick={goToMain}>
-        <img src={Mingle} alt="밍글이" />
+        <img src={mingle} alt="밍글이" />
         <img src={textlogo} alt="로컬밍글" />
       </St.Icon>
       <St.Language onClick={changeLanguage}>
