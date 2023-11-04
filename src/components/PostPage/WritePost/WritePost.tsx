@@ -32,7 +32,7 @@ const WritePost: React.FC = () => {
   // 비로그인 접근 시 차단
   useEffect(() => {
     if (!accessToken) {
-      toast.error(t("로그인이 필요합니다 😢"), {
+      toast.error(t("로그인시 확인이 가능합니다 😢"), {
         className: "toast-error toast-container",
       });
       setTimeout(() => {
@@ -167,8 +167,7 @@ const WritePost: React.FC = () => {
     if (location_City == t("시 / 도") || location_City == "") {
       setLocation_District("");
     }
-
-  }, [location_City, location_District, refetchGugunOptions]);
+  }, [location_City, location_District, refetchGugunOptions, t]);
 
   // 게시글 작성 interface (console.log 기준)
   interface WritePostData {
@@ -239,9 +238,12 @@ const WritePost: React.FC = () => {
 
       // 참가신청 기간 두번째 input이 첫번째 input보다 빠른 경우 체크
       if (new Date(signupStartDate) > new Date(signupEndDate)) {
-        toast.error(t("참가신청 기간은 종료일이 시작일보다 빠를 수 없습니다!"), {
-          className: "toast-error toast-container",
-        });
+        toast.error(
+          t("참가신청 기간은 종료일이 시작일보다 빠를 수 없습니다!"),
+          {
+            className: "toast-error toast-container",
+          }
+        );
         return;
       }
 
@@ -288,28 +290,28 @@ const WritePost: React.FC = () => {
 
       // 샐랙터 체크
       if (category == t("선택") || category == "") {
-        toast.error(t('카테고리 선택해 주세요!'), {
+        toast.error(t("카테고리 선택해 주세요!"), {
           className: "toast-error toast-container",
         });
         return;
       }
 
       if (isVerified == t("선택") || isVerified == "") {
-        toast.error(t('모임 범위 선택해 주세요!'), {
+        toast.error(t("모임 범위 선택해 주세요!"), {
           className: "toast-error toast-container",
         });
         return;
       }
 
       if (location_City == t("시 / 도") || location_City == "") {
-        toast.error(t('시/도 선택해 주세요!'), {
+        toast.error(t("시/도 선택해 주세요!"), {
           className: "toast-error toast-container",
         });
         return;
       }
 
       if (location_District == t("구 / 군") || location_District == "") {
-        toast.error(t('구/군 선택해 주세요!'), {
+        toast.error(t("구/군 선택해 주세요!"), {
           className: "toast-error toast-container",
         });
         return;
