@@ -69,6 +69,9 @@ export function validateBio(bio: string) {
   if (!bio || !bio.trim()) {
     return "자기소개를 입력하세요.";
   }
+  if (bio.length > 30) {
+    return "자기소개는 30자 이하로 작성해주세요.";
+  }
   return "";
 }
 

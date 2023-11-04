@@ -90,10 +90,11 @@ export const Header = styled.div`
 
 export const Icon = styled(FontAwesomeIcon)`
   margin-top: -20px;
+  font-size: 16px;
   cursor: pointer;
 
   &:hover {
-    color: #6ec0f9; // 원하는 색상으로 바꿔도 됨
+    color: #6ec0f9;
   }
 `;
 
