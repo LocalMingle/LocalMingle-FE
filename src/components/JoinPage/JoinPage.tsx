@@ -35,6 +35,7 @@ const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
   const jsConfetti = new JSConfetti();
   const [, setUser] = useRecoilState(userState);
+  const [isAgreed, setIsAgreed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { currentLang, t, changeLanguage } = useLanguage();
   const [shouldRunTimer, setShouldRunTimer] = useState(false);
@@ -461,11 +462,32 @@ const SignUpForm: React.FC = () => {
         <ST.ErrorMessageJoin>{bioError}</ST.ErrorMessageJoin>
       </ST.LabelWrapper>
       <ST.StyledCheckboxLabel>
-        <input type="checkbox" id="agree" style={{ marginRight: "10px" }} />
+        <input
+          type="checkbox"
+          id="agree"
+          style={{ marginRight: "10px" }}
+          onChange={(e) => setIsAgreed(e.target.checked)}
+        />
         {t("(필수) 통합서비스 이용약관 및 개인정보 처리방침에 동의 합니다.")}
       </ST.StyledCheckboxLabel>
       {isLoading && <div>{t("회원가입 중...")}</div>}
-      <Button onClick={handleSignUp}>{t("회원가입")}</Button>
+      <Button
+        onClick={handleSignUp}
+        disabled={
+          isLoading ||
+          !authCode ||
+          !isNicknameValid ||
+          !isEmailVerified ||
+          !!bioError ||
+          !!passwordError ||
+          !!confirmPasswordError ||
+          !isNicknameChecked ||
+          !isAgreed ||
+          email !== verifiedEmail
+        }
+      >
+        {t("회원가입")}
+      </Button>
     </ST.Wrapper>
   );
 };
