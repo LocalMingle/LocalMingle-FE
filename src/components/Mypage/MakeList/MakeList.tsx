@@ -48,7 +48,7 @@ const MakeList: React.FC = () => {
     }
   );
 
-  const mutation = useMutation(deleteEvent, {
+  const mutation = useMutation<number, Error, number>(deleteEvent, {
     onSuccess: () => {
       refetch();
       toast.success(t("삭제가 완료되었습니다."), {
@@ -57,8 +57,23 @@ const MakeList: React.FC = () => {
     },
   });
 
-  const handleDeleteEvent = async (eventId: number) => {
-    await mutation.mutateAsync(eventId);
+  const handleDeleteEvent = (eventId: number) => {
+    const toastId = toast(
+      <St.ToastWrapper>
+        {t("정말로 삭제하시겠습니까?")}
+        <St.ConfirmButton
+          onClick={async () => {
+            await mutation.mutateAsync(eventId);
+            toast.dismiss(toastId);
+          }}
+        >
+          {t("삭제")}
+        </St.ConfirmButton>
+        <St.CancelButton onClick={() => toast.dismiss(toastId)}>
+          {t("취소")}
+        </St.CancelButton>
+      </St.ToastWrapper>
+    );
   };
 
   const handlePostClick = (eventId: number) => {

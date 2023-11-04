@@ -49,17 +49,32 @@ const JoinList: React.FC = () => {
     },
   });
 
-  const handleCancel = async (eventId: number) => {
-    try {
-      const result = await mutation.mutateAsync(eventId);
-      if (result === "cancelled") {
-        toast.success(t("참석이 취소되었습니다."), {
-          className: "toast-success toast-container",
-        });
-      }
-    } catch (error) {
-      // console.error("참석 취소 중 오류 발생:", error);
-    }
+  const handleCancel = (eventId: number) => {
+    const toastId = toast(
+      <St.ToastWrapper>
+        {t("참가를 정말로 취소하시겠습니까?")}
+        <St.ConfirmButton
+          onClick={async () => {
+            try {
+              const result = await mutation.mutateAsync(eventId);
+              if (result === "cancelled") {
+                toast.success(t("참석이 취소되었습니다."), {
+                  className: "toast-success toast-container",
+                });
+              }
+            } catch (error) {
+              // console.error("참석 취소 중 오류 발생:", error);
+            }
+            toast.dismiss(toastId);
+          }}
+        >
+          {t("참가취소")}
+        </St.ConfirmButton>
+        <St.CancelButton onClick={() => toast.dismiss(toastId)}>
+          {t("닫기")}
+        </St.CancelButton>
+      </St.ToastWrapper>
+    );
   };
 
   const handlePostClick = (eventId: number) => {
