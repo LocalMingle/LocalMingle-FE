@@ -4,7 +4,14 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import App from "./App";
 import "./util/Locales/i18n";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      cacheTime: Infinity,
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <RecoilRoot>

@@ -13,7 +13,7 @@ const Button: React.FC<ButtonProps> = ({ children, onClick, bgcolor }) => {
         <St.Button bgcolor={bgcolor}>{children}</St.Button>
       </St.ButtonWrap>
     </>
-  )
+  );
 };
 
 export default Button;
