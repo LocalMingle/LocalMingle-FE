@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import * as St from "./STJoinList";
 import toast from "react-hot-toast";
 import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
-import { useQuery, useMutation } from "react-query";
 import { userState } from "../../../recoil/atoms/UserState";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 import { getJoinedEvents, cancelEventJoin } from "../../../api/api";
@@ -17,53 +16,66 @@ type Event = {
   createdAt: string;
   eventId: number;
 };
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = `0${date.getMonth() + 1}`.slice(-2);
+  const day = `0${date.getDate()}`.slice(-2);
+  return `${year}/${month}/${day}`;
+};
 
 const JoinList: React.FC = () => {
   const user = useRecoilValue(userState);
   const userId = user.userId;
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchEvents = async () => {
-    if (!userId) throw new Error("사용자가 로그인하지 않았습니다.");
-    const joinedEvents: Event[] = await getJoinedEvents(Number(userId));
-    return joinedEvents.sort((a, b) => {
-      const dateA = new Date(a.createdAt);
-      const dateB = new Date(b.createdAt);
-      return dateB.getTime() - dateA.getTime();
-    });
-  };
-
-  const { data: events = [], refetch } = useQuery<Event[], Error>(
-    ["events", userId],
-    fetchEvents,
-    {
-      enabled: !!userId,
-      initialData: [],
+  const fetchEvents = useCallback(async () => {
+    if (!userId) return;
+    setLoading(true);
+    try {
+      const joinedEvents: Event[] = await getJoinedEvents(Number(userId));
+      const formattedEvents = joinedEvents.map((event) => ({
+        ...event,
+        createdAt: formatDate(event.createdAt),
+      }));
+      setEvents(formattedEvents);
+    } catch (error) {
+      console.error("이벤트 불러오기 실패:", error);
+    } finally {
+      setLoading(false);
     }
-  );
+  }, [userId]);
 
-  const mutation = useMutation(cancelEventJoin, {
-    onSuccess: () => {
-      refetch();
-    },
-  });
+  useEffect(() => {
+    fetchEvents();
+  }, [userId, fetchEvents]);
 
-  const handleCancel = (eventId: number) => {
+  const handleCancel = async (eventId: number) => {
     const toastId = toast(
       <St.ToastWrapper>
         {t("참가를 정말로 취소하시겠습니까?")}
         <St.ConfirmButton
           onClick={async () => {
             try {
-              const result = await mutation.mutateAsync(eventId);
+              const result = await cancelEventJoin(eventId);
               if (result === "cancelled") {
                 toast.success(t("참석이 취소되었습니다."), {
                   className: "toast-success toast-container",
                 });
+                fetchEvents();
+              } else {
+                toast.error(t("참석 취소에 실패했습니다."), {
+                  className: "toast-error toast-container",
+                });
               }
             } catch (error) {
-              // console.error("참석 취소 중 오류 발생:", error);
+              console.error("참석 취소 중 오류 발생:", error);
+              toast.error(t("참석 취소에 실패했습니다."), {
+                className: "toast-error toast-container",
+              });
             }
             toast.dismiss(toastId);
           }}
@@ -81,6 +93,10 @@ const JoinList: React.FC = () => {
     navigate(`/postview/${eventId}`);
   };
 
+  if (loading) {
+    return <p>로딩 중...</p>;
+  }
+
   return (
     <>
       {events.length > 0 ? (
@@ -94,8 +110,8 @@ const JoinList: React.FC = () => {
                       {event.eventName}
                     </h2>
                     <St.CategoryLocationWrapper>
-                      <span>{event.category}</span>
-                      <span>{event.eventDate}</span>
+                      <span>{t(event.category)}</span>
+                      <span>{formatDate(event.eventDate)}</span>
                     </St.CategoryLocationWrapper>
                   </St.UserJoinFormWrap>
                   <St.UserPostButtonWrap>
