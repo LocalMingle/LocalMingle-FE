@@ -196,7 +196,9 @@ const ViewPost: React.FC = () => {
 
       {/* 게시글 컨텐츠 */}
       <St.ContentWrap>
-        <St.Content>{content}</St.Content>
+        <div>
+          <textarea readOnly>{content}</textarea>
+        </div>
       </St.ContentWrap>
 
       <St.ButtonWrap>
