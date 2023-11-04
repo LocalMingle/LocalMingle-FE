@@ -345,12 +345,21 @@ const UserInfo: React.FC = () => {
 
           <St.InputContainer>
             <St.Label htmlFor="passwordConfirm">{t("비밀번호 확인")}</St.Label>
-            <input
-              type="password"
-              id="passwordConfirm"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-            />
+            <St.EyleToggleWrap>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="passwordConfirm"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+              />
+              <St.EyeToggleButton onClick={togglePasswordVisibility}>
+                {showPassword ? (
+                  <FontAwesomeIcon icon={faEye} />
+                ) : (
+                  <FontAwesomeIcon icon={faEyeSlash} />
+                )}
+              </St.EyeToggleButton>
+            </St.EyleToggleWrap>
             <St.ErrorMessagePassword>
               {confirmPasswordError}
             </St.ErrorMessagePassword>

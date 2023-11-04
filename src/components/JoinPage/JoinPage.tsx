@@ -160,7 +160,7 @@ const SignUpForm: React.FC = () => {
     let timer: NodeJS.Timeout | null = null;
 
     const startTimer = () => {
-      if (countdown === null) {
+      {
         setCountdown(300);
       }
 
@@ -194,7 +194,7 @@ const SignUpForm: React.FC = () => {
         clearInterval(timer);
       }
     };
-  }, [shouldRunTimer, isEmailVerified, t, countdown]);
+  }, [shouldRunTimer, isEmailVerified, t]);
 
   const handleSendEmail = async () => {
     const errorMessage = t(await handleCheckEmail(email));
@@ -259,7 +259,6 @@ const SignUpForm: React.FC = () => {
     } catch (error) {
       setIsLoading(false);
 
-      // console.error("인증 실패:", error);
       setAuthError(t("인증코드를 다시 확인해주세요."));
       setIsSuccess(false);
     }
