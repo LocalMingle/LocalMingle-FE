@@ -206,7 +206,7 @@ const SignUpForm: React.FC = () => {
     }
 
     setIsEmailValid(true);
-    setIsLoading(true); // API 호출 전에 로딩 상태를 true로 변경해줘
+    setIsLoading(true);
 
     try {
       toast.success(t("인증코드가 전송되었습니다."), {
