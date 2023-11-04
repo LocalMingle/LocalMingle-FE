@@ -1,6 +1,6 @@
 import React from "react";
 import * as St from "./STBanner";
-import local from "../../../asset/localMingleImages/Local.png";
+import local from "../../../asset/localMingleImages/local.png";
 import mingle from "../../../asset/localMingleImages/mingle_2.png";
 import eyes from "../../../asset/localMingleImages/eyes.png";
 
