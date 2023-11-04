@@ -396,7 +396,7 @@ const SignUpForm: React.FC = () => {
       </ST.LabelWrapper>
 
       <ST.LabelWrapper>
-        <label>{t("이메일")}</label>
+        <label>{t("이메일..")}</label>
         <div>
           <input type="email" value={email} onChange={handleEmailChange} />
           {emailSent ? (
