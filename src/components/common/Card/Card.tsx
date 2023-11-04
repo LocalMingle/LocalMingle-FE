@@ -21,7 +21,7 @@ interface CardProps {
     signupStartDate: string;
     updatedAt: string;
   };
-  guestList: number[];
+  guestList: number;
   hostUser: [
     {
       userDetailId: number;
@@ -39,6 +39,11 @@ const setDateFormat = (date: string): string => {
   return new String(date).split("T")[0];
 };
 
+const setDefaultMember = (member: number): number => {
+  // 최소 맴버수(본인 포함) +1
+  return member + 1;
+}
+
 const Card: React.FC<CardProps> = ({ event, guestList, hostUser }) => {
   const { t } = useLanguage();
   return (
@@ -47,8 +52,7 @@ const Card: React.FC<CardProps> = ({ event, guestList, hostUser }) => {
         <St.CardTop>
           <Tag bgcolor="green">{t(event.category)}</Tag>
           <St.Members>
-            {" "}
-            {guestList} / {event.maxSize}
+            {setDefaultMember(guestList)} / {event.maxSize}
           </St.Members>
         </St.CardTop>
         <St.Date>

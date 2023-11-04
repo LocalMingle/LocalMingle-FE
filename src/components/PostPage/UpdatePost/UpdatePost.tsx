@@ -19,7 +19,7 @@ const ModifyPost: React.FC = () => {
 
   // 게시글 작성 state
   const [eventName, setEventName] = useState<string>("");
-  const [maxSize, setMaxSize] = useState<number>(0);
+  const [maxSize, setMaxSize] = useState<number>(1);
   const [eventDate, setEventDate] = useState<string>("");
   const [signupStartDate, setSignupStartDate] = useState<string>("");
   const [signupEndDate, setSignupEndDate] = useState<string>("");
@@ -325,8 +325,8 @@ const ModifyPost: React.FC = () => {
       }
 
       // 최소 모임인원 체크
-      if (maxSize < 0 || maxSize == 0) {
-        toast.error(t("모임인원은 1명 이상이어야 합니다!"), {
+      if (maxSize < 2) {
+        toast.error(t("모임인원은 본인 포함 2명 이상이어야 합니다!"), {
           className: "toast-error toast-container",
         });
         return;

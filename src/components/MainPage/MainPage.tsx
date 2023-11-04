@@ -39,7 +39,7 @@ const MainPage: React.FC = () => {
       signupStartDate: string;
       updatedAt: string;
     };
-    guestList: number[];
+    guestList: number;
     hostUser: [
       {
         userDetailId: number;
