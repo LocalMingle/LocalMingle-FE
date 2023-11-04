@@ -77,8 +77,8 @@ export const DupCheckButtonWrap = styled.div`
 export const DupCheckButton = styled.button`
   border: 1px solid #adadad;
   border-radius: 20px;
-  background-color: #646464;
-  cursor: pointer;
+  background-color: ${(props) => (props.disabled ? "#adadad" : "#646464")};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   font-size: 12px;
   padding: 6px;
   color: #ffffff;
