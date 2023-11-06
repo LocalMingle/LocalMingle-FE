@@ -18,7 +18,7 @@ export const Button = styled.button<ButtonProps>`
   box-sizing: border-box;
   border-radius: 20px;
   border: 1px solid ${({ disabled }) => (disabled ? "#d3d3d3" : "#adadad")};
-  color: ${({ disabled }) => (disabled ? "#a8a8a8" : "#646464")};
+  color: ${({ disabled }) => (disabled ? "#ffffff" : "#646464")};
   text-align: center;
   height: 40px;
   padding: 8px;

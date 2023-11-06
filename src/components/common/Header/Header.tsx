@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as St from "./STHeader";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import "../../../util/toastStyles.css";
 import { useRecoilState } from "recoil";
 import { isLoginState } from "../../../recoil/atoms/UserState";
-import { useEffect } from "react";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 import textlogo from "../../../asset/localMingleImages/textlogo.png";
 import kologo from "../../../asset/languageImages/kologo.png";
@@ -16,6 +15,7 @@ import userlogo from "../../../asset/headerImages/userlogo.png";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [isLogin, setIsLoginState] = useRecoilState(isLoginState);
   const [showDropdown, setShowDropdown] = useState(false);
   const { currentLang, t, changeLanguage } = useLanguage();
@@ -24,10 +24,37 @@ const Header: React.FC = () => {
     setShowDropdown(!showDropdown);
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setShowDropdown(false);
+    }
+  };
+
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     accessToken ? setIsLoginState(true) : setIsLoginState(false);
   }, [setIsLoginState]);
+
+  useEffect(() => {
+    if (showDropdown) {
+      window.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showDropdown]);
+
+  useEffect(() => {
+    if (showDropdown) {
+      window.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showDropdown]);
 
   // (로고) 메인페이지 이동 후 새로고침
   const goToMain = () => {
@@ -66,7 +93,7 @@ const Header: React.FC = () => {
             <St.UserLogo onClick={toggleDropdown}>
               <img src={userlogo} alt="User" />
               {showDropdown && (
-                <St.Dropdown>
+                <St.Dropdown ref={dropdownRef}>
                   <St.MyPageButton onClick={goToMyPage}>
                     {t("마이페이지")}
                   </St.MyPageButton>
