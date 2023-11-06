@@ -29,24 +29,6 @@ export const BannerContent = styled.div`
   }
 `
 
-export const EyesWrap = styled.div`
-  & img:first-child {
-    width: 27px;
-    position: absolute;
-    top: 18px;
-    left: 40px;
-    transform: scaleX(-1) rotate(-29.486deg);
-  }
-
-  & img:last-child {
-    width: 22px;
-    position: absolute;
-    top: 40px;
-    left: 260px;
-    transform: rotate(-29.486deg);
-  }
-
-`
 export const LogoWrap = styled.div`
   display: flex;
 
@@ -64,4 +46,71 @@ export const LogoWrap = styled.div`
     bottom: 20px;
     transform: scaleX(-1);
   }
+`
+
+export const BannerImg = styled.div`
+  /* 눈 */
+  & img:nth-child(1) {
+    z-index: 3;
+    position: absolute;
+    top: 65px;
+    right: 90px;
+    width: 40px;
+    transform: rotate(-12.986deg);
+    /* filter: drop-shadow(0px 4px 4px #00000040);  */
+
+    @media screen and (max-width: 500px){
+      top: 90px;
+      right: 80px;
+      width: 33px;
+    }
+  }
+  /* 파랑이 */
+  & img:nth-child(2) {
+    z-index: 2;
+    position: absolute;
+    top: 55px;
+    right: 30px;
+    width: 48px;
+    transform: rotate(39.424deg);
+    /* filter: drop-shadow(0px 4px 4px #00000040);  */
+
+    @media screen and (max-width: 500px){
+      top: 70px;
+      right: 20px;
+      width: 48px;
+    }
+  }
+  /* 빨강이 */
+  & img:nth-child(3) {
+    z-index: 2;
+    position: absolute;
+    top: 100px;
+    right: 100px;
+    width: 64px;
+    transform: rotate(-41.439deg);
+    /* filter: drop-shadow(0px 4px 4px #00000040);  */
+
+    @media screen and (max-width: 500px){
+      top: 115px;
+      right: 90px;
+      width: 54px;
+    }
+  }
+  /* 노랑이 */
+  & img:nth-child(4) {
+    z-index: 1;
+    position: absolute;
+    top: 90px;
+    right: 20px;
+    width: 87px;
+    transform: rotate(18.396deg);
+    /* filter: drop-shadow(0px 4px 4px #00000040); */
+
+    @media screen and (max-width: 500px){
+      top: 100px;
+      right: 10px;
+      width: 87px;
+    }
+    }
 `
