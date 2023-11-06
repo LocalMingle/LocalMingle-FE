@@ -47,15 +47,6 @@ const Header: React.FC = () => {
     };
   }, [showDropdown]);
 
-  useEffect(() => {
-    if (showDropdown) {
-      window.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      window.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showDropdown]);
-
   // (로고) 메인페이지 이동 후 새로고침
   const goToMain = () => {
     navigate("/");
