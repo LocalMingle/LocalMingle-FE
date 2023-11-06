@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as St from "./STMainPage";
 import Banner from "../common/Banner/Banner";
-// import Search from "../common/Search/Search";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import Selector from "../common/Selector/Selector";
@@ -276,8 +275,7 @@ const MainPage: React.FC = () => {
   return (
     <>
       <Banner></Banner>
-      {/* <Search onSearch={onSearch}></Search> */}
-        <St.SearchBar>
+      <St.SearchBar>
         <div>
           <St.SearchInput
             ref={searchRef}
