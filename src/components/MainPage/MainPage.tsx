@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "../../util/Locales/useLanguage";
 import i18n from "../../util/Locales/i18n";
 import toast from "react-hot-toast";
+import { useInView } from "react-intersection-observer";
 
 const MainPage: React.FC = () => {
 
@@ -94,6 +95,10 @@ const MainPage: React.FC = () => {
   const [verifyList , setVerifyList] = useState<string[]>(); 
   const [postList , setPostList] = useState<CardProps[]>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
+  const [ref, inView] = useInView();
+
+  console.log(inView, "무한 스크롤 잘 나오니?")
   
   /**
    * @description mainAPI: DB에서 받아온 데이터
@@ -132,6 +137,7 @@ const MainPage: React.FC = () => {
         keyWord : keyword
       }
     }),
+    infinity: () => customAxios.get(`events/pageNo=${page}&pageSize=5`)
   };
 
   // useEffect 샐랙터 초기값 세팅
@@ -266,6 +272,34 @@ const MainPage: React.FC = () => {
       postListSearch();
   },[verify, sido, gugun, category, lang]);
 
+  /**
+   * @description 무한 스크롤
+   * 지정한 타겟 div가 화면에 보일 때 마다 서버에 요청을 보냄
+   */
+
+  const infiniteScroll = async () => {
+    setLoading(true);
+
+    const response:CardProps[] = await mainAPI.infinity
+      .then((response) => {
+        console.log('무한스크롤 데이터:', response.data);
+        setPostList([...postList, ...response.data])
+        setPage((page) => page + 1);
+      }).catch((error) => {
+        throw error;
+      });
+
+      setLoading(false);
+  }
+
+  useEffect(() => {
+    // inView가 true 일때만 실행한다.
+    if (inView) {
+      console.log(inView, '무한 스크롤 요청')
+      infiniteScroll();
+    }
+  }, [inView]);
+    
 
   /**
    * @description 메인페이지 렌더링
@@ -346,6 +380,7 @@ const MainPage: React.FC = () => {
           <Card key={index} {...postDataItem}></Card>
         </CustomLink>
       ))}
+      <div ref={ref}>무한스크롤 테스트</div>
       <FixedButton></FixedButton>
       {loading == true ? <Spinner/> : <></>}
     </>
