@@ -29,9 +29,10 @@ const Header: React.FC = () => {
     accessToken ? setIsLoginState(true) : setIsLoginState(false);
   }, [setIsLoginState]);
 
-  // (로고)메인 페이지로 이동
+  // (로고) 메인페이지 이동 후 새로고침
   const goToMain = () => {
     navigate("/");
+    window.location.reload();
   };
 
   // 마이 페이지로 이동
