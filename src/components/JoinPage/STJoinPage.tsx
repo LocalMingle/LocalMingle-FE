@@ -59,6 +59,14 @@ export const EyeToggleButton = styled.button`
   cursor: pointer;
 `;
 
+export const NickameInput = styled.input`
+  width: 200px;
+`;
+
+export const EmailInput = styled.input`
+  width: 200px;
+`;
+
 export const ErrorMessageJoin = styled.div`
   font-size: 12px;
   color: #da7969;

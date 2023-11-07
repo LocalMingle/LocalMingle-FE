@@ -3,6 +3,7 @@ import { useContext, useState, useEffect } from "react";
 import { SocketContext } from "../SocketContext";
 import { EventDetailResponse } from "../ChatTypes";
 import { useLanguage } from "../../../util/Locales/useLanguage";
+import { Modal } from "../../common/Modal";
 
 type ChatBoxProps = {
   currentUserId: number;
@@ -45,21 +46,25 @@ const ChatBox = (props: ChatBoxProps) => {
   const socket = useContext(SocketContext);
   const [error, setError] = useState<string | null>(null);
   const [isComposing, setIsComposing] = useState(false);
+  const [participants, setParticipants] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { currentUserNickname, currentUserProfileImg } = getCurrentUserDetails(
     props.eventDetail,
     props.currentUserId
   );
-
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   const handleSendMessage = () => {
     if (!isComposing && message.trim() && socket) {
       const currentTime = new Date().toLocaleTimeString();
       const messageData = {
-        message: message,
+        userId: props.currentUserId,
         nickname: currentUserNickname,
         profileImg: currentUserProfileImg,
         time: currentTime,
         roomId: props.eventId,
-        userId: props.currentUserId,
+        message: message,
       };
       socket.emit("submit_chat", messageData);
       setMessage("");
@@ -79,13 +84,39 @@ const ChatBox = (props: ChatBoxProps) => {
   useEffect(() => {
     if (socket && currentUserNickname && currentUserProfileImg) {
       const joinData = {
-        nickname: currentUserNickname,
         roomId: props.eventId,
-        profileImg: currentUserProfileImg,
+        userList: {
+          [props.currentUserId]: {
+            nickname: currentUserNickname,
+            profileImg: currentUserProfileImg,
+          },
+        },
       };
       socket.emit("join_room", joinData);
     }
-  }, [socket, currentUserNickname, currentUserProfileImg, props.eventId]);
+  }, [
+    socket,
+    currentUserNickname,
+    currentUserProfileImg,
+    props.currentUserId,
+    props.eventId,
+  ]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("users_list", (usersList) => {
+        setParticipants(usersList);
+      });
+
+      return () => {
+        socket.off("users_list");
+      };
+    }
+  }, [socket]);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
   return (
     <ST.MessageContainer>
@@ -108,6 +139,12 @@ const ChatBox = (props: ChatBoxProps) => {
 
         <ST.SendButton onClick={handleSendMessage}>{t("전송")}</ST.SendButton>
       </ST.InputContainer>
+      <ST.ParticipantsButton onClick={openModal}>
+        {t("참여자 목록 보기")}
+      </ST.ParticipantsButton>
+      {isModalOpen && (
+        <Modal participants={participants} onClose={closeModal} />
+      )}
       {error && <ST.ErrorMessage>{error}</ST.ErrorMessage>}
     </ST.MessageContainer>
   );

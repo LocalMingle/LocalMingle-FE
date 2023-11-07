@@ -365,7 +365,11 @@ const SignUpForm: React.FC = () => {
       <ST.LabelWrapper>
         <label>{t("닉네임")}</label>
         <div>
-          <input type="text" value={nickname} onChange={handleNicknameChange} />
+          <ST.NickameInput
+            type="text"
+            value={nickname}
+            onChange={handleNicknameChange}
+          />
           <ST.DupCheckButtonWrap>
             <ST.DupCheckButton onClick={handleNicknameDupCheck}>
               {t("중복 체크")}
