@@ -1,7 +1,7 @@
 import * as ST from "./STChatList";
 import { SocketContext } from "../SocketContext";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext, useRef, useCallback } from "react";
 import { MessageData, EventDetailResponse } from "../ChatTypes";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
@@ -11,9 +11,34 @@ type ChatListProps = {
   eventDetail: EventDetailResponse;
   currentUserId: number;
 };
-type UserConnectedData = {
-  nickname: string;
-  profileImg?: string;
+
+const getCurrentUserDetails = (
+  eventDetail: EventDetailResponse | null,
+  currentUserId: number
+) => {
+  let currentUserNickname;
+  let currentUserProfileImg;
+
+  if (eventDetail?.hostUser[0]?.UserId === currentUserId) {
+    currentUserNickname = eventDetail?.hostUser[0]?.nickname;
+    currentUserProfileImg = eventDetail?.hostUser[0]?.profileImg;
+  } else {
+    const currentUser = eventDetail?.guestUser.find((group) =>
+      group.some((user) => user.UserId === currentUserId)
+    );
+
+    if (currentUser) {
+      const guestUser = currentUser.find(
+        (user) => user.UserId === currentUserId
+      );
+
+      if (guestUser) {
+        currentUserNickname = guestUser.nickname;
+        currentUserProfileImg = guestUser.profileImg;
+      }
+    }
+  }
+  return { currentUserNickname, currentUserProfileImg };
 };
 
 const ChatList = (props: ChatListProps) => {
@@ -22,31 +47,20 @@ const ChatList = (props: ChatListProps) => {
   const [messages, setMessages] = useState<MessageData[]>([]);
   const socket = useContext(SocketContext);
   const chatListRef = useRef<HTMLDivElement>(null);
-  null;
+  const { currentUserProfileImg } = getCurrentUserDetails(
+    props.eventDetail,
+    props.currentUserId
+  );
 
-  const navigateToEventDetail = () => {
-    navigate("/");
-  };
-
-  const getCurrentTime = () => {
+  // 현재 시간을 문자열로 가져오는 함수
+  const getCurrentTime = useCallback(() => {
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes().toString().padStart(2, "0");
-    const seconds = now.getSeconds().toString().padStart(2, "0");
     const ampm = hours >= 12 ? "오후" : "오전";
     const twelveHour = hours % 12 || 12;
-
-    return `${ampm} ${twelveHour}:${minutes}:${seconds}`;
-  };
-
-  const hostNickname = props.eventDetail?.hostUser[0]?.nickname;
-  const hostProfileImg = props.eventDetail?.hostUser[0]?.profileImg;
-  const guestNicknames = props.eventDetail?.guestUser
-    .flat()
-    .map((user) => user.nickname);
-  const guestProfileImgs = props.eventDetail?.guestUser
-    .flat()
-    .map((user) => user.profileImg);
+    return `${ampm} ${twelveHour}:${minutes}`;
+  }, []);
 
   useEffect(() => {
     if (chatListRef.current) {
@@ -57,78 +71,54 @@ const ChatList = (props: ChatListProps) => {
   useEffect(() => {
     if (socket) {
       socket.on("new_chat", (messageData: MessageData) => {
-        // console.log("ChatList에서 새로운 채팅이 도착했어:", messageData);
-        setMessages((prevMessages) => {
-          const newMessages = [...prevMessages, messageData];
-          // console.log("ChatList 업데이트된 메시지:", newMessages);
-          return newMessages;
-        });
+        setMessages((prevMessages) => [...prevMessages, messageData]);
       });
 
-      socket.on("user_connected", (userData: UserConnectedData) => {
-        const nickname = userData.nickname;
-        let userProfileImg = userData.profileImg || "";
-
-        if (nickname === hostNickname) {
-          userProfileImg = hostProfileImg;
-        } else if (guestNicknames.includes(nickname)) {
-          const idx = guestNicknames.indexOf(nickname);
-          userProfileImg = guestProfileImgs[idx];
-        }
+      socket.on("new-user", (eventData) => {
+        console.log("New user event received:", eventData);
+        const { nickname, profileImg } = eventData;
         const newUserMessage: MessageData = {
-          message: `${nickname}${t("님이 들어왔습니다.")}`,
+          message: `${nickname}님이 채팅방에 참가하셨습니다.`,
           nickname,
-          profileImg: userProfileImg,
+          profileImg: profileImg || currentUserProfileImg,
           time: getCurrentTime(),
           roomId: props.eventId,
         };
         setMessages((prevMessages) => [...prevMessages, newUserMessage]);
       });
 
-      socket.on("disconnect_user", (userData: UserConnectedData) => {
-        // console.log("disconnect_user 이벤트 발생, 받은 데이터:", userData);
-        const nickname = userData.nickname;
-        let userProfileImg = userData.profileImg || "";
-
-        if (nickname === hostNickname) {
-          userProfileImg = hostProfileImg;
-        } else if (guestNicknames.includes(nickname)) {
-          const idx = guestNicknames.indexOf(nickname);
-          userProfileImg = guestProfileImgs[idx];
-        }
-        const disconnectedUserMessage: MessageData = {
-          message: `${nickname}${t("님이 나갔습니다.")}`,
+      socket.on("left-user", (eventData) => {
+        console.log("User left event received:", eventData);
+        const { nickname, profileImg } = eventData;
+        const leftUserMessage: MessageData = {
+          message: `${nickname}님이 채팅방을 떠났습니다.`,
           nickname,
-          profileImg: userProfileImg,
+          profileImg: profileImg || currentUserProfileImg,
           time: getCurrentTime(),
           roomId: props.eventId,
         };
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          disconnectedUserMessage,
-        ]);
+        setMessages((prevMessages) => [...prevMessages, leftUserMessage]);
       });
 
       return () => {
         socket.off("new_chat");
-        socket.off("user_connected");
-        socket.off("disconnect_user");
+        socket.off("new-user");
+        socket.off("left-user");
       };
     }
-  }, [
-    props.eventId,
-    socket,
-    guestNicknames,
-    guestProfileImgs,
-    hostNickname,
-    hostProfileImg,
-    t,
-  ]);
+  }, [socket, props.eventId, getCurrentTime, t, currentUserProfileImg]);
+
+  const handleLeaveRoomAndNavigate = useCallback(() => {
+    if (socket) {
+      socket.emit("leave_room", { roomId: props.eventId });
+    }
+    navigate("/");
+  }, [socket, props.eventId, navigate]);
 
   return (
     <ST.ChatListContainer ref={chatListRef}>
       <ST.Header>
-        <ST.Icon icon={faChevronLeft} onClick={navigateToEventDetail} />
+        <ST.Icon icon={faChevronLeft} onClick={handleLeaveRoomAndNavigate} />
         <ST.EventName>{props.eventDetail.event.eventName}</ST.EventName>
         <div></div>
       </ST.Header>

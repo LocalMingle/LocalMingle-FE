@@ -64,7 +64,9 @@ export const MessageItem = styled.div.withConfig({
   margin-left: ${(props) => (props.isMyMessage ? "10px" : "0")};
 `;
 
-export const Timestamp = styled.div<TimestampProps>`
+export const Timestamp = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["isMyMessage"].includes(prop),
+})<TimestampProps>`
   font-size: 10px;
   color: #666;
   margin-top: 5px;

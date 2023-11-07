@@ -11,6 +11,7 @@ export type MessageData = {
   guestUser?: {
     UserId: number;
   }[][];
+  userList?: User[];
 };
 
 export type EventDetailResponse = {
@@ -28,4 +29,10 @@ export type EventDetailResponse = {
     nickname: string;
     profileImg: string;
   }[][];
+};
+
+export type User = {
+  UserId: number;
+  nickname: string;
+  profileImg: string;
 };
