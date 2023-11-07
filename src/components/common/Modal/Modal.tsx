@@ -9,11 +9,6 @@ import { getEventDetail } from "../../../api/api";
 
 interface ModalProps {}
 
-interface ModalProps {
-  participants: GuestUser[];
-  onClose: () => void;
-}
-
 interface GuestUser {
   userDetailId: number;
   UserId: number;
