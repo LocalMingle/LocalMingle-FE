@@ -95,11 +95,14 @@ const MainPage: React.FC = () => {
   const [verifyList , setVerifyList] = useState<string[]>(); 
   const [postList , setPostList] = useState<CardProps[]>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(0);
-  const [ref, inView] = useInView();
+  const [page, setPage] = useState<number>(0); // 현재 페이지 번호 (페이지네이션)
+  const [ref, inView] = useInView(
+    {
+      root: null,
+      threshold: 0.8, // 스크롤이 80% 이상 발생하면 inView가 true가 됨
+    }
+  );
 
-  console.log(inView, "무한 스크롤 잘 나오니?")
-  
   /**
    * @description mainAPI: DB에서 받아온 데이터
    * @method cardListApi(게시글조회)
@@ -117,7 +120,10 @@ const MainPage: React.FC = () => {
    * @param {string} query: keyword
   */
   const mainAPI = {
-    cardListApi: () => customAxios.get("events"),
+    cardListApi: (lastPage: number) => 
+      customAxios.get("events", {
+        params : {lastPage: page}
+    }),
     verifyApi: () => customAxios.get("data/toss"),
     sidoApi: (lang: string) =>
       customAxios.get("data/city", {
@@ -137,7 +143,6 @@ const MainPage: React.FC = () => {
         keyWord : keyword
       }
     }),
-    infinity: () => customAxios.get(`events/pageNo=${page}&pageSize=5`)
   };
 
   // useEffect 샐랙터 초기값 세팅
@@ -174,32 +179,64 @@ const MainPage: React.FC = () => {
     verifyApiInit();
     sidoApiInit();
     categoryOptionsData();
-    postListSearch();
+    // postListSearch();
+    infiniteScroll();
   },[]);
 
+  /**
+   * @description 무한 스크롤
+   * 지정한 타겟 지점 때 마다 서버에 요청을 보냄
+   */
+    const infiniteScroll = async () => {
+      setLoading(true);
+  
+      const response:CardProps[] = await mainAPI.cardListApi(page)
+      .then((response) => {
+          console.log("무한 스크롤 api?", response.data);
+          // setPostList([...new Set(postList?.concat(response.data))]);
+          setPage((page) => (page +1));
+          return response.data;
+        }).catch((error) => {
+          console.log("무한스크롤 에러!", error);
+          throw error;
+        });
+  
+        setPostList(response);
+        // setPostList([...new Set(postList?.concat(response))]);
+        setLoading(false);
+    }
+  
+    useEffect(() => {
+      // inView가 true 일때만 실행한다.
+      if (inView) {
+        console.log(inView, '무한 스크롤 요청')
+        infiniteScroll();
+      } else {
+        console.log(inView, '무한 스크롤 요청 안함')
+      }
+    }, [inView]);
 
   // 게시글 조회
   /**
    * @method postListSearch
    * @return {string} data(카드 형태 리스트)
    * 샐랙터 기본값이면 모든 카드가 보이게
-   * 필터링하려면 verify를 무조건 선택 해야 다음 필터링이 가능함 (현 api 구조상)
   */
-  const postListSearch = async ()  => {
-    setLoading(true); // 로딩중
+  // const postListSearch = async ()  => {
+  //   setLoading(true); // 로딩중
 
-    const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword)
-      .then((response) => {
-        // console.log('게시글 데이터:', response.data);
-        return response.data;
-      }).catch((error) => {
-        // console.log("게시글 불러오기 에러!", error);
-        throw error;
-      });
+  //   const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword)
+  //     .then((response) => {
+  //       console.log('게시글 데이터:', response.data);
+  //       return response.data;
+  //     }).catch((error) => {
+  //       // console.log("게시글 불러오기 에러!", error);
+  //       throw error;
+  //     });
 
-      setPostList(response);
-      setLoading(false);
-  }
+  //     setPostList(response);
+  //     setLoading(false);
+  // }
 
   // 게시글 검색
   /**
@@ -261,7 +298,6 @@ const MainPage: React.FC = () => {
     */
     const sidoHandler = async ()=>{
       const gugun:string[] = await mainAPI.gugunApi(t(sido),lang).then(res=> {return res.data.map(v=> {return t(v.guName)})}).catch(err=>{throw err});
-      // setGugunList([...new Set((new Array<string>(t('구 / 군')).concat(gugun)))]);
       setGugunList(gugun);
       //포스트 조회 로직
     }
@@ -269,37 +305,9 @@ const MainPage: React.FC = () => {
       sidoHandler(); 
     }
 
-      postListSearch();
+    infiniteScroll();
+    // postListSearch();
   },[verify, sido, gugun, category, lang]);
-
-  /**
-   * @description 무한 스크롤
-   * 지정한 타겟 div가 화면에 보일 때 마다 서버에 요청을 보냄
-   */
-
-  const infiniteScroll = async () => {
-    setLoading(true);
-
-    const response:CardProps[] = await mainAPI.infinity
-      .then((response) => {
-        console.log('무한스크롤 데이터:', response.data);
-        setPostList([...postList, ...response.data])
-        setPage((page) => page + 1);
-      }).catch((error) => {
-        throw error;
-      });
-
-      setLoading(false);
-  }
-
-  useEffect(() => {
-    // inView가 true 일때만 실행한다.
-    if (inView) {
-      console.log(inView, '무한 스크롤 요청')
-      infiniteScroll();
-    }
-  }, [inView]);
-    
 
   /**
    * @description 메인페이지 렌더링
@@ -375,12 +383,12 @@ const MainPage: React.FC = () => {
         ></Selector>
       </St.SelectorWrap>
       {/* 카드 */}
+      {/* <div ref={ref}>이 텍스트가 보이면 무한 스크롤 함수 실행!</div> */}
       {postList?.map((postDataItem, index) => (
         <CustomLink to={`/postview/${postDataItem.event.eventId}`}>
           <Card key={index} {...postDataItem}></Card>
         </CustomLink>
       ))}
-      <div ref={ref}>무한스크롤 테스트</div>
       <FixedButton></FixedButton>
       {loading == true ? <Spinner/> : <></>}
     </>
