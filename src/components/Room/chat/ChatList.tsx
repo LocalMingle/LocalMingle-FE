@@ -3,7 +3,7 @@ import { SocketContext } from "../SocketContext";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext, useRef, useCallback } from "react";
 import { MessageData, EventDetailResponse } from "../ChatTypes";
-import { useLanguage } from "../../../util/Locales/useLanguage";
+// import { useLanguage } from "../../../util/Locales/useLanguage";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 type ChatListProps = {
@@ -48,7 +48,7 @@ const getCurrentUserDetails = (
 };
 
 const ChatList = (props: ChatListProps) => {
-  const { t } = useLanguage();
+  // const { t } = useLanguage();
   const navigate = useNavigate();
   const [messages, setMessages] = useState<MessageData[]>([]);
   const socket = useContext(SocketContext);
