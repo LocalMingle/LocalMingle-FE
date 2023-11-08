@@ -11,40 +11,75 @@ import i18n from "../../../util/Locales/i18n";
 import toast from "react-hot-toast";
 
 const ModifyPost: React.FC = () => {
+  // 231108 JSY 주석해도 정상 동작함. 확인 필요
+  // useEffect(() => {
+  //   setLocation_City(t("시 / 도"));
+  //   setLocation_District(t("구 / 군"));
+  // }, [t]);
+  
+  // 다국어 지원 관련
   const { t } = useLanguage();
   const lang = i18n.language;
-  const navigate = useNavigate();
+
+  // 토큰 (accessToken)
   const accessToken = localStorage.getItem("accessToken");
+
+  // 라우터
+  const navigate = useNavigate();
+
+  // 게시글 id
   const { eventId } = useParams<{ eventId?: string }>();
 
-  // 게시글 작성 state
-  const [eventName, setEventName] = useState<string>("");
-  const [maxSize, setMaxSize] = useState<number>(1);
-  const [eventDate, setEventDate] = useState<string>("");
-  const [signupStartDate, setSignupStartDate] = useState<string>("");
-  const [signupEndDate, setSignupEndDate] = useState<string>("");
-  const [location_City, setLocation_City] = useState<string>("");
-  const [location_District, setLocation_District] = useState<string>("");
-  const [content, setContent] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
-  const [isDeleted, setIsDeleted] = useState<boolean>(false);
-  const [isVerified, setIsVerified] = useState<string>("");
-  const [eventImg, setEventImg] = useState<null>(null);
-
-  useEffect(() => {
-    setLocation_City(t("시 / 도"));
-    setLocation_District(t("구 / 군"));
-  }, [t]);
-
-  // AxiosInstance & API 설정
+  // 공통 AxiosInstance
   const customAxios: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_REACT_APP_URL,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
+
+  /**
+   * @description useState : 게시글 수정
+   * 지역 범위: isVerified
+   * 카테고리: category
+   * 게시글 제목: eventName
+   * 모임일시: eventDate
+   * 참가신청 기간: signupStartDate(시작일), signupEndDate(마감일)
+   * 모임주소: location_City(시/도), location_District(구/군)
+   * 모임인원: maxSize
+   * 본문 내용: content
+   * 삭제 여부: isDeleted
+   * 모임 이미지: eventImg -> 231108 JSY 게시글 내 이미지 등록 기능 없음 
+  */
+  const [isVerified, setIsVerified] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
+  const [eventName, setEventName] = useState<string>("");
+  const [eventDate, setEventDate] = useState<string>("");
+  const [signupStartDate, setSignupStartDate] = useState<string>("");
+  const [signupEndDate, setSignupEndDate] = useState<string>("");
+  const [location_City, setLocation_City] = useState<string>("");
+  const [location_District, setLocation_District] = useState<string>("");
+  const [maxSize, setMaxSize] = useState<number>(1);
+  const [content, setContent] = useState<string>("");
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [eventImg, setEventImg] = useState<null>(null);
+
+  /**
+   * @description updatePostAPI: DB에서 받아온 데이터
+   * @method locationApi(위치인증여부)
+   * @method categoryApi(카테고리)
+   * 
+   * @method sidoApi(시/도)
+   * @param {string} lang
+   * 
+   * @method gugunApi(구/군)
+   * @param {string} doname:sido
+   * @param {string} lang
+   * 
+   * @method updatePostApi(게시글수정)
+   */
   const updatePostAPI = {
-    locationApi: () => customAxios.get("data/toss"), // 위치 인증 여부
+    locationApi: () => customAxios.get("data/toss"),
     sidoApi: (lang: string) =>
       customAxios.get("data/city", {
         params: { lang },
@@ -53,8 +88,8 @@ const ModifyPost: React.FC = () => {
       customAxios.get("data/gu_name", {
         params: { doName: sido, lang },
       }),
-    categoryApi: () => customAxios.get("data/toss"), // 카테고리
-    updatePostApi: () => customAxios.patch(`events/${eventId}`), // 게시글 수정
+    categoryApi: () => customAxios.get("data/toss"),
+    updatePostApi: () => customAxios.patch(`events/${eventId}`),
   };
 
   // 위치 인증 여부 interface (console.log 기준)
