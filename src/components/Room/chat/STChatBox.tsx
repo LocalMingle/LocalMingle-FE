@@ -73,3 +73,28 @@ export const ErrorMessage = styled.div`
   text-align: center;
   font-weight: bold;
 `;
+
+export const ParticipantsButton = styled.button`
+  background-color: #e7f3ff; // 연한 파란색 배경
+  border: 2px solid #90cdf4; // 파란색 테두리
+  border-radius: 20px; // 둥근 모서리
+  padding: 8px 16px; // 안쪽 여백
+  margin-top: 10px; // 위 여백
+  color: #007bff; // 진한 파란색 글자
+  font-size: 14px; // 글자 크기
+  cursor: pointer; // 커서 포인터 모양
+  display: flex; // Flexbox 레이아웃
+  align-items: center; // 가로축 중앙 정렬
+  justify-content: center; // 세로축 중앙 정렬
+  gap: 10px; // 아이콘과 텍스트 사이 간격
+  font-weight: 500; // 글자 굵기
+  transition: background-color 0.3s ease; // 배경색 변경 애니메이션
+
+  &:hover {
+    background-color: #d0e9ff; // 호버시 배경색 변경
+  }
+
+  & .icon {
+    font-size: 1.2em; // 아이콘 크기 조정
+  }
+`;

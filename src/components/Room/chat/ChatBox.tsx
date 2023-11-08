@@ -54,12 +54,12 @@ const ChatBox = (props: ChatBoxProps) => {
     if (!isComposing && message.trim() && socket) {
       const currentTime = new Date().toLocaleTimeString();
       const messageData = {
-        message: message,
+        userId: props.currentUserId,
         nickname: currentUserNickname,
         profileImg: currentUserProfileImg,
         time: currentTime,
         roomId: props.eventId,
-        userId: props.currentUserId,
+        message: message,
       };
       socket.emit("submit_chat", messageData);
       setMessage("");
@@ -79,13 +79,23 @@ const ChatBox = (props: ChatBoxProps) => {
   useEffect(() => {
     if (socket && currentUserNickname && currentUserProfileImg) {
       const joinData = {
-        nickname: currentUserNickname,
         roomId: props.eventId,
-        profileImg: currentUserProfileImg,
+        userList: {
+          [props.currentUserId]: {
+            nickname: currentUserNickname,
+            profileImg: currentUserProfileImg,
+          },
+        },
       };
       socket.emit("join_room", joinData);
     }
-  }, [socket, currentUserNickname, currentUserProfileImg, props.eventId]);
+  }, [
+    socket,
+    currentUserNickname,
+    currentUserProfileImg,
+    props.currentUserId,
+    props.eventId,
+  ]);
 
   return (
     <ST.MessageContainer>
@@ -108,6 +118,10 @@ const ChatBox = (props: ChatBoxProps) => {
 
         <ST.SendButton onClick={handleSendMessage}>{t("전송")}</ST.SendButton>
       </ST.InputContainer>
+      <ST.ParticipantsButton>{t("참여자 목록 보기")}</ST.ParticipantsButton>
+      {/* {isModalOpen && (
+        <Modal participants={participants} onClose={closeModal} />
+      )} */}
       {error && <ST.ErrorMessage>{error}</ST.ErrorMessage>}
     </ST.MessageContainer>
   );
