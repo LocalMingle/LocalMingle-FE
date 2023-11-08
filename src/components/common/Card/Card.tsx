@@ -52,7 +52,7 @@ const Card: React.FC<CardProps> = ({ event, guestList, hostUser }) => {
         <St.CardTop>
           <Tag bgcolor="green">{t(event.category)}</Tag>
           <St.Members>
-            {setDefaultMember(guestList)} / {event.maxSize}
+            {setDefaultMember(guestList)} / {event.maxSize + 1}
           </St.Members>
         </St.CardTop>
         <St.Date>

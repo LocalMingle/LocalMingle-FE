@@ -119,9 +119,6 @@ const ChatBox = (props: ChatBoxProps) => {
         <ST.SendButton onClick={handleSendMessage}>{t("전송")}</ST.SendButton>
       </ST.InputContainer>
       <ST.ParticipantsButton>{t("참여자 목록 보기")}</ST.ParticipantsButton>
-      {/* {isModalOpen && (
-        <Modal participants={participants} onClose={closeModal} />
-      )} */}
       {error && <ST.ErrorMessage>{error}</ST.ErrorMessage>}
     </ST.MessageContainer>
   );

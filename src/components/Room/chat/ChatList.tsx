@@ -3,13 +3,19 @@ import { SocketContext } from "../SocketContext";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext, useRef, useCallback } from "react";
 import { MessageData, EventDetailResponse } from "../ChatTypes";
-import { useLanguage } from "../../../util/Locales/useLanguage";
+// import { useLanguage } from "../../../util/Locales/useLanguage";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 type ChatListProps = {
   eventId: number;
   eventDetail: EventDetailResponse;
   currentUserId: number;
+};
+
+type UserListPayload = {
+  nickname: string;
+  profileImg: string;
+  userListArr: { userId: number; nickname: string; profileImg: string }[];
 };
 
 const getCurrentUserDetails = (
@@ -42,7 +48,7 @@ const getCurrentUserDetails = (
 };
 
 const ChatList = (props: ChatListProps) => {
-  const { t } = useLanguage();
+  // const { t } = useLanguage();
   const navigate = useNavigate();
   const [messages, setMessages] = useState<MessageData[]>([]);
   const socket = useContext(SocketContext);
@@ -70,13 +76,15 @@ const ChatList = (props: ChatListProps) => {
 
   useEffect(() => {
     if (socket) {
+      // 새로운 채팅 메시지 수신
       socket.on("new_chat", (messageData: MessageData) => {
         setMessages((prevMessages) => [...prevMessages, messageData]);
       });
 
-      socket.on("new-user", (eventData) => {
-        console.log("New user event received:", eventData);
-        const { nickname, profileImg } = eventData;
+      // 새로운 사용자가 채팅방에 참가했을 때
+      socket.on("new-user", (payload: UserListPayload) => {
+        console.log("New user data received:", payload);
+        const { nickname, profileImg } = payload;
         const newUserMessage: MessageData = {
           message: `${nickname}님이 채팅방에 참가하셨습니다.`,
           nickname,
@@ -87,9 +95,9 @@ const ChatList = (props: ChatListProps) => {
         setMessages((prevMessages) => [...prevMessages, newUserMessage]);
       });
 
-      socket.on("left-user", (eventData) => {
-        console.log("User left event received:", eventData);
-        const { nickname, profileImg } = eventData;
+      // 사용자가 채팅방을 떠났을 때
+      socket.on("left-user", (payload: UserListPayload) => {
+        const { nickname, profileImg } = payload;
         const leftUserMessage: MessageData = {
           message: `${nickname}님이 채팅방을 떠났습니다.`,
           nickname,
@@ -100,13 +108,14 @@ const ChatList = (props: ChatListProps) => {
         setMessages((prevMessages) => [...prevMessages, leftUserMessage]);
       });
 
+      // 이벤트 리스너 해제
       return () => {
         socket.off("new_chat");
         socket.off("new-user");
         socket.off("left-user");
       };
     }
-  }, [socket, props.eventId, getCurrentTime, t, currentUserProfileImg]);
+  }, [socket, props.eventId, getCurrentTime, currentUserProfileImg]);
 
   const handleLeaveRoomAndNavigate = useCallback(() => {
     if (socket) {
