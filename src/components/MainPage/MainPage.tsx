@@ -95,9 +95,9 @@ const MainPage: React.FC = () => {
   const [postList , setPostList] = useState<CardProps[]>();
   const [loading, setLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0); // 현재 페이지 번호 (페이지네이션)
+  // const [infinityYn, setInfinityYn] = useState<boolean>(false); // 무한 스크롤 여부
   const [ref, inView] = useInView(
     {
-      root: null,
       threshold: 0.8, // 스크롤이 80% 이상 발생하면 inView가 true가 됨
     }
   );
@@ -121,7 +121,7 @@ const MainPage: React.FC = () => {
   const mainAPI = {
     cardListApi: (lastPage: number) => 
       customAxios.get("events", {
-        params : {lastPage: page}
+        params : {page: page}
     }),
     verifyApi: () => customAxios.get("data/toss"),
     sidoApi: (lang: string) =>
@@ -191,26 +191,27 @@ const MainPage: React.FC = () => {
       const response:CardProps[] = await mainAPI.cardListApi(page)
       .then((response) => {
           console.log("무한 스크롤 api?", response.data);
-          // setPostList([...new Set(postList?.concat(response.data))]);
-          setPage((page) => (page +1));
+          setPage((page) => (page == 0 ? 4 : page+4)); // 페이지네이션 4배수로 증가시켜 불러오기
           return response.data;
         }).catch((error) => {
           console.log("무한스크롤 에러!", error);
           throw error;
         });
-  
-        setPostList(response);
-        // setPostList([...new Set(postList?.concat(response))]);
+
+        if (postList?.length == 0) {
+          setPostList(response);
+          // setInfinityYn(true);
+        } else {
+          setPostList([...new Set(postList?.concat(response))]);
+        }
         setLoading(false);
     }
   
     useEffect(() => {
       // inView가 true 일때만 실행한다.
       if (inView) {
-        console.log(inView, '무한 스크롤 요청')
+        console.log(inView, '무한 스크롤 요청');
         infiniteScroll();
-      } else {
-        console.log(inView, '무한 스크롤 요청 안함')
       }
     }, [inView]);
 
@@ -381,12 +382,13 @@ const MainPage: React.FC = () => {
         ></Selector>
       </St.SelectorWrap>
       {/* 카드 */}
-      {/* <div ref={ref}>이 텍스트가 보이면 무한 스크롤 함수 실행!</div> */}
       {postList?.map((postDataItem, index) => (
         <CustomLink to={`/postview/${postDataItem.event.eventId}`}>
           <Card key={index} {...postDataItem}></Card>
         </CustomLink>
       ))}
+      <div ref={ref}/>
+      {/* {infinityYn == true ? <div ref={ref}/> : <></>} */}
       <FixedButton></FixedButton>
       {loading == true ? <Spinner/> : <></>}
     </>
