@@ -16,7 +16,6 @@ import toast from "react-hot-toast";
 import { useInView } from "react-intersection-observer";
 
 const MainPage: React.FC = () => {
-
   /**
    * @description 게시글 카드
    * @interface [<CardProps>]
@@ -150,7 +149,7 @@ const MainPage: React.FC = () => {
     /**
      * @discussion 지역범위 샐랙터
      * @method verifyApiInit
-     * @return {string} data("", "아무나", "동네만")
+     * @return {string} data("선택", "아무나", "동네만")
      */
     const verifyApiInit = async() =>{
       const data:string[] = await mainAPI.verifyApi().then(res=> {return res.data.verify}).catch(err=> {throw err});
@@ -160,7 +159,6 @@ const MainPage: React.FC = () => {
      * @discussion 시/도 샐랙터
      * @method sidoApiInit
      * @return {string} data("시 / 도", "서울특별시", "경기도"...)
-     * 구/군 의 경우 '구/군' 자체가 없어서 프론트에서 추가함
      */
     const sidoApiInit = async() =>{
       const data:string[] = await mainAPI.sidoApi(lang).then(res=> {return res.data.items.map((v)=> {return t(v.doName)})}).catch(err=> {throw err});
