@@ -95,11 +95,10 @@ const MainPage: React.FC = () => {
   const [postList , setPostList] = useState<CardProps[]>();
   const [loading, setLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0); // 현재 페이지 번호 (페이지네이션)
-  // const [infinityYn, setInfinityYn] = useState<boolean>(false); // 무한 스크롤 여부
   const [ref, inView] = useInView(
-    // {
-    //   threshold: 0.8, // 스크롤이 80% 이상 발생하면 inView가 true가 됨
-    // }
+    {
+      threshold: 0.8, // 스크롤이 80% 이상 발생하면 inView가 true가 됨
+    }
   );
 
   /**
@@ -189,7 +188,7 @@ const MainPage: React.FC = () => {
 
     const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword, page)
       .then((response) => {
-        console.log('[인피니티 스크롤] 게시글 데이터:', response.data);
+        // console.log('[인피니티 스크롤] 게시글 데이터:', response.data);
         setPage((page) => (page == 0 ? 4 : page+4)); 
         return response.data;
       }).catch((error) => {
@@ -206,7 +205,6 @@ const MainPage: React.FC = () => {
   useEffect(() => {
     // inView가 true 일때만 실행한다.
     if (inView) {
-      console.log(inView, '무한 스크롤 요청');
       postListSearch();
     }
   }, [inView]);
@@ -277,8 +275,7 @@ const MainPage: React.FC = () => {
     if(sido){ 
       sidoHandler(); 
     }
-
-    // infiniteScroll();
+    
     // postListSearch();
   },[verify, sido, gugun, category, lang]);
 
@@ -362,7 +359,6 @@ const MainPage: React.FC = () => {
         </CustomLink>
       ))}
       <div ref={ref}/>
-      {/* {infinityYn == true ? <div ref={ref}/> : <></>} */}
       <FixedButton></FixedButton>
       {loading == true ? <Spinner/> : <></>}
     </>
