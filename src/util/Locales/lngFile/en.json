@@ -111,6 +111,8 @@
   "참석이 취소되었습니다.": "Attendance canceled.",
   "게시글이 등록되었습니다.": "Post registered.",
   "등록": "Post",
+  "님이 채팅방에 참가하셨습니다.": "have joined the chat room.",
+  "님이 채팅방을 떠났습니다.": "left the chat room.",
 
   "category": "category",
   "eventName": "eventName",

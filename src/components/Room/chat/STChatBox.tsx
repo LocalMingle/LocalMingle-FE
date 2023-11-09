@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // 메시지 컨테이너
 export const MessageContainer = styled.div`
@@ -96,5 +97,15 @@ export const ParticipantsButton = styled.button`
 
   & .icon {
     font-size: 1.2em; // 아이콘 크기 조정
+  }
+`;
+
+export const Icon = styled(FontAwesomeIcon)`
+  margin-top: -20px;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    color: #6ec0f9;
   }
 `;

@@ -8,7 +8,7 @@ import {
   MessageFromServer,
   ClientMessageData,
 } from "../ChatTypes";
-// import { useLanguage } from "../../../util/Locales/useLanguage";
+import { useLanguage } from "../../../util/Locales/useLanguage";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 type ChatListProps = {
@@ -53,7 +53,7 @@ const getCurrentUserDetails = (
 };
 
 const ChatList = (props: ChatListProps) => {
-  // const { t } = useLanguage();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [messages, setMessages] = useState<MessageData[]>([]);
   const socket = useContext(SocketContext);
@@ -86,14 +86,14 @@ const ChatList = (props: ChatListProps) => {
         const roomChatHistory: ClientMessageData[] = chatHistory
           .filter((msg) => msg.roomId === props.eventId)
           .map((msg) => {
-            const user = msg.userList.find((u) => u.userId); // userId가 있는 첫 번째 사용자 정보를 사용합니다.
+            const user = msg.userList.find((u) => u.userId);
             return {
               message: msg.chat,
-              nickname: user ? user.nickname : "알 수 없음",
-              profileImg: user ? user.profileImg : "기본 이미지 경로",
-              time: getCurrentTime(), // 메시지에 시간 필드가 없으므로 현재 시간을 사용합니다. 서버에서 시간을 받는다면 그 값을 사용하세요.
+              nickname: user ? user.nickname : "",
+              profileImg: user ? user.profileImg : "",
+              time: getCurrentTime(),
               roomId: msg.roomId,
-              userId: user ? user.userId : -1, // user 정보가 없는 경우를 위한 기본값 설정
+              userId: user ? user.userId : -1,
             };
           });
         setMessages(roomChatHistory);
@@ -109,7 +109,7 @@ const ChatList = (props: ChatListProps) => {
         console.log("New user data received:", payload);
         const { nickname, profileImg } = payload;
         const newUserMessage: MessageData = {
-          message: `${nickname}님이 채팅방에 참가하셨습니다.`,
+          message: `${nickname}${t("님이 채팅방에 참가하셨습니다.")}`,
           nickname,
           profileImg: profileImg || currentUserProfileImg,
           time: getCurrentTime(),
@@ -122,7 +122,7 @@ const ChatList = (props: ChatListProps) => {
       socket.on("disconnect_user", (payload: UserListPayload) => {
         const { nickname, profileImg } = payload;
         const leftUserMessage: MessageData = {
-          message: `${nickname}님이 채팅방을 떠났습니다.`,
+          message: `${nickname}${t("님이 채팅방을 떠났습니다.")}`,
           nickname,
           profileImg: profileImg || currentUserProfileImg,
           time: getCurrentTime(),
@@ -139,7 +139,7 @@ const ChatList = (props: ChatListProps) => {
         socket.off("disconnect_user");
       };
     }
-  }, [socket, props.eventId, getCurrentTime, currentUserProfileImg]);
+  }, [socket, props.eventId, getCurrentTime, currentUserProfileImg, t]);
 
   const handleLeaveRoomAndNavigate = useCallback(() => {
     if (socket) {
