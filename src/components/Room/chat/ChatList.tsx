@@ -2,7 +2,12 @@ import * as ST from "./STChatList";
 import { SocketContext } from "../SocketContext";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext, useRef, useCallback } from "react";
-import { MessageData, EventDetailResponse } from "../ChatTypes";
+import {
+  MessageData,
+  EventDetailResponse,
+  MessageFromServer,
+  ClientMessageData,
+} from "../ChatTypes";
 // import { useLanguage } from "../../../util/Locales/useLanguage";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
@@ -77,10 +82,20 @@ const ChatList = (props: ChatListProps) => {
   useEffect(() => {
     if (socket) {
       // 채팅 이력 수신
-      socket.on("chat_history", (chatHistory: MessageData[]) => {
-        const roomChatHistory = chatHistory.filter(
-          (msg) => msg.roomId === props.eventId
-        );
+      socket.on("chat_history", (chatHistory: MessageFromServer[]) => {
+        const roomChatHistory: ClientMessageData[] = chatHistory
+          .filter((msg) => msg.roomId === props.eventId)
+          .map((msg) => {
+            const user = msg.userList.find((u) => u.userId); // userId가 있는 첫 번째 사용자 정보를 사용합니다.
+            return {
+              message: msg.chat,
+              nickname: user ? user.nickname : "알 수 없음",
+              profileImg: user ? user.profileImg : "기본 이미지 경로",
+              time: getCurrentTime(), // 메시지에 시간 필드가 없으므로 현재 시간을 사용합니다. 서버에서 시간을 받는다면 그 값을 사용하세요.
+              roomId: msg.roomId,
+              userId: user ? user.userId : -1, // user 정보가 없는 경우를 위한 기본값 설정
+            };
+          });
         setMessages(roomChatHistory);
       });
 

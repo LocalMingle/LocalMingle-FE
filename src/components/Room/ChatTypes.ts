@@ -47,11 +47,26 @@ export type ChatHistory = {
   }[];
 };
 
+// 채팅 리스트 컴포넌트 내부에서 사용할 메시지 데이터를 위한 타입
 export type ClientMessageData = {
   message: string;
   nickname: string;
   profileImg: string;
-  time: string; // 서버 측 타임스탬프가 string 타입인지 확인 필요
+  time: string;
   roomId: number;
   userId: number;
+};
+
+// 서버에서 받은 사용자 정보를 위한 타입
+export type UserFromServer = {
+  userId: number;
+  nickname: string;
+  profileImg: string;
+};
+
+// 서버에서 받은 채팅 메시지를 위한 타입
+export type MessageFromServer = {
+  roomId: number;
+  chat: string;
+  userList: UserFromServer[];
 };
