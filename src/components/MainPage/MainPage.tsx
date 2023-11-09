@@ -196,13 +196,10 @@ const MainPage: React.FC = () => {
         throw error;
       });
 
-      setPostList(response);
-      // if (postList?.length == 0) {
-      //   // setInfinityYn(true);
-      // } else {
-      //   setPostList([...new Set(postList?.concat(response))]);
-      // }
-    
+    setPostList((prevPostList) =>
+      prevPostList ? [...prevPostList, ...response] : response
+    );
+
     setLoading(false); // 로딩완료
   }
 
@@ -211,8 +208,6 @@ const MainPage: React.FC = () => {
     if (inView) {
       console.log(inView, '무한 스크롤 요청');
       postListSearch();
-    } else {
-      return;
     }
   }, [inView]);
 
