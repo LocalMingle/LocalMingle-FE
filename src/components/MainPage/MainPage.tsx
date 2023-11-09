@@ -119,7 +119,7 @@ const MainPage: React.FC = () => {
    * @param {string} query: keyword
   */
   const mainAPI = {
-    cardListApi: (lastPage: number) => 
+    cardListApi: (page: number) => 
       customAxios.get("events", {
         params : {page: page}
     }),
