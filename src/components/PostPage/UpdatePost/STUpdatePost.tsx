@@ -32,7 +32,7 @@ export const InputWrap = styled.div`
 
     & p {
       color: #646464;
-      width: 85px;
+      width: 90px;
     }
 
     & span {
