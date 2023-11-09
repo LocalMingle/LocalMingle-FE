@@ -119,10 +119,7 @@ const MainPage: React.FC = () => {
    * @param {string} query: keyword
   */
   const mainAPI = {
-    cardListApi: (page: number) => 
-      customAxios.get("events", {
-        params : {page: page}
-    }),
+    cardListApi: () => customAxios.get("events"),
     verifyApi: () => customAxios.get("data/toss"),
     sidoApi: (lang: string) =>
       customAxios.get("data/city", {
@@ -133,13 +130,14 @@ const MainPage: React.FC = () => {
         params: { doName: sido, lang },
       }),
     categoryApi: () => customAxios.get("data/toss"),
-    searchApi: (verify: string, category: string, sido: string, gugun: string, keyword: string) => customAxios.get("/search", {
+    searchApi: (verify: string, category: string, sido: string, gugun: string, keyword: string, page: number) => customAxios.get("/search", {
       params: {
         verify : verify == t('선택') ? '' : verify,
         category : category == t('선택') ? '' : category,
         city : sido == t('시 / 도') ? '' : sido,
         guName : gugun == t('구 / 군') ? '' : gugun,
-        keyWord : keyword
+        keyWord : keyword,
+        page : page
       }
     }),
   };
@@ -177,43 +175,43 @@ const MainPage: React.FC = () => {
     verifyApiInit();
     sidoApiInit();
     categoryOptionsData();
-    // postListSearch();
-    infiniteScroll();
+    postListSearch();
+    // infiniteScroll();
   },[]);
 
   /**
    * @description 무한 스크롤
    * 지정한 타겟 지점 때 마다 서버에 요청을 보냄
    */
-    const infiniteScroll = async () => {
-      setLoading(true);
+    // const infiniteScroll = async () => {
+    //   setLoading(true);
   
-      const response:CardProps[] = await mainAPI.cardListApi(page)
-      .then((response) => {
-          console.log("무한 스크롤 api?", response.data);
-          setPage((page) => (page == 0 ? 4 : page+4)); // 페이지네이션 4배수로 증가시켜 불러오기
-          return response.data;
-        }).catch((error) => {
-          console.log("무한스크롤 에러!", error);
-          throw error;
-        });
+    //   const response:CardProps[] = await mainAPI.cardListApi(page)
+    //   .then((response) => {
+    //       console.log("무한 스크롤 api?", response.data);
+    //       setPage((page) => (page == 0 ? 4 : page+4)); // 페이지네이션 4배수로 증가시켜 불러오기
+    //       return response.data;
+    //     }).catch((error) => {
+    //       console.log("무한스크롤 에러!", error);
+    //       throw error;
+    //     });
 
-        if (postList?.length == 0) {
-          setPostList(response);
-          // setInfinityYn(true);
-        } else {
-          setPostList([...new Set(postList?.concat(response))]);
-        }
-        setLoading(false);
-    }
+    //     if (postList?.length == 0) {
+    //       setPostList(response);
+    //       // setInfinityYn(true);
+    //     } else {
+    //       setPostList([...new Set(postList?.concat(response))]);
+    //     }
+    //     setLoading(false);
+    // }
   
-    useEffect(() => {
-      // inView가 true 일때만 실행한다.
-      if (inView) {
-        console.log(inView, '무한 스크롤 요청');
-        infiniteScroll();
-      }
-    }, [inView]);
+    // useEffect(() => {
+    //   // inView가 true 일때만 실행한다.
+    //   if (inView) {
+    //     console.log(inView, '무한 스크롤 요청');
+    //     infiniteScroll();
+    //   }
+    // }, [inView]);
 
   // 게시글 조회
   /**
@@ -221,21 +219,35 @@ const MainPage: React.FC = () => {
    * @return {string} data(카드 형태 리스트)
    * 샐랙터 기본값이면 모든 카드가 보이게
   */
-  // const postListSearch = async ()  => {
-  //   setLoading(true); // 로딩중
+  const postListSearch = async ()  => {
+    setLoading(true); // 로딩중
 
-  //   const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword)
-  //     .then((response) => {
-  //       console.log('게시글 데이터:', response.data);
-  //       return response.data;
-  //     }).catch((error) => {
-  //       // console.log("게시글 불러오기 에러!", error);
-  //       throw error;
-  //     });
+    const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword, page)
+      .then((response) => {
+        console.log('[인피니티 스크롤] 게시글 데이터:', response.data);
+        setPage((page) => (page == 0 ? 4 : page+4)); 
+        return response.data;
+      }).catch((error) => {
+        throw error;
+      });
 
-  //     setPostList(response);
-  //     setLoading(false);
-  // }
+      setPostList(response);
+      // if (postList?.length == 0) {
+      //   // setInfinityYn(true);
+      // } else {
+      //   setPostList([...new Set(postList?.concat(response))]);
+      // }
+    
+    setLoading(false); // 로딩완료
+  }
+
+  useEffect(() => {
+    // inView가 true 일때만 실행한다.
+    if (inView) {
+      console.log(inView, '무한 스크롤 요청');
+      postListSearch();
+    }
+  }, [inView]);
 
   // 게시글 검색
   /**
@@ -261,7 +273,7 @@ const MainPage: React.FC = () => {
 
     setLoading(true); // 로딩중
 
-    const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword)
+    const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword, page)
     .then((response) => {
       // console.log('필터링 게시글 가져오기', response.data);
       return response.data;
@@ -304,8 +316,8 @@ const MainPage: React.FC = () => {
       sidoHandler(); 
     }
 
-    infiniteScroll();
-    // postListSearch();
+    // infiniteScroll();
+    postListSearch();
   },[verify, sido, gugun, category, lang]);
 
   /**
