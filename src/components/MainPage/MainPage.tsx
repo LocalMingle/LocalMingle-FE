@@ -97,9 +97,9 @@ const MainPage: React.FC = () => {
   const [page, setPage] = useState<number>(0); // 현재 페이지 번호 (페이지네이션)
   // const [infinityYn, setInfinityYn] = useState<boolean>(false); // 무한 스크롤 여부
   const [ref, inView] = useInView(
-    {
-      threshold: 0.8, // 스크롤이 80% 이상 발생하면 inView가 true가 됨
-    }
+    // {
+    //   threshold: 0.8, // 스크롤이 80% 이상 발생하면 inView가 true가 됨
+    // }
   );
 
   /**
@@ -175,43 +175,8 @@ const MainPage: React.FC = () => {
     verifyApiInit();
     sidoApiInit();
     categoryOptionsData();
-    postListSearch();
-    // infiniteScroll();
+    // postListSearch();
   },[]);
-
-  /**
-   * @description 무한 스크롤
-   * 지정한 타겟 지점 때 마다 서버에 요청을 보냄
-   */
-    // const infiniteScroll = async () => {
-    //   setLoading(true);
-  
-    //   const response:CardProps[] = await mainAPI.cardListApi(page)
-    //   .then((response) => {
-    //       console.log("무한 스크롤 api?", response.data);
-    //       setPage((page) => (page == 0 ? 4 : page+4)); // 페이지네이션 4배수로 증가시켜 불러오기
-    //       return response.data;
-    //     }).catch((error) => {
-    //       console.log("무한스크롤 에러!", error);
-    //       throw error;
-    //     });
-
-    //     if (postList?.length == 0) {
-    //       setPostList(response);
-    //       // setInfinityYn(true);
-    //     } else {
-    //       setPostList([...new Set(postList?.concat(response))]);
-    //     }
-    //     setLoading(false);
-    // }
-  
-    // useEffect(() => {
-    //   // inView가 true 일때만 실행한다.
-    //   if (inView) {
-    //     console.log(inView, '무한 스크롤 요청');
-    //     infiniteScroll();
-    //   }
-    // }, [inView]);
 
   // 게시글 조회
   /**
@@ -246,6 +211,8 @@ const MainPage: React.FC = () => {
     if (inView) {
       console.log(inView, '무한 스크롤 요청');
       postListSearch();
+    } else {
+      return;
     }
   }, [inView]);
 
@@ -317,7 +284,7 @@ const MainPage: React.FC = () => {
     }
 
     // infiniteScroll();
-    postListSearch();
+    // postListSearch();
   },[verify, sido, gugun, category, lang]);
 
   /**
