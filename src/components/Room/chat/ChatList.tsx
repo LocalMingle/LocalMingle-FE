@@ -76,13 +76,21 @@ const ChatList = (props: ChatListProps) => {
 
   useEffect(() => {
     if (socket) {
+      // 채팅 이력 수신
+      socket.on("chat_history", (chatHistory: MessageData[]) => {
+        const roomChatHistory = chatHistory.filter(
+          (msg) => msg.roomId === props.eventId
+        );
+        setMessages(roomChatHistory);
+      });
+
       // 새로운 채팅 메시지 수신
       socket.on("new_chat", (messageData: MessageData) => {
         setMessages((prevMessages) => [...prevMessages, messageData]);
       });
 
       // 새로운 사용자가 채팅방에 참가했을 때
-      socket.on("new-user", (payload: UserListPayload) => {
+      socket.on("user_connected", (payload: UserListPayload) => {
         console.log("New user data received:", payload);
         const { nickname, profileImg } = payload;
         const newUserMessage: MessageData = {
@@ -96,7 +104,7 @@ const ChatList = (props: ChatListProps) => {
       });
 
       // 사용자가 채팅방을 떠났을 때
-      socket.on("left-user", (payload: UserListPayload) => {
+      socket.on("disconnect_user", (payload: UserListPayload) => {
         const { nickname, profileImg } = payload;
         const leftUserMessage: MessageData = {
           message: `${nickname}님이 채팅방을 떠났습니다.`,
@@ -110,9 +118,10 @@ const ChatList = (props: ChatListProps) => {
 
       // 이벤트 리스너 해제
       return () => {
+        socket.off("chat_history");
         socket.off("new_chat");
-        socket.off("new-user");
-        socket.off("left-user");
+        socket.off("user_connected");
+        socket.off("disconnect_user");
       };
     }
   }, [socket, props.eventId, getCurrentTime, currentUserProfileImg]);
