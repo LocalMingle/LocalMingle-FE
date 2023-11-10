@@ -51,6 +51,7 @@ const MainPage: React.FC = () => {
       }
     ];
   }
+
   
   // Link 컴포넌트에 스타일을 적용하기 위해 styled-components를 사용
   const CustomLink = styled(Link)`
@@ -100,6 +101,9 @@ const MainPage: React.FC = () => {
       threshold: 0.8, // 스크롤이 80% 이상 발생하면 inView가 true가 됨
     }
   );
+  const initIsMounted = useRef(false);
+  const initIsMounted2 = useRef(false);
+  const [isReset,setIsReset] = useState<boolean>(true);
 
   /**
    * @description mainAPI: DB에서 받아온 데이터
@@ -174,7 +178,7 @@ const MainPage: React.FC = () => {
     verifyApiInit();
     sidoApiInit();
     categoryOptionsData();
-    // postListSearch();
+    postListSearch(3);
   },[]);
 
   // 게시글 조회
@@ -183,40 +187,48 @@ const MainPage: React.FC = () => {
    * @return {string} data(카드 형태 리스트)
    * 샐랙터 기본값이면 모든 카드가 보이게
   */
-  const postListSearch = async ()  => {
-    setLoading(true); // 로딩중
 
-    const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword, page)
+  const postListSearch = async (num:number)  => {
+    setLoading(true); // 로딩중
+    console.log(num);
+    // setPage((page) => { //요청되기 이전에 페이지를 Set하고, 만약 셀렉터&서치값이 업뎃이 된 경우 Page가 0으로 초기화되야함,
+    //   //page가 0이면 초기 조회 값은 0으로 하고 API가 조회 성공한 경우 Page를 ++해준다
+    //   return reset.resetType ? 0 : page == 0 ? 0 : page
+    // });
+    console.log("포스트리스트 Set 후 :" + page);
+    const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, (searchRef?.current?.value||''), page)
       .then((response) => {
         // console.log('[인피니티 스크롤] 게시글 데이터:', response.data);
-        setPage((page) => (page == 0 ? 4 : page+4)); 
+        // setPage((page)=>{
+        //   return page+4;
+        // })
         return response.data;
       }).catch((error) => {
         throw error;
       });
 
-    setPostList((prevPostList) =>
-      prevPostList ? [...prevPostList, ...response] : response
-    );
+    setPostList((prevPostList) =>{
+      // ? [...prevPostList, ...response] : response
+      //기존 목록이 있는지? 있으면 연결.. 아니면 새로운 값
+      //false 일때... 연결, true면 초기화
+      if(isReset){
+        return response;
+      } else {
+        return prevPostList ? [...prevPostList, ...response] : response
+      }
+    });
 
     setLoading(false); // 로딩완료
   }
 
-  useEffect(() => {
-    // inView가 true 일때만 실행한다.
-    if (inView) {
-      postListSearch();
-    }
-  }, [inView]);
 
   // 게시글 검색
   /**
    * @method searchHandler
    * @return {string} data
   */
-  const searchCards = async () => {
-    // 빈칸 입력시 유효성 검사
-    if (keyword.length == 0 || keyword == null || keyword == undefined || keyword == "") {
+  const searchCards = (v:string) => {
+    if (!v) {
       toast.error(t("검색어를 입력해주세요!"), {
         className: "toast-error toast-container",
       });
@@ -224,31 +236,13 @@ const MainPage: React.FC = () => {
     }
 
     // 최소 글자 유효성 검사
-    if (keyword.length < 2) {
+    if (v.length <= 1) {
       toast.error(t("최소 2글자 이상 입력해 주세요!"), {
         className: "toast-error toast-container",
       });
       return;
     }
-
-    setLoading(true); // 로딩중
-
-    const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, keyword, page)
-    .then((response) => {
-      // console.log('필터링 게시글 가져오기', response.data);
-      return response.data;
-    }).catch((error) => {
-      // console.log("게시글 불러오기 에러!", error);
-      throw error;
-    });
-
-    // 검색 버튼을 누르면 필터링
-    setPostList(response);
-
-    setLoading(false);
-    
-    setKeyword("");
-    if (searchRef.current) {searchRef.current.value = "";}
+      setKeyword(v);
   }
 
   /**
@@ -256,9 +250,13 @@ const MainPage: React.FC = () => {
    */
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      searchCards();
+      searchCards(e.currentTarget.value);
     }
   };
+  const handleBlurPress = (e: React.FocusEvent<HTMLInputElement>) =>{
+    e.target.value != '';
+    searchCards(searchRef?.current?.value||'');
+  }
 
   // 핸들러 목록
   useEffect(()=>{
@@ -276,8 +274,59 @@ const MainPage: React.FC = () => {
       sidoHandler(); 
     }
     
-    // postListSearch();
-  },[verify, sido, gugun, category, lang]);
+    if(verify){ 
+      console.log('verify') 
+    }
+    if(sido){ 
+      console.log('sido') 
+    }
+    if(gugun){ 
+      console.log('gugun');
+    }
+    if(category){ 
+      console.log('category');
+    }
+    if(lang){ 
+      console.log('lang');
+    }
+    if(initIsMounted.current){
+      setIsReset(true);
+      if(page == 0 ){
+        postListSearch(2);
+      } else {
+        setPage(0);
+      }
+    } else {
+      initIsMounted.current = true;
+    }
+  },[verify, sido, gugun, category , keyword]);
+
+  useEffect(() => {
+    
+    if(initIsMounted2.current){
+      postListSearch(1);
+    } else {
+      initIsMounted2.current = true;
+    }
+  }, [page]);
+//처음...왔을땐 false , 게시글이 최초 있는 상태(page:0)에서 하단접근시 inView true... page가 4로 업데이트 됨
+//page가 업뎃되었으니 postListSearch를 동작시켜서 page4가 넘어감....
+//이땐 isReset이 false이기에 초기화 안됨..
+//만약 셀렉터를 업뎃한경우 reset이 true...
+//postListSearch에선 reset값이 true이기에 prevent+response가 아닌 response로 Set.
+//이때 페이지는? page4가 그대로이기에.. 목록이 초기화되었어도 다음 호출은 4가 될것
+//셀렉터가 업뎃되면 무조건 page는 0으로 초기화되야함
+
+  
+  useEffect(() => {
+    // inView가 true 일때만 실행한다.
+    if (inView && (postList?.length||0 > 0)) {
+      console.log("새로고침하면 얘가 뜨나????");
+      setIsReset(false);
+      setPage((page)=>page + 4);
+    }
+  }, [inView]);
+
 
   /**
    * @description 메인페이지 렌더링
@@ -291,12 +340,13 @@ const MainPage: React.FC = () => {
         <div>
           <St.SearchInput
             ref={searchRef}
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
+            // value={keyword}
+            // onChange={(e) => setKeyword(e.target.value)}
             onKeyPress={handleKeyPress}
+            onBlur={handleBlurPress}
             placeholder={t("제목 및 글 내용을 검색해 보세요.")}
           ></St.SearchInput>
-          <p onClick={searchCards}>
+          <p onClick={()=>searchCards(searchRef?.current?.value||'')}>
             <FontAwesomeIcon
               icon={faMagnifyingGlass}
               style={{ color: "#646464" }}
