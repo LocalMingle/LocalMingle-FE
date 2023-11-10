@@ -34,6 +34,7 @@ export const Language = styled.div`
   & button {
     border: none;
     background-color: transparent;
+    user-select: none;
   }
   & img {
     display: block;
@@ -44,10 +45,13 @@ export const Language = styled.div`
 
 export const UserLogo = styled.div`
   cursor: pointer;
-  img {
+  svg {
     width: 20px;
-    height: 20px;
+    height: 18px;
+    margin-top: 1px;
     margin-right: 7px;
+    color: #646464;
+    user-select: none;
   }
 `;
 

@@ -1,22 +1,13 @@
 import * as ST from "./STChatBox";
-import { useRecoilState } from "recoil";
 import { useContext, useState, useEffect } from "react";
 import { SocketContext } from "../SocketContext";
 import { EventDetailResponse } from "../ChatTypes";
 import { useLanguage } from "../../../util/Locales/useLanguage";
-import { faBarsStaggered } from "@fortawesome/free-solid-svg-icons";
-import { modalState } from "../../../recoil/atoms/ModalState";
-import UserListModal from "../UserListModal";
 
 type ChatBoxProps = {
   currentUserId: number;
   eventId: number;
   eventDetail: EventDetailResponse | null;
-};
-type User = {
-  userId: number;
-  nickname: string;
-  profileImg: string;
 };
 const getCurrentUserDetails = (
   eventDetail: EventDetailResponse | null,
@@ -53,20 +44,10 @@ const ChatBox = (props: ChatBoxProps) => {
   const socket = useContext(SocketContext);
   const [error, setError] = useState<string | null>(null);
   const [isComposing, setIsComposing] = useState(false);
-  const [userList, setUserList] = useState<User[]>([]);
   const { currentUserNickname, currentUserProfileImg } = getCurrentUserDetails(
     props.eventDetail,
     props.currentUserId
   );
-  const [isModalOpen, setIsModalOpen] = useRecoilState(modalState);
-  // 중복을 제거하는 함수
-  const getUniqueUserList = (users: User[]): User[] => {
-    const uniqueUsers = {};
-    users.forEach((user) => {
-      uniqueUsers[user.userId] = user;
-    });
-    return Object.values(uniqueUsers);
-  };
   const handleSendMessage = () => {
     if (!isComposing && message.trim() && socket) {
       const currentTime = new Date().toLocaleTimeString();
@@ -110,30 +91,10 @@ const ChatBox = (props: ChatBoxProps) => {
     props.currentUserId,
     props.eventId,
   ]);
-  useEffect(() => {
-    const handleUserListUpdate = (serverUserList: User[]) => {
-      setUserList(getUniqueUserList(serverUserList));
-    };
-
-    if (socket) {
-      socket.on("userList", handleUserListUpdate);
-    }
-
-    return () => {
-      if (socket) {
-        socket.off("userList", handleUserListUpdate);
-      }
-    };
-  }, [socket]);
-
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
 
   return (
     <>
       <ST.MessageContainer>
-        <ST.Icon icon={faBarsStaggered} onClick={toggleModal} />
         <ST.InputContainer>
           <ST.InputField
             type="text"
@@ -155,11 +116,6 @@ const ChatBox = (props: ChatBoxProps) => {
         </ST.InputContainer>
         {error && <ST.ErrorMessage>{error}</ST.ErrorMessage>}
       </ST.MessageContainer>
-      <UserListModal
-        userList={userList}
-        isOpen={isModalOpen}
-        onClose={toggleModal}
-      />
     </>
   );
 };

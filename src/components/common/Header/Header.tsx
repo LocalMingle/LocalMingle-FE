@@ -11,7 +11,8 @@ import kologo from "../../../asset/languageImages/kologo.png";
 import enlogo from "../../../asset/languageImages/enlogo.png";
 import jplogo from "../../../asset/languageImages/jplogo.png";
 // import ringlogo from "../../../asset/headerImages/ringlogo.png"
-import userlogo from "../../../asset/headerImages/userlogo.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser as farUser } from "@fortawesome/free-regular-svg-icons";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ const Header: React.FC = () => {
         <St.HeaderBtns>
           {isLogin ? (
             <St.UserLogo onClick={toggleDropdown}>
-              <img src={userlogo} alt="User" />
+              <FontAwesomeIcon icon={farUser} />
               {showDropdown && (
                 <St.Dropdown ref={dropdownRef}>
                   <St.MyPageButton onClick={goToMyPage}>
