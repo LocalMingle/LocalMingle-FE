@@ -17,7 +17,7 @@
 //         reconnection: true,
 //         reconnectionAttempts: 10,
 //         reconnectionDelay: 3000,
-//       }
+//       }qwe
 //     );
 //     socketInstance.on("connect_error", () => {
 //       console.error("소켓 연결에 문제가 있어!");

@@ -102,7 +102,9 @@ export const ParticipantsButton = styled.button`
 
 export const Icon = styled(FontAwesomeIcon)`
   margin-top: -20px;
+  margin-bottom: 10px;
   font-size: 16px;
+  color: #646464;
   cursor: pointer;
 
   &:hover {

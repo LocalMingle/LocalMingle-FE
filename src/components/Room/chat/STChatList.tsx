@@ -86,25 +86,39 @@ export const MessageWrapper = styled.div.withConfig({
 export const Header = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 0 10px;
 `;
 
-export const Icon = styled(FontAwesomeIcon)`
-  margin-top: -20px;
+export const GoBackIcon = styled(FontAwesomeIcon)`
   font-size: 16px;
   cursor: pointer;
 
   &:hover {
     color: #6ec0f9;
   }
+  position: absolute;
+  left: 40px;
+  transform: translateY(-50%);
 `;
+export const UsersList = styled(FontAwesomeIcon)`
+  font-size: 16px;
+  cursor: pointer;
 
+  &:hover {
+    color: #6ec0f9;
+  }
+  position: absolute;
+  right: 40px;
+  transform: translateY(-50%);
+`;
 export const EventName = styled.h2`
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin: 0 auto;
   text-align: center;
+  transform: translateY(-50%);
+  flex-grow: 1;
+  user-select: none;
 `;
 
 export const ProfileContainer = styled.div`

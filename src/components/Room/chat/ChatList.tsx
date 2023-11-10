@@ -10,11 +10,21 @@ import {
 } from "../ChatTypes";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faUserFriends } from "@fortawesome/free-solid-svg-icons";
+import { modalState } from "../../../recoil/atoms/ModalState";
+import UserListModal from "../UserListModal";
+import { useRecoilState } from "recoil";
 
 type ChatListProps = {
   eventId: number;
   eventDetail: EventDetailResponse;
   currentUserId: number;
+};
+
+type User = {
+  userId: number;
+  nickname: string;
+  profileImg: string;
 };
 
 type UserListPayload = {
@@ -51,7 +61,6 @@ const getCurrentUserDetails = (
   }
   return { currentUserNickname, currentUserProfileImg };
 };
-
 const ChatList = (props: ChatListProps) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -62,6 +71,16 @@ const ChatList = (props: ChatListProps) => {
     props.eventDetail,
     props.currentUserId
   );
+  const [userList, setUserList] = useState<User[]>([]);
+  const [isModalOpen, setIsModalOpen] = useRecoilState(modalState);
+  // 중복을 제거하는 함수
+  const getUniqueUserList = (users: User[]): User[] => {
+    const uniqueUsers = {};
+    users.forEach((user) => {
+      uniqueUsers[user.userId] = user;
+    });
+    return Object.values(uniqueUsers);
+  };
 
   // 현재 시간을 문자열로 가져오는 함수
   const getCurrentTime = useCallback(() => {
@@ -141,6 +160,22 @@ const ChatList = (props: ChatListProps) => {
     }
   }, [socket, props.eventId, getCurrentTime, currentUserProfileImg, t]);
 
+  useEffect(() => {
+    const handleUserListUpdate = (serverUserList: User[]) => {
+      setUserList(getUniqueUserList(serverUserList));
+    };
+
+    if (socket) {
+      socket.on("userList", handleUserListUpdate);
+    }
+
+    return () => {
+      if (socket) {
+        socket.off("userList", handleUserListUpdate);
+      }
+    };
+  }, [socket]);
+
   const handleLeaveRoomAndNavigate = useCallback(() => {
     if (socket) {
       socket.emit("leave_room", { roomId: props.eventId });
@@ -148,35 +183,54 @@ const ChatList = (props: ChatListProps) => {
     navigate("/");
   }, [socket, props.eventId, navigate]);
 
-  return (
-    <ST.ChatListContainer ref={chatListRef}>
-      <ST.Header>
-        <ST.Icon icon={faChevronLeft} onClick={handleLeaveRoomAndNavigate} />
-        <ST.EventName>{props.eventDetail.event.eventName}</ST.EventName>
-        <div></div>
-      </ST.Header>
-      {messages.map((msg, index) => {
-        const key = `${msg.roomId}-${msg.time}-${index}`;
-        const isMyMessage = msg.userId === props.currentUserId;
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
-        return (
-          <ST.MessageWrapper isMyMessage={isMyMessage} key={key}>
-            {!isMyMessage && (
-              <ST.ProfileContainer>
-                <ST.ProfileImage src={msg.profileImg} alt={`${msg.nickname}`} />
-                <ST.Nickname>{msg.nickname}</ST.Nickname>
-              </ST.ProfileContainer>
-            )}
-            <div>
-              <ST.MessageItem isMyMessage={isMyMessage}>
-                <div>{msg.message}</div>
-              </ST.MessageItem>
-              <ST.Timestamp isMyMessage={isMyMessage}>{msg.time}</ST.Timestamp>
-            </div>
-          </ST.MessageWrapper>
-        );
-      })}
-    </ST.ChatListContainer>
+  return (
+    <>
+      <ST.Header>
+        <ST.UsersList icon={faUserFriends} onClick={toggleModal} />
+        <ST.GoBackIcon
+          icon={faChevronLeft}
+          onClick={handleLeaveRoomAndNavigate}
+        />
+        <ST.EventName>{props.eventDetail.event.eventName}</ST.EventName>
+      </ST.Header>
+      <ST.ChatListContainer ref={chatListRef}>
+        {messages.map((msg, index) => {
+          const key = `${msg.roomId}-${msg.time}-${index}`;
+          const isMyMessage = msg.userId === props.currentUserId;
+
+          return (
+            <ST.MessageWrapper isMyMessage={isMyMessage} key={key}>
+              {!isMyMessage && (
+                <ST.ProfileContainer>
+                  <ST.ProfileImage
+                    src={msg.profileImg}
+                    alt={`${msg.nickname}`}
+                  />
+                  <ST.Nickname>{msg.nickname}</ST.Nickname>
+                </ST.ProfileContainer>
+              )}
+              <div>
+                <ST.MessageItem isMyMessage={isMyMessage}>
+                  <div>{msg.message}</div>
+                </ST.MessageItem>
+                <ST.Timestamp isMyMessage={isMyMessage}>
+                  {msg.time}
+                </ST.Timestamp>
+              </div>
+            </ST.MessageWrapper>
+          );
+        })}
+      </ST.ChatListContainer>
+      <UserListModal
+        userList={userList}
+        isOpen={isModalOpen}
+        onClose={toggleModal}
+      />
+    </>
   );
 };
 
