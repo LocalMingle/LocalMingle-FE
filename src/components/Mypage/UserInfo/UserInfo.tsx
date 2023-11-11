@@ -7,18 +7,18 @@ import { useLanguage } from "../../../util/Locales/useLanguage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import {
+  uploadProfileImage,
+  getUserProfileImage,
+  updateUserProfile,
+  updatePassword,
+} from "../../../api/api";
+import {
   UpdateValidateNickname,
   UpdateValidatePassword,
   UpdateValidatePasswordConfirmation,
   handleCheckNickname,
   validateImageUpload,
 } from "../../../util/validation";
-import {
-  uploadProfileImage,
-  getUserProfileImage,
-  updateUserProfile,
-  updatePassword,
-} from "../../../api/api";
 
 const UserInfo: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);

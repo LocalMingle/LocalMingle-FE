@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import ChatBox from "../components/Room/chat/ChatBox";
-import ChatList from "../components/Room/chat/ChatList";
-import { Header } from "../components/common/Header";
+import { useRecoilValue } from "recoil";
 import { getEventDetail } from "../api/api";
 import { useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { Header } from "../components/common/Header";
+import ChatBox from "../components/Room/chat/ChatBox";
 import { userState } from "../recoil/atoms/UserState";
+import ChatList from "../components/Room/chat/ChatList";
 import { EventDetailResponse } from "../components/Room/ChatTypes";
 import {
   MyPageContainer,
@@ -27,7 +27,7 @@ const Chat: React.FC = () => {
       const detail = await getEventDetail(id);
       setEventDetail(detail);
     } catch (error) {
-      // console.error("이벤트 상세 정보 불러오기 실패:", error);
+      console.error("이벤트 상세 정보 불러오기 실패:", error);
     }
   };
 
