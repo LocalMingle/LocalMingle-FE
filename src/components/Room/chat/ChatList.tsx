@@ -1,6 +1,12 @@
 import * as ST from "./STChatList";
-import { SocketContext } from "../SocketContext";
+import { useRecoilState } from "recoil";
+import UserListModal from "../UserListModal";
 import { useNavigate } from "react-router-dom";
+import { SocketContext } from "../SocketContext";
+import { modalState } from "../../../recoil/atoms/ModalState";
+import { useLanguage } from "../../../util/Locales/useLanguage";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faUserFriends } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useContext, useRef, useCallback } from "react";
 import {
   MessageData,
@@ -8,12 +14,6 @@ import {
   MessageFromServer,
   ClientMessageData,
 } from "../ChatTypes";
-import { useLanguage } from "../../../util/Locales/useLanguage";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { faUserFriends } from "@fortawesome/free-solid-svg-icons";
-import { modalState } from "../../../recoil/atoms/ModalState";
-import UserListModal from "../UserListModal";
-import { useRecoilState } from "recoil";
 
 type ChatListProps = {
   eventId: number;
@@ -64,15 +64,16 @@ const getCurrentUserDetails = (
 const ChatList = (props: ChatListProps) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [messages, setMessages] = useState<MessageData[]>([]);
   const socket = useContext(SocketContext);
   const chatListRef = useRef<HTMLDivElement>(null);
+  const [userList, setUserList] = useState<User[]>([]);
+  const [messages, setMessages] = useState<MessageData[]>([]);
+  const [isModalOpen, setIsModalOpen] = useRecoilState(modalState);
   const { currentUserProfileImg } = getCurrentUserDetails(
     props.eventDetail,
     props.currentUserId
   );
-  const [userList, setUserList] = useState<User[]>([]);
-  const [isModalOpen, setIsModalOpen] = useRecoilState(modalState);
+
   // 중복을 제거하는 함수
   const getUniqueUserList = (users: User[]): User[] => {
     const uniqueUsers = {};
