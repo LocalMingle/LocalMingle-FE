@@ -4,8 +4,8 @@ import toast from "react-hot-toast";
 import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
-import { userState } from "../../../recoil/atoms/UserState";
 import { getEvents, deleteEvent } from "../../../api/api";
+import { userState } from "../../../recoil/atoms/UserState";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 
 interface Event {
