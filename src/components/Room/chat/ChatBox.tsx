@@ -1,7 +1,7 @@
 import * as ST from "./STChatBox";
-import { useContext, useState, useEffect } from "react";
 import { SocketContext } from "../SocketContext";
 import { EventDetailResponse } from "../ChatTypes";
+import { useContext, useState, useEffect } from "react";
 import { useLanguage } from "../../../util/Locales/useLanguage";
 
 type ChatBoxProps = {
@@ -40,8 +40,8 @@ const getCurrentUserDetails = (
 
 const ChatBox = (props: ChatBoxProps) => {
   const { t } = useLanguage();
-  const [message, setMessage] = useState("");
   const socket = useContext(SocketContext);
+  const [message, setMessage] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isComposing, setIsComposing] = useState(false);
   const { currentUserNickname, currentUserProfileImg } = getCurrentUserDetails(

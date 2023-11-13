@@ -1,11 +1,11 @@
 import React from "react";
-import { useQuery } from "react-query";
-import { useRecoilValue, useRecoilState } from "recoil";
-import { useParams, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
 import * as St from "./STViewPost";
+import toast from "react-hot-toast";
+import { useQuery } from "react-query";
 import Modal from "../../common/Modal/Modal";
 import Button from "../../common/Button/Button";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { useParams, useNavigate } from "react-router-dom";
 import { userState } from "../../../recoil/atoms/UserState";
 import { modalState } from "../../../recoil/atoms/ModalState";
 import { useLanguage } from "../../../util/Locales/useLanguage";
@@ -204,7 +204,7 @@ const ViewPost: React.FC = () => {
       <St.ButtonWrap>
         {isAuthor ? (
           <div>
-            <Button bgcolor={"#9ECBFA"} onClick={handleChat}>
+            <Button bgcolor={"#edf895"} onClick={handleChat}>
               {t("채팅하기")}
             </Button>
           </div>
@@ -212,7 +212,7 @@ const ViewPost: React.FC = () => {
           <div>
             {/* 참가했을 때 */}
             {isJoined === true && (
-              <Button bgcolor={"#9ECBFA"} onClick={handleChat}>
+              <Button bgcolor={"#edf895"} onClick={handleChat}>
                 {t("채팅하기")}
               </Button>
             )}

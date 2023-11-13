@@ -2,8 +2,8 @@ import "./App.css";
 import Router from "../src/router/Router";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { SocketContext } from "../src/components/Room/SocketContext";
 import io, { Socket } from "socket.io-client";
+import { SocketContext } from "../src/components/Room/SocketContext";
 
 const App: React.FC = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
