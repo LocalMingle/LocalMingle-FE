@@ -70,8 +70,8 @@ export const UserPostButtonWrap = styled.div`
     cursor: pointer;
 
     &:first-child {
-      background: #646464;
-      color: #fff;
+      background: #f7d16f;
+      color: #646464;
     }
 
     &:last-child {

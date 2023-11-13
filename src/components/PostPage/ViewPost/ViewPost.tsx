@@ -204,7 +204,7 @@ const ViewPost: React.FC = () => {
       <St.ButtonWrap>
         {isAuthor ? (
           <div>
-            <Button bgcolor={"#9ECBFA"} onClick={handleChat}>
+            <Button bgcolor={"#edf895"} onClick={handleChat}>
               {t("채팅하기")}
             </Button>
           </div>
@@ -212,7 +212,7 @@ const ViewPost: React.FC = () => {
           <div>
             {/* 참가했을 때 */}
             {isJoined === true && (
-              <Button bgcolor={"#9ECBFA"} onClick={handleChat}>
+              <Button bgcolor={"#edf895"} onClick={handleChat}>
                 {t("채팅하기")}
               </Button>
             )}
