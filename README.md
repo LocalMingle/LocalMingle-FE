@@ -35,6 +35,38 @@
 
 </br>
 
+## **🎈 주요기능 소개**
+
+<table>
+  <tr align="center">
+    <td><strong>소셜 로그인</strong></td>
+    <td><strong>다국어</strong></td>
+    <td><strong>채팅방</strong></td>
+  </tr>
+   <tr align="center">
+    <td><img src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/e7925ad3-c01b-4a92-b55c-85af5c0ee943" alt="소셜 로그인" style="height:500px"/></td>
+    <td><img src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/5e4219ef-f591-424f-8c9d-3a71566f4510" alt="다국어" style="height:500px"/></td>
+    <td><img src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/f9855b2f-5e4e-468b-a14b-56136a1e7a08" alt="채팅방" style="height:500px"/></td>
+  </tr>
+</table>
+
+</br>
+
+<table>
+  <tr align="center">
+    <td><strong>게시글 검색</strong></td>
+    <td><strong>게시글 필터링</strong></td>
+    <td><strong>인피니티 스크롤</strong></td>
+  </tr>
+   <tr align="center">
+    <td><img src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/e8eb91f1-340d-4b19-a32c-4cce8ff83fee" alt="게시글 검색" style="height:500px"/></td>
+    <td><img src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/92aa2dc2-0865-4b98-9a7c-fdd70af87bb1" alt="게시글 필터링" style="height:500px"/></td>
+    <td><img src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/66e20e95-5784-4d25-9a4a-3766a227d907" alt="인피니티 스크롤" style="height:500px"/></td>
+  </tr>
+</table>
+
+</br>
+
 ## **🧑🏻‍💻👩🏻‍💻 FrontEnd 개발**
 
 |김태현|(VL) 장소영|
