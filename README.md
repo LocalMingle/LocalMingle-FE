@@ -201,7 +201,6 @@
       - 마이페이지(회원정보 수정, 작성 이벤트, 참여 이벤트 관리, 회원탈퇴) CRUD<br />
       - 실시간 채팅
     </td>
-    <td align="center"><a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/ted0729">@ted0729</a></td>
     <td align="center">이메일 적어주세요!!</td>
   </tr>
     <tr>
@@ -213,7 +212,6 @@
       - 프론트 gitHub 관리<br />
       - Figma 관리
     </td>
-    <td align="center"><a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/ddoddiworld">@ddoddiworld</a></td>
     <td align="center">emily_jang@kakao.com</td>
   </tr>
 </table>
