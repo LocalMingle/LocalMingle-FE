@@ -67,7 +67,8 @@ const Modal: React.FC<ModalProps> = () => {
                     <St.ModalProfileInfo>
                       <div>
                         <p>{user.nickname}</p>
-                        <span>{user.userLocation || "위치 정보 없음"}</span>
+                        {/* 231113 JSY 위치정보 개발 불가로 주석처리 */}
+                        {/* <span>{user.userLocation || "위치 정보 없음"}</span> */} 
                       </div>
                       <div>{user.intro || "자기소개가 없습니다."}</div>
                     </St.ModalProfileInfo>
