@@ -67,7 +67,7 @@
 
 </br>
 
-## **🧑🏻‍💻👩🏻‍💻 FrontEnd 개발**
+## **👩🏻‍💻👨🏻‍💻 FrontEnd 개발**
 
 |김태현|(VL) 장소영|
 |:---:|:---:|
@@ -194,14 +194,14 @@
   <tr>
     <td align="center">김태현</td>
     <td style="padding: 15px 10px;">
-      - 일반회원가입/로그인페이지<br />
+      - 일반회원가입 / 로그인페이지<br />
       - 소셜 로그인<br />
       - 다국어기능<br />
       - 게시글 상세 페이지<br />
-      - 마이페이지(회원정보 수정, 작성 이벤트, 참여 이벤트 관리, 회원탈퇴) CRUD<br />
+      - 마이페이지(회원정보 수정, 작성 이벤트 관리, 참여 이벤트 관리, 회원탈퇴) CRUD<br />
       - 실시간 채팅
     </td>
-    <td align="center">이메일 적어주세요!!</td>
+    <td align="center">tutu72933@gmail.com</td>
   </tr>
     <tr>
     <td align="center">장소영</td>
