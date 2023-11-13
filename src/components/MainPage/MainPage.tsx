@@ -178,7 +178,7 @@ const MainPage: React.FC = () => {
     verifyApiInit();
     sidoApiInit();
     categoryOptionsData();
-    postListSearch(3);
+    postListSearch();
   },[]);
 
   // 게시글 조회
@@ -188,7 +188,7 @@ const MainPage: React.FC = () => {
    * 샐랙터 기본값이면 모든 카드가 보이게
   */
 
-  const postListSearch = async (num:number)  => {
+  const postListSearch = async ()  => {
     setLoading(true); // 로딩중
 
     const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, (searchRef?.current?.value||''), page)
@@ -267,7 +267,7 @@ const MainPage: React.FC = () => {
     if(initIsMounted.current){
       setIsReset(true);
       if(page == 0 ){
-        postListSearch(2);
+        postListSearch();
       } else {
         setPage(0);
       }
@@ -279,7 +279,7 @@ const MainPage: React.FC = () => {
   useEffect(() => {
     
     if(initIsMounted2.current){
-      postListSearch(1);
+      postListSearch();
     } else {
       initIsMounted2.current = true;
     }

@@ -28,7 +28,7 @@ const UserInfo: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [, setInitialNickname] = useState("");
   const [intro, setIntro] = useState("");
-  const [userLocation, setUserLocation] = useState<string>("");
+  const [userLocation, ] = useState<string>("");
 
   const [nicknameError, setNicknameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
