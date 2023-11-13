@@ -190,25 +190,15 @@ const MainPage: React.FC = () => {
 
   const postListSearch = async (num:number)  => {
     setLoading(true); // 로딩중
-    console.log(num);
-    // setPage((page) => { //요청되기 이전에 페이지를 Set하고, 만약 셀렉터&서치값이 업뎃이 된 경우 Page가 0으로 초기화되야함,
-    //   //page가 0이면 초기 조회 값은 0으로 하고 API가 조회 성공한 경우 Page를 ++해준다
-    //   return reset.resetType ? 0 : page == 0 ? 0 : page
-    // });
-    console.log("포스트리스트 Set 후 :" + page);
+
     const response:CardProps[] = await mainAPI.searchApi(verify, category, sido, gugun, (searchRef?.current?.value||''), page)
       .then((response) => {
-        // console.log('[인피니티 스크롤] 게시글 데이터:', response.data);
-        // setPage((page)=>{
-        //   return page+4;
-        // })
         return response.data;
       }).catch((error) => {
         throw error;
       });
 
     setPostList((prevPostList) =>{
-      // ? [...prevPostList, ...response] : response
       //기존 목록이 있는지? 있으면 연결.. 아니면 새로운 값
       //false 일때... 연결, true면 초기화
       if(isReset){
@@ -274,21 +264,6 @@ const MainPage: React.FC = () => {
       sidoHandler(); 
     }
     
-    if(verify){ 
-      console.log('verify') 
-    }
-    if(sido){ 
-      console.log('sido') 
-    }
-    if(gugun){ 
-      console.log('gugun');
-    }
-    if(category){ 
-      console.log('category');
-    }
-    if(lang){ 
-      console.log('lang');
-    }
     if(initIsMounted.current){
       setIsReset(true);
       if(page == 0 ){
@@ -321,7 +296,6 @@ const MainPage: React.FC = () => {
   useEffect(() => {
     // inView가 true 일때만 실행한다.
     if (inView && (postList?.length||0 > 0)) {
-      console.log("새로고침하면 얘가 뜨나????");
       setIsReset(false);
       setPage((page)=>page + 4);
     }
