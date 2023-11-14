@@ -209,7 +209,7 @@ useQuery 훅을 사용했는데 완전히 알지 못하는 기능들이 있는�
 useQuery에는 data, isLoading, error 외로 refetch라는 것도 있는데 refetch는 데이터를 갱신하고 다시 가져오는데 사용됩니다.
 주로 사용자 행동에 응답하여 데이터를 갱신할 때 사용되는데 이를 이용해서 데이터를 새로고침 후 최신 정보를 표현하기 위해 refetch와 useEffect를 이용해서 해결하였습니다.
   <br>
-  <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/180903b1-c817-4ad2-ad88-2693089093e5" width="700" height="100">
+  <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/180903b1-c817-4ad2-ad88-2693089093e5" width="500" height="80">
 </details>
 
 <details>
@@ -287,7 +287,7 @@ size를 조건에 넣으려면 각 모바일의 브라우저 버전이 가장 �
 하지만 필터링관련 API들은 event에 대한 정보들만 있기 때문에
 카드에 들어가야할 나머지 값들을 확인할 수 있는 방법이 없습니다. (아래 스웨거 사진 참조)
   <br>
-  <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/80dd90e2-b25a-4c33-827c-6e16b535701f" width="600" height="600">
+  <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/80dd90e2-b25a-4c33-827c-6e16b535701f" width="500" height="600">
   <br>
 event를 제외한 나머지 데이터 값이 없으므로 카드에 필요한 데이터 값을 찾을 수 없어
 필터링을 할 때마다 빈 페이지 상태로 에러가 발생합니다.
