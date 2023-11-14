@@ -10,7 +10,6 @@ import textlogo from "../../../asset/localMingleImages/textlogo.png";
 import kologo from "../../../asset/languageImages/kologo.png";
 import enlogo from "../../../asset/languageImages/enlogo.png";
 import jplogo from "../../../asset/languageImages/jplogo.png";
-// import ringlogo from "../../../asset/headerImages/ringlogo.png"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser as farUser } from "@fortawesome/free-regular-svg-icons";
 

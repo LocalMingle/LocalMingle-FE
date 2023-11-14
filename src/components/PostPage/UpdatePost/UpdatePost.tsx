@@ -10,13 +10,7 @@ import { useParams } from "react-router-dom";
 import i18n from "../../../util/Locales/i18n";
 import toast from "react-hot-toast";
 
-const ModifyPost: React.FC = () => {
-  // 231108 JSY 주석해도 정상 동작함. 확인 필요
-  // useEffect(() => {
-  //   setLocation_City(t("시 / 도"));
-  //   setLocation_District(t("구 / 군"));
-  // }, [t]);
-  
+const ModifyPost: React.FC = () => {  
   // 다국어 지원 관련
   const { t } = useLanguage();
   const lang = i18n.language;

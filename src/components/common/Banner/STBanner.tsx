@@ -57,7 +57,6 @@ export const BannerImg = styled.div`
     right: 90px;
     width: 40px;
     transform: rotate(-12.986deg);
-    /* filter: drop-shadow(0px 4px 4px #00000040);  */
 
     @media screen and (max-width: 500px){
       top: 90px;
@@ -73,7 +72,6 @@ export const BannerImg = styled.div`
     right: 30px;
     width: 48px;
     transform: rotate(39.424deg);
-    /* filter: drop-shadow(0px 4px 4px #00000040);  */
 
     @media screen and (max-width: 500px){
       top: 70px;
@@ -89,7 +87,6 @@ export const BannerImg = styled.div`
     right: 100px;
     width: 64px;
     transform: rotate(-41.439deg);
-    /* filter: drop-shadow(0px 4px 4px #00000040);  */
 
     @media screen and (max-width: 500px){
       top: 115px;
@@ -105,7 +102,6 @@ export const BannerImg = styled.div`
     right: 20px;
     width: 87px;
     transform: rotate(18.396deg);
-    /* filter: drop-shadow(0px 4px 4px #00000040); */
 
     @media screen and (max-width: 500px){
       top: 100px;
