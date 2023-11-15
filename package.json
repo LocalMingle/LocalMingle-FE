@@ -38,7 +38,7 @@
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "styled-components": "^6.1.0",
-    "yarn": "^1.22.19"
+    "yarn": "^1.22.21"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
