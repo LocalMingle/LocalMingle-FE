@@ -326,7 +326,7 @@ api를 하나로 통일하면서 && 조건도 같이 탈 수 있도록 로직 �
       <img width="400" height="300" alt="작성자 참여 비포" src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/51ed028a-fe1c-4705-9c71-df4b0d142a3b">
     </td>
     <td align="center">
-      <img width="400" height="300" alt="작성자 참여 애프터" src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/2378ce8f-0be7-4081-bec7-3537190dd91a">
+      <img width="400" height="300" alt="작성자 참여 애프터" src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/712da9f9-7536-409e-aab8-e96520f20e95">
     </td>
   </tr>
   <tr>
