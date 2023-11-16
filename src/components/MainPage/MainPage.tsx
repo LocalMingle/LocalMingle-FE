@@ -101,6 +101,7 @@ const MainPage: React.FC = () => {
       threshold: 0.8, // 스크롤이 80% 이상 발생하면 inView가 true가 됨
     }
   );
+
   const initIsMounted = useRef(false);
   const initIsMounted2 = useRef(false);
   const [isReset,setIsReset] = useState<boolean>(true);
@@ -264,6 +265,8 @@ const MainPage: React.FC = () => {
       sidoHandler(); 
     }
     
+    // isMounted: 상태를 사용하여 컴포넌트가 마운트된 상태를 추적하고 컴포넌트가 언마운트된 경우에는 상태 업데이트를 시도하지 않도록 함.
+    // (주로 비동기 작업에서 컴포넌트가 언마운트된 후에도 업데이트를 방지하기 위해 사용)
     if(initIsMounted.current){
       setIsReset(true);
       if(page == 0 ){
@@ -277,22 +280,20 @@ const MainPage: React.FC = () => {
   },[verify, sido, gugun, category , keyword]);
 
   useEffect(() => {
-    
     if(initIsMounted2.current){
       postListSearch();
     } else {
       initIsMounted2.current = true;
     }
   }, [page]);
-//처음...왔을땐 false , 게시글이 최초 있는 상태(page:0)에서 하단접근시 inView true... page가 4로 업데이트 됨
-//page가 업뎃되었으니 postListSearch를 동작시켜서 page4가 넘어감....
-//이땐 isReset이 false이기에 초기화 안됨..
-//만약 셀렉터를 업뎃한경우 reset이 true...
-//postListSearch에선 reset값이 true이기에 prevent+response가 아닌 response로 Set.
-//이때 페이지는? page4가 그대로이기에.. 목록이 초기화되었어도 다음 호출은 4가 될것
-//셀렉터가 업뎃되면 무조건 page는 0으로 초기화되야함
+  //처음...왔을땐 false , 게시글이 최초 있는 상태(page:0)에서 하단접근시 inView true... page가 4로 업데이트 됨
+  //page가 업뎃되었으니 postListSearch를 동작시켜서 page4가 넘어감....
+  //이땐 isReset이 false이기에 초기화 안됨..
+  //만약 셀렉터를 업뎃한경우 reset이 true...
+  //postListSearch에선 reset값이 true이기에 prevent+response가 아닌 response로 Set.
+  //이때 페이지는? page4가 그대로이기에.. 목록이 초기화되었어도 다음 호출은 4가 될것
+  //셀렉터가 업뎃되면 무조건 page는 0으로 초기화되야함
 
-  
   useEffect(() => {
     // inView가 true 일때만 실행한다.
     if (inView && (postList?.length||0 > 0)) {
