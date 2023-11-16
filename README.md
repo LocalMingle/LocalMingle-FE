@@ -277,6 +277,8 @@ size를 조건에 넣으려면 각 모바일의 브라우저 버전이 가장 �
 결과적으로 최신화 되어있지않은 모바일 브라우저 환경에서는 urlParams.Size를 지원하지 않는데 사용하려 해서 발생한 문제로 크로스 브라우징을 위해 해당 변수 없이도 원하는 조건 필터링을 할 수 있어서 제거했습니다.
   <br>
   <img width="600" alt="스크린샷 2023-11-13 오후 11 02 21 복사본" src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/b57d9e2c-38f1-4bcb-8455-064c6dfc8877">
+  <br>
+  <img width="524" alt="스크린샷 2023-11-16 오후 8 01 02" src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/6b78f3df-cff7-4e1b-af18-bc1868e6f68d">
 </details>
 
 <details>
