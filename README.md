@@ -311,6 +311,11 @@ api를 하나로 통일하면서 && 조건도 같이 탈 수 있도록 로직 �
 </br>
 
 ## **🗣️ 유지 피드백 & 반영**
+마지막으로 유저 피드백 입니다.<br/>
+프로젝트에서 좋게 평가해주신 부분은 디자인과 성능이 부분이며<br/>
+불편하게 느끼신 상당 부분은 유저 편의성이 좋지 않다는 것 이였습니다.<br/>
+그래서 남은 프로젝트 기간 동안 피드백을 반영할 수 있는 부분이 유저 편의성 부분이라고 판단하여,<br/>
+이 부분을 중점으로 프로젝트를 수정 하였습니다.<br/>
 <table>
   <tr>
     <th align="center">Before</td>
@@ -318,18 +323,43 @@ api를 하나로 통일하면서 && 조건도 같이 탈 수 있도록 로직 �
   </tr>
   <tr>
     <td align="center">
-      <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/93027502/77eb64f2-168d-4c31-b62f-15a260552e64" width="200px"/>
+      <img width="400" height="300" alt="작성자 참여 비포" src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/51ed028a-fe1c-4705-9c71-df4b0d142a3b">
     </td>
     <td align="center">
-      <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/93027502/77eb64f2-168d-4c31-b62f-15a260552e64" width="200px"/>
+      <img width="400" height="300" alt="작성자 참여 애프터" src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/2378ce8f-0be7-4081-bec7-3537190dd91a">
     </td>
   </tr>
   <tr>
     <td>
-      수정 전 설명 입력
+      참여자 리스트에 작성자 본인도 포함되었으면 좋겠다는 의견
     </td>
     <td>
-      수정 후 설명 입력
+      기존에는 작성자가 게시글 생성시 참여자리스트에<br/>
+      포함되지 않았지만 피드백 이후 포함 되도록 수정
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th align="center">Before</td>
+    <th align="center">After</td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img width="400" height="200" alt="헤더변경 비포" src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/0b6766fe-1281-4682-9b24-3d7e6ae1c57f">
+    </td>
+    <td align="center">
+      <img width="400" height="200" alt="해더변경 애프터" src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/8000ae7c-fef0-4b86-8871-2545b38d3580">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      헤더에 텍스트로 이루어진 부분 때문에 화면이<br/>
+      다소 정신없고 꽉 차보인다는 의견
+    </td>
+    <td>
+      아이콘으로 대체하여 드롭다운으로 피드백을 반영
     </td>
   </tr>
 </table>
@@ -349,10 +379,12 @@ api를 하나로 통일하면서 && 조건도 같이 탈 수 있도록 로직 �
   </tr>
   <tr>
     <td>
-      수정 전 설명 입력
+      게시글 작성 시 제목과 본문에 대해 몇 글자까지<br/>
+      작성할 수 있는지 알려주면 좋겠다는 의견
     </td>
     <td>
-      수정 후 설명 입력
+      Placeholder를 활용하여 글자 제한 안내 문구와<br/>
+      해당 validation 추가
     </td>
   </tr>
 </table>
