@@ -107,7 +107,7 @@
 
 ## **🗂️ 서비스 아키텍처**
 
-<img src="https://github.com/LocalMingle/LocalMingle-FE/assets/93027502/b1dab7b7-d0cd-46bc-9736-925d67494595" alt="서비스아키텍처" style="width:800px"/>
+<img src="https://github.com/LocalMingle/LocalMingle-FE/assets/93027502/b1dab7b7-d0cd-46bc-9736-925d67494595" alt="서비스아키텍처" style="width:850"/>
 
 </br>
 
