@@ -310,6 +310,55 @@ api를 하나로 통일하면서 && 조건도 같이 탈 수 있도록 로직 �
 
 </br>
 
+## **🗣️ 유지 피드백 & 반영**
+<table>
+  <tr>
+    <th align="center">Before</td>
+    <th align="center">After</td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/93027502/77eb64f2-168d-4c31-b62f-15a260552e64" width="200px"/>
+    </td>
+    <td align="center">
+      <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/93027502/77eb64f2-168d-4c31-b62f-15a260552e64" width="200px"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      수정 전 설명 입력
+    </td>
+    <td>
+      수정 후 설명 입력
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th align="center">Before</td>
+    <th align="center">After</td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/93027502/77eb64f2-168d-4c31-b62f-15a260552e64" width="200px"/>
+    </td>
+    <td align="center">
+      <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/93027502/77eb64f2-168d-4c31-b62f-15a260552e64" width="200px"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      수정 전 설명 입력
+    </td>
+    <td>
+      수정 후 설명 입력
+    </td>
+  </tr>
+</table>
+
+</br>
+
 ## **💻 역할 담당**
 <table>
   <tr>
@@ -328,9 +377,9 @@ api를 하나로 통일하면서 && 조건도 같이 탈 수 있도록 로직 �
     <td align="center">장소영</td>
     <td style="padding: 15px 10px;">
       - 메인페이지(카드뷰, 게시글 검색, 게시글 샐랙터 필터링, 인피니티 스크롤)<br />
-      - 게시글 작성 및 수정 페이지<br />
+      - 게시글 작성 / 수정 페이지<br />
       - 1차 개발 범위에 대한 전체화면 퍼블리싱<br />
-      - 프론트 gitHub 관리<br />
+      - gitHub 관리<br />
       - Figma 관리
     </td>
     <td align="center">emily_jang@kakao.com</td>
