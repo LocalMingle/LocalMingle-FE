@@ -371,10 +371,10 @@ api를 하나로 통일하면서 && 조건도 같이 탈 수 있도록 로직 �
   </tr>
   <tr>
     <td align="center">
-      <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/93027502/77eb64f2-168d-4c31-b62f-15a260552e64" width="200px"/>
+      <img width="400" height="700" alt="placeholder before" src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/f9e542f6-2c3a-4f13-ae4c-4946e5dcc30c">
     </td>
     <td align="center">
-      <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/93027502/77eb64f2-168d-4c31-b62f-15a260552e64" width="200px"/>
+      <img width="400" height="700" alt="placeholder after" src="https://github.com/LocalMingle/LocalMingle-FE/assets/138233242/b90b78f2-a0a2-4857-9dff-842f7c5c746f">
     </td>
   </tr>
   <tr>
@@ -383,8 +383,7 @@ api를 하나로 통일하면서 && 조건도 같이 탈 수 있도록 로직 �
       작성할 수 있는지 알려주면 좋겠다는 의견
     </td>
     <td>
-      Placeholder를 활용하여 글자 제한 안내 문구와<br/>
-      해당 validation 추가
+      Placeholder를 활용하여 글자 제한 안내 문구 추가
     </td>
   </tr>
 </table>
