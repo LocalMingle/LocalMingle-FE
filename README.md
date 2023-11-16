@@ -76,6 +76,35 @@
 
 </br>
 
+## **💻 역할 담당**
+<table>
+  <tr>
+    <td align="center">김태현</td>
+    <td style="padding: 15px 10px;">
+      - 일반회원가입 / 로그인페이지<br />
+      - 소셜 로그인<br />
+      - 다국어기능<br />
+      - 실시간 채팅<br />
+      - 게시글 상세 페이지<br />
+      - 마이페이지(회원정보 수정, 작성 이벤트 관리, 참여 이벤트 관리, 회원탈퇴) CRUD<br />
+    </td>
+    <td align="center">tutu72933@gmail.com</td>
+  </tr>
+    <tr>
+    <td align="center">장소영</td>
+    <td style="padding: 15px 10px;">
+      - 메인페이지(카드뷰, 게시글 검색, 게시글 샐랙터 필터링, 인피니티 스크롤)<br />
+      - 게시글 작성 / 수정 페이지<br />
+      - 1차 개발 범위에 대한 전체화면 퍼블리싱<br />
+      - gitHub 관리<br />
+      - Figma 관리
+    </td>
+    <td align="center">emily_jang@kakao.com</td>
+  </tr>
+</table>
+
+</br>
+
 ## **🗂️ 서비스 아키텍처**
 
 <img src="https://github.com/LocalMingle/LocalMingle-FE/assets/93027502/b1dab7b7-d0cd-46bc-9736-925d67494595" alt="서비스아키텍처" style="width:800px"/>
@@ -389,32 +418,5 @@ api를 하나로 통일하면서 && 조건도 같이 탈 수 있도록 로직 �
 </table>
 
 </br>
-
-## **💻 역할 담당**
-<table>
-  <tr>
-    <td align="center">김태현</td>
-    <td style="padding: 15px 10px;">
-      - 일반회원가입 / 로그인페이지<br />
-      - 소셜 로그인<br />
-      - 다국어기능<br />
-      - 실시간 채팅<br />
-      - 게시글 상세 페이지<br />
-      - 마이페이지(회원정보 수정, 작성 이벤트 관리, 참여 이벤트 관리, 회원탈퇴) CRUD<br />
-    </td>
-    <td align="center">tutu72933@gmail.com</td>
-  </tr>
-    <tr>
-    <td align="center">장소영</td>
-    <td style="padding: 15px 10px;">
-      - 메인페이지(카드뷰, 게시글 검색, 게시글 샐랙터 필터링, 인피니티 스크롤)<br />
-      - 게시글 작성 / 수정 페이지<br />
-      - 1차 개발 범위에 대한 전체화면 퍼블리싱<br />
-      - gitHub 관리<br />
-      - Figma 관리
-    </td>
-    <td align="center">emily_jang@kakao.com</td>
-  </tr>
-</table>
 
 
