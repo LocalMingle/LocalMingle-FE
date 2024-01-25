@@ -2,7 +2,7 @@
 ![로컬밍글 브로셔](https://github.com/LocalMingle/LocalMingle-FE/assets/93027502/4a4fd6d4-cded-4ef3-af10-0f84fa26785e)
 
 > 로컬밍글은 소셜 커뮤니티 서비스입니다.</br>
-쉽고 빠르게 함께 할 수 있는 활동을 만들고 참여해보세요!
+쉽고 빠르게 함께 할 수 있는 활동을 만들고 참여해보세요!!
 
 </br>
 
